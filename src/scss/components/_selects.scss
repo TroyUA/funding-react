@@ -1,0 +1,137 @@
+@use '../abstracts/' as *;
+// @use 'inputs' as *;
+
+.select-box {
+  position: relative;
+  cursor: pointer;
+  outline-style: none;
+  user-select: none;
+  border-bottom: 1px solid black;
+
+  &:focus {
+    background-color: $gray95;
+    border-bottom: 2px solid black;
+  }
+
+  &__value {
+    position: relative;
+    cursor: inherit;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 16px 48px 16px 16px;
+    border: none;
+    outline-style: none;
+    align-self: stretch;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+
+    &[data-disabled] {
+      color: $gray50;
+    }
+
+    // &:has(+ .show) {
+    //   border-bottom: 2px solid black;
+    // }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: calc(50% - 6px);
+      right: 20px;
+      width: 8px;
+      height: 8px;
+      border-right: 1px solid black;
+      border-bottom: 1px solid black;
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    // frame for calibration purpose
+    &::before {
+      content: '';
+      position: absolute;
+      top: calc(50% - 8px);
+      right: 16px;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #ccc;
+      pointer-events: none;
+    }
+  }
+
+  &__options {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 53px;
+    padding: 0px;
+    height: 175px;
+    cursor: inherit;
+    border: 1px solid $gray50;
+    border-top: none;
+    overflow-y: auto;
+
+    &.show {
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+
+      /* Inside auto layout */
+
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+  }
+
+  &__option {
+    position: relative;
+    padding: 8px 16px;
+    background: $gray95;
+    /* Inside auto layout */
+    flex: none;
+    align-self: stretch;
+    flex-grow: 0;
+
+    &:hover {
+      background-color: $gray50;
+      color: white;
+    }
+
+    &[data-hidden] {
+      display: none;
+    }
+
+    &.selected {
+      font-weight: 600;
+      &:after {
+        content: '';
+        position: absolute;
+        top: calc(50% - 7px);
+        right: 21px;
+        width: 6px;
+        height: 10px;
+        border-right: 1px solid black;
+        border-bottom: 1px solid black;
+        transform: rotate(45deg);
+        pointer-events: none;
+      }
+
+      // frame for calibration purpose
+      &:before {
+        content: '';
+        position: absolute;
+        top: calc(50% - 8px);
+        right: 16px;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #ccc;
+        pointer-events: none;
+      }
+    }
+  }
+}

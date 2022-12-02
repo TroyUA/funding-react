@@ -1,0 +1,180 @@
+@use '../abstracts' as *;
+@use '../layout/footer' as *;
+
+.header {
+  /* Auto layout */
+  @include flexCenter();
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  z-index: 2;
+
+  height: var(--header-height);
+
+  /* Black */
+  background: #000000;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  &__wrapper {
+    @include flexBetween();
+    padding: 6px 25px;
+    // margin: 0 auto;
+    width: 100vw;
+    max-width: 1440px;
+  }
+
+  &__logo {
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 100%;
+    /* identical to box height, or 20px */
+
+    text-transform: capitalize;
+
+    /* White */
+    color: #ffffff;
+  }
+
+  &__register-donation-btn {
+    display: none;
+    &.btn_white {
+      .btn__text {
+        text-transform: uppercase;
+        padding: 20px 30px;
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 16px;
+      }
+    }
+
+    @include respond-to('small') {
+      display: inline-block;
+    }
+  }
+
+  &__profile-btn {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+  }
+
+  &__burger {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      background-color: white;
+      width: 16px;
+      height: 2px;
+      @include transition-ease;
+    }
+    &:before {
+      top: 5px;
+      left: 2px;
+    }
+    &:after {
+      bottom: 5px;
+      left: 2px;
+    }
+    &.open {
+      &:before {
+        transform: translateY(4px) rotate(45deg);
+      }
+      &:after {
+        transform: translateY(-4px) rotate(-225deg);
+      }
+    }
+  }
+
+  &__burger-btn {
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+    border: none;
+  }
+
+  &__burger-sidebar {
+    position: absolute;
+    right: 0px;
+    top: var(--header-height);
+    bottom: calc(-100vh + var(--footer-height) + var(--header-height));
+    width: 100vw;
+    max-width: 400px;
+    transform: translateX(100%);
+    //in active state body must be set to overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px;
+    isolation: isolate;
+
+    background-color: black;
+    @include transition-ease;
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: calc(100vh - (var(--header-height) + var(--footer-height)));
+      width: 100vw;
+      transform: translateX(0);
+      background: rgba(0, 0, 0, 0);
+      @include transition-ease;
+    }
+
+    &.open {
+      transform: translateX(0);
+      &:before {
+        background: rgba(0, 0, 0, 0.5);
+        transform: translateX(-100%);
+      }
+
+      @include respond-to('small') {
+        --footer-height: 0px;
+        .footer {
+          height: var(--footer-height);
+        }
+      }
+    }
+  }
+
+  &__burger-nav-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+    isolation: isolate;
+
+    /* Inside auto layout */
+  }
+
+  &__burger-contact-us {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #ffffff;
+    align-self: center;
+  }
+
+  &__menu {
+    @include flexBetween();
+    gap: 30px;
+  }
+}

@@ -1,0 +1,86 @@
+@use '../abstracts/' as *;
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  width: 100vw;
+  height: var(--footer-height);
+  @include transition-ease;
+
+  &__container {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  &__nav {
+    display: none;
+    justify-content: space-between;
+    color: #ffffff;
+
+    @include respond-to('small') {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 100px;
+    }
+  }
+
+  &__nav-links {
+    text-decoration: none;
+    list-style: none;
+    cursor: pointer;
+    padding: 0px;
+    gap: 25px;
+
+    display: flex;
+  }
+
+  &__nav-link {
+    a {
+      font-family: 'Raleway';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 14px;
+    }
+  }
+
+  &__support-link {
+    all: unset;
+
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+  }
+
+  &__register-donation-btn {
+    padding: 24px 32px;
+    gap: 8px;
+    width: 100%;
+
+    border: none;
+    border-top: 1px solid #ffffff;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 4;
+    // align-self: stretch;
+    flex-grow: 0;
+
+    @include respond-to('small') {
+      display: none;
+    }
+  }
+
+  &.hide {
+    @include respond-to('small') {
+      --footer-height: 0;
+    }
+  }
+}

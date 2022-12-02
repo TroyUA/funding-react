@@ -1,0 +1,66 @@
+@use '../abstracts/' as *;
+
+.profile-dialog {
+  min-width: 375px;
+  max-width: 600px;
+  width: 100%;
+
+  height: min(100vh, 794px);
+
+  border: none;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: #ffffff;
+
+  &__upload {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 25px 50px;
+    background: $gray95;
+    /* Grey/50 */
+
+    border: 1px solid $gray50;
+
+    &-icon {
+      opacity: 0;
+      position: absolute;
+      z-index: -1;
+    }
+
+    &-label {
+      font-family: 'Raleway';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      /* identical to box height */
+
+      margin: auto;
+      cursor: pointer;
+      // text-align: center;
+      // align-self: center;
+      text-decoration-line: underline;
+
+      /* Grey/50 */
+
+      color: $gray50;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 25px;
+    gap: 25px;
+  }
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+}

@@ -1,0 +1,175 @@
+@use '../abstracts' as *;
+
+/***************Buttons********************/
+.btn {
+  cursor: pointer;
+  @include flexCenter;
+  gap: 10px;
+
+  &__text {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+
+    /* White */
+
+    color: #ffffff;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+  &__icon {
+    /* Open */
+    @include flexCenter;
+    width: 20px;
+    height: 20px;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &_black {
+    @extend .btn;
+    background: black;
+    border: 1px solid white;
+    &:hover,
+    &:focus {
+      background: $gray25;
+    }
+    &:disabled {
+      background: black;
+      opacity: 0.25;
+    }
+  }
+
+  &_white {
+    @extend .btn;
+    background: white;
+    border: 1px solid black;
+
+    &:hover,
+    &:focus {
+      background: $gray95;
+    }
+    &:disabled {
+      border: none;
+      background: $gray95;
+      .btn__text {
+        color: $gray50;
+      }
+    }
+
+    .btn__text {
+      color: #000000;
+    }
+  }
+
+  &_with-image {
+    @extend .btn;
+    padding: 8px;
+    border: none;
+    background: transparent;
+
+    /* Inside auto layout */
+    flex: none;
+    align-self: stretch;
+    flex-grow: 0;
+
+    @include hover {
+      @include transition-ease;
+      background: black;
+      .btn__text {
+        color: white;
+      }
+      .btn__icon {
+        filter: invert(100%);
+      }
+    }
+    .btn__text {
+      text-transform: capitalize;
+      font-family: 'Raleway';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 23px;
+
+      /* Black */
+      color: #000000;
+
+      /* Inside auto layout */
+      flex: none;
+      order: 0;
+      flex-grow: 0;
+    }
+
+    .btn__icon {
+      /* Open */
+      @include flexCenter;
+      width: 20px;
+      height: 20px;
+      /* Inside auto layout */
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      flex: none;
+      order: 1;
+      flex-grow: 0;
+    }
+    &_white {
+      @extend .btn;
+      padding: 8px;
+      background: #000000;
+
+      align-self: stretch;
+
+      .btn__text {
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 23px;
+        color: #ffffff;
+        text-transform: capitalize;
+        /* Inside auto layout */
+        flex: none;
+        order: 0;
+        flex-grow: 0;
+      }
+
+      .btn__icon {
+        @include flexCenter;
+        width: 20px;
+        height: 20px;
+        filter: invert(100%);
+        /* Inside auto layout */
+        img {
+          width: 16px;
+          height: 16px;
+        }
+
+        flex: none;
+        order: 1;
+        flex-grow: 0;
+      }
+    }
+  }
+}

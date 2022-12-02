@@ -1,0 +1,282 @@
+// @use 'fonts' as *;
+@use 'abstracts' as *;
+@use 'base' as *;
+@use 'components' as *;
+@use 'layout' as *;
+
+:root {
+  --footer-height: 64px;
+  --header-height: 70px;
+}
+
+h2 {
+  font-family: 'Play';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 37px;
+  text-transform: capitalize;
+
+  /* Black */
+  color: #000000;
+}
+
+body.lock {
+  overflow: hidden;
+}
+
+/***************User********************/
+
+.users {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+
+  /* Inside auto layout */
+
+  flex: none;
+  order: 1;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.user {
+  /* Auto layout */
+
+  display: flex;
+  // flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 16px 0;
+  gap: 8px;
+
+  /* Black */
+  border-bottom: 1px solid #000000;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+
+  @include hover {
+    background: black;
+    .user__about,
+    .user__amount,
+    .user__rank {
+      color: white;
+    }
+    .user__arrow-btn {
+      background: inherit;
+      display: inline;
+      .btn__icon {
+        filter: invert(100%);
+      }
+    }
+  }
+
+  &__icon {
+    /* Picture */
+    width: 50px;
+    height: 50px;
+    display: inline;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+
+  &__all-other-info {
+    display: flex;
+    flex-direction: row;
+
+    padding: 0px;
+    gap: 8px;
+    width: 100%;
+
+    /* Inside auto layout */
+
+    // flex: none;
+    // order: 1;
+    flex-grow: 1;
+  }
+
+  &__about {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    text-decoration: none;
+    /* identical to box height */
+
+    /* Black */
+    color: #000000;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+  }
+
+  &__text-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 8px;
+    width: 100%;
+  }
+
+  &__address {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    /* identical to box height */
+
+    text-transform: uppercase;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+
+    /* Black */
+
+    color: #000000;
+
+    opacity: 0.5;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+  }
+
+  &__numbers {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 0px;
+    gap: 8px;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  }
+
+  &__amount {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 14px;
+    /* identical to box height */
+
+    font-feature-settings: 'pnum' on, 'lnum' on;
+
+    /* Black */
+
+    color: #000000;
+
+    opacity: 0.5;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+  }
+
+  &__rank {
+    /* #1 */
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+
+    font-feature-settings: 'pnum' on, 'lnum' on;
+
+    /* Black */
+
+    color: #000000;
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+  }
+  &__arrow-btn {
+    display: none;
+    order: 4;
+  }
+
+  @include respond-to('small') {
+    padding: 25px;
+    gap: 30px;
+    flex-direction: row;
+    align-items: center;
+
+    &__icon {
+      width: 100px;
+      height: 100px;
+      border: 1px solid $gray50;
+      border-radius: 50%;
+      display: inline;
+    }
+
+    &__numbers {
+      flex-direction: row;
+      align-items: center;
+      gap: 30px;
+    }
+
+    &__rank {
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 28px;
+
+      order: 1;
+    }
+
+    &__amount {
+      font-family: 'Raleway';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      /* identical to box height */
+
+      font-feature-settings: 'pnum' on, 'lnum' on;
+
+      /* Black */
+
+      color: #000000;
+      opacity: 1;
+
+      order: 0;
+    }
+
+    &__address {
+      font-family: 'Raleway';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 14px;
+      /* identical to box height */
+
+      text-transform: uppercase;
+
+      /* Grey/50 */
+
+      color: $gray50;
+      opacity: 1;
+    }
+  }
+}
