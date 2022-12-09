@@ -5,7 +5,11 @@ interface MainProps extends React.PropsWithChildren {
 }
 
 const Main: React.FC<MainProps> = ({ children }) => {
-  return <main className="main">{children}</main>
+  return (
+    <main className="main">
+      <div className="main__wrapper">{children}</div>
+    </main>
+  )
 }
 
 export default Main

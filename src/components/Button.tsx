@@ -15,7 +15,7 @@ export interface IButtonProps
     HTMLButtonElement
   > {
   imgSrc?: string
-  className: string
+  className?: string
   onClick?: () => void
   to?: string
   alt?: string

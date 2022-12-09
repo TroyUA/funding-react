@@ -1,31 +1,41 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import Button from './Button'
 
 const Footer: React.FC = () => {
   return (
     <footer className="footer">
-      <div className="footer__container">
+      <div className="wrapper">
         <nav className="footer__nav">
           <ul className="footer__nav-links">
-            <li className="footer__nav-link">
-              <a>Charity funds</a>
+            <li>
+              <Link to={'/funds'} className="footer__nav-link">
+                Charity funds
+              </Link>
             </li>
-            <li className="footer__nav-link">
-              <a>Leadboard</a>
+            <li>
+              <Link to={'/leaderboard'} className="footer__nav-link">
+                Leadboard
+              </Link>
             </li>
-            <li className="footer__nav-link">
-              <a>Log In</a>
+            <li>
+              <Link to={'/login'} className="footer__nav-link">
+                Log In
+              </Link>
             </li>
-            <li className="footer__nav-link">
-              <a>Register donation</a>
+            <li>
+              <Link to={'/donation'} className="footer__nav-link">
+                Register donation
+              </Link>
             </li>
           </ul>
-          <a href="" className="footer__support-link">
+          <Link to={'#'} className="footer__support-link">
             supportua@gmail.com
-          </a>
+          </Link>
         </nav>
-        <button className="footer__register-donation-btn btn_black" type="button">
+        <Button to={'/donation'} className="footer__register-donation-btn btn_black">
           <span className="btn__text">register donation</span>
-        </button>
+        </Button>
       </div>
     </footer>
   )

@@ -4,8 +4,8 @@ import Button from '../components/Button'
 const Home = () => {
   return (
     <>
-      <section className="leaderboard">
-        <div className="wrapper">
+      <section className="leaderboard section">
+        <div className="section__wrapper">
           <h2>donation leaderboard</h2>
           <ul className="users">
             <li className="user">
@@ -67,23 +67,17 @@ const Home = () => {
             </li>
           </ul>
           <Button
-            className="leaderboard__see-all-btn btn_with-image"
+            className="see-all-btn btn_with-image"
             imgSrc="/src/img/arrow.svg"
             alt="arrow"
             to="/leaderboard"
           >
             See All
           </Button>
-          {/* <button className="leaderboard__see-all-btn btn_with-image" type="button">
-            <span className="btn__text">See All</span>
-            <span className="btn__icon">
-              <img alt="arrow" src="@img/arrow.svg" />
-            </span>
-          </button> */}
         </div>
       </section>
-      <section className="how-it-works">
-        <div className="wrapper">
+      <section className="how-it-works section">
+        <div className="section__wrapper">
           <h2>how it works</h2>
           <div className="how-it-works__steps">
             <article className="how-it-works__step article">
@@ -107,61 +101,75 @@ const Home = () => {
               <h3 className="how-it-works__step-description">Compete with others</h3>
             </article>
           </div>
-          <button className="how-it-works__register-donation-btn btn_black" type="button">
+          <Button to="/donation" className="how-it-works__register-donation-btn btn_black">
             <span className="btn__text">register donation</span>
-          </button>
+          </Button>
         </div>
       </section>
-      <section className="charity-funds">
-        <div className="wrapper">
+      <section className="charity-funds section">
+        <div className="section__wrapper">
           <h2>charity funds</h2>
-          <div className="charity-funds__list">
-            <article className="charity-funds__item article">
-              <div className="charity-funds__item-fon">
-                <div className="charity-funds__item-defence-btn btn_black">
-                  <span className="btn__text">defence and demining</span>
+          <ul className="charity-funds__list">
+            <li>
+              <article className="charity-funds__item article">
+                <div className="charity-funds__item-fon">
+                  <div className="charity-funds__item-defence-btn btn_black">
+                    <span className="btn__text">defence and demining</span>
+                  </div>
                 </div>
-              </div>
-              <button className="charity-funds__item-make-donation-btn btn_with-image">
-                <span className="btn__text">Make a Donation</span>
-                <span className="btn__icon">
-                  <img alt="arrow" src="@img/arrow.svg" />
-                </span>
-              </button>
-            </article>
-            <article className="charity-funds__item article">
-              <div className="charity-funds__item-fon">
-                <div className="charity-funds__item-defence-btn btn_black">
-                  <span className="btn__text">defence and demining</span>
+                <Button
+                  to="/donation"
+                  className="charity-funds__item-make-donation-btn btn_with-image"
+                  imgSrc="/src/img/arrow.svg"
+                  alt="arrow"
+                >
+                  Make a Donation
+                </Button>
+              </article>
+            </li>
+            <li>
+              <article className="charity-funds__item article">
+                <div className="charity-funds__item-fon">
+                  <div className="charity-funds__item-defence-btn btn_black">
+                    <span className="btn__text">defence and demining</span>
+                  </div>
                 </div>
-              </div>
-              <button className="charity-funds__item-make-donation-btn btn_with-image">
-                <span className="btn__text">Make a Donation</span>
-                <span className="btn__icon">
-                  <img alt="arrow" src="@img/arrow.svg" />
-                </span>
-              </button>
-            </article>
-            <article className="charity-funds__item article">
-              <div className="charity-funds__item-fon">
-                <div className="charity-funds__item-defence-btn btn_black">
-                  <span className="btn__text">defence and demining</span>
+                <Button
+                  to="/donation"
+                  className="charity-funds__item-make-donation-btn btn_with-image"
+                  imgSrc="/src/img/arrow.svg"
+                  alt="arrow"
+                >
+                  Make a Donation
+                </Button>
+              </article>
+            </li>
+            <li>
+              <article className="charity-funds__item article">
+                <div className="charity-funds__item-fon">
+                  <div className="charity-funds__item-defence-btn btn_black">
+                    <span className="btn__text">defence and demining</span>
+                  </div>
                 </div>
-              </div>
-              <button className="charity-funds__item-make-donation-btn btn_with-image">
-                <span className="btn__text">Make a Donation</span>
-                <span className="btn__icon">
-                  <img alt="arrow" src="@img/arrow.svg" />
-                </span>
-              </button>
-            </article>
-          </div>
-          <button className="charity-funds__see-all-btn btn_with-image" type="button">
-            <span className="btn__text">See All</span>
-            <span className="btn__icon">
-              <img alt="arrow" src="@img/arrow.svg" />
-            </span>
-          </button>
+                <Button
+                  to="/donation"
+                  className="charity-funds__item-make-donation-btn btn_with-image"
+                  imgSrc="/src/img/arrow.svg"
+                  alt="arrow"
+                >
+                  Make a Donation
+                </Button>
+              </article>
+            </li>
+          </ul>
+          <Button
+            className="see-all-btn btn_with-image"
+            imgSrc="/src/img/arrow.svg"
+            alt="arrow"
+            to="/funds"
+          >
+            See All
+          </Button>
         </div>
       </section>
     </>

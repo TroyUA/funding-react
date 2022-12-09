@@ -7,6 +7,7 @@
 :root {
   --footer-height: 64px;
   --header-height: 70px;
+  --footer__register-donation-display: 'flex';
 }
 
 h2 {
@@ -278,5 +279,128 @@ body.lock {
       color: $gray50;
       opacity: 1;
     }
+  }
+}
+
+.not-found {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  gap: 25px;
+  /* Inside auto layout */
+  color: #ffffff;
+
+  // flex: none;
+  // order: 0;
+  // align-self: stretch;
+  // flex-grow: 1;
+
+  h1 {
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 80px;
+    line-height: 93px;
+  }
+
+  p {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+
+    /* White */
+  }
+
+  &__home-btn {
+    padding: 16px 24px;
+  }
+}
+
+.success {
+  // --footer__register-donation-display: 'none';
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px;
+    gap: 25px;
+
+    /* White */
+
+    background: #ffffff;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 1;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .check {
+    position: relative;
+    width: 50px;
+    height: 50px;
+
+    &::before {
+      content: '';
+      height: 20px;
+      width: 30px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+
+      border-left: 2.5px solid #000000;
+      border-bottom: 2.5px solid #000000;
+    }
+  }
+
+  .return-home-btn {
+    padding: 20px 30px;
+  }
+
+  .donation-link {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+
+    /* Black */
+
+    color: #000000;
+  }
+
+  &__message {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+
+    /* Black */
+
+    color: #000000;
+  }
+
+  @include respond-to('small') {
+    padding: 100px 200px;
   }
 }

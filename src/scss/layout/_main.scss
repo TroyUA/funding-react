@@ -7,13 +7,29 @@
   margin-top: var(--header-height);
   width: 100vw;
 
+  .see-all-btn {
+    align-self: stretch;
+    order: 2;
+    @include respond-to('small') {
+      align-self: auto;
+      margin: 0 auto;
+    }
+  }
+
+  .section {
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      padding: 50px 25px;
+      @include respond-to('small') {
+        padding: 50px 100px;
+      }
+    }
+  }
+
   .leaderboard {
     background-color: $gray95;
-
-    &__see-all-btn {
-      align-self: stretch;
-      order: 2;
-    }
   }
 
   .how-it-works {
@@ -31,6 +47,9 @@
       flex: none;
       order: 2;
       flex-grow: 0;
+      @include respond-to('small') {
+        display: flex;
+      }
     }
 
     &__steps {
@@ -152,13 +171,11 @@
     }
   }
 
-  .wrapper {
+  &__wrapper {
     margin: 0 auto;
     max-width: 1440px;
-    padding: 50px 25px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
   }
 
   .article {
@@ -166,6 +183,14 @@
 
     @include respond-to('small') {
       width: 380px;
+    }
+  }
+
+  &:has(.success, .sign-up, .donation, .log-in) + .footer {
+    display: none;
+
+    @include respond-to('small') {
+      display: block;
     }
   }
 }

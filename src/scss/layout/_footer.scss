@@ -7,9 +7,9 @@
   background-color: #000000;
   width: 100vw;
   height: var(--footer-height);
-  @include transition-ease;
+  // @include transition-ease;
 
-  &__container {
+  .wrapper {
     max-width: 1440px;
     margin: 0 auto;
   }
@@ -39,13 +39,13 @@
   }
 
   &__nav-link {
-    a {
-      font-family: 'Raleway';
-      font-style: normal;
-      font-weight: 400;
-      font-size: 12px;
-      line-height: 14px;
-    }
+    all: unset;
+    text-decoration: none;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
   }
 
   &__support-link {
@@ -59,6 +59,7 @@
   }
 
   &__register-donation-btn {
+    // display: var(--footer__register-donation-display);
     padding: 24px 32px;
     gap: 8px;
     width: 100%;

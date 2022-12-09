@@ -4,14 +4,13 @@ import Footer from '../components/Footer'
 import Header from '../components/Header'
 import Main from '../components/Main'
 
-interface LayoutProps extends React.PropsWithChildren {}
+// interface LayoutProps extends React.PropsWithChildren {}
 
-const Layout: React.FC<LayoutProps> = () => {
+const Layout: React.FC = () => {
   return (
     <>
       <Header />
       <Main>
-        {/* {children} */}
         <Outlet />
       </Main>
       <Footer />
