@@ -2,14 +2,14 @@ import React from 'react'
 
 import { Routes, Route, Outlet, Link } from 'react-router-dom'
 import Home from './pages/Home'
-import Layout from './pages/Layout'
+import Layout from './components/Layout'
 import NotFound from './pages/NotFound'
-import Profile from './pages/Profile'
-import Leaderboard from './pages/Leaderboard'
+import Leaderboard from './components/Leaderboard'
 import Donation from './pages/Donation'
 import Funds from './pages/Funds'
 import Success from './pages/Success'
 import Login from './pages/Login'
+import ProfilePage from './pages/ProfilePage'
 
 const App: React.FC = () => {
   return (
@@ -17,7 +17,7 @@ const App: React.FC = () => {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="leaderboard" element={<Leaderboard />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile" element={<ProfilePage />} />
         <Route path="donation" element={<Donation />} />
         <Route path="funds" element={<Funds />} />
         <Route path="success" element={<Success />} />

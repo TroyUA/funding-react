@@ -1,7 +1,12 @@
 import React from 'react'
 
 const Login = () => {
-  return <h1>Log In</h1>
+  return (
+    <div className="login">
+      <h1>Log In</h1>
+      <form></form>
+    </div>
+  )
 }
 
 export default Login

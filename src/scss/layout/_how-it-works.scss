@@ -1,0 +1,58 @@
+@use '../abstracts/' as *;
+
+.how-it-works {
+  background-color: #000000;
+
+  h1,
+  h3 {
+    color: white;
+  }
+
+  &__register-donation-btn {
+    display: none;
+    padding: 24px 32px;
+    align-self: flex-end;
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+    @include respond-to('small') {
+      display: flex;
+    }
+  }
+
+  &__steps {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 50px;
+  }
+
+  &__step {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    &-img {
+      width: 100%;
+    }
+
+    &-description {
+      font-family: 'Raleway';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 26px;
+      /* identical to box height */
+
+      /* White */
+      color: #ffffff;
+
+      /* Inside auto layout */
+      flex: none;
+      order: 1;
+      align-self: stretch;
+      flex-grow: 0;
+    }
+  }
+}

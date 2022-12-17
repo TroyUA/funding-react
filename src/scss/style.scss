@@ -10,7 +10,7 @@
   --footer__register-donation-display: 'flex';
 }
 
-h2 {
+h1 {
   font-family: 'Play';
   font-style: normal;
   font-weight: 700;
@@ -63,7 +63,7 @@ body.lock {
 
   @include hover {
     background: black;
-    .user__about,
+    .user__name,
     .user__amount,
     .user__rank {
       color: white;
@@ -104,7 +104,7 @@ body.lock {
     flex-grow: 1;
   }
 
-  &__about {
+  &__name {
     font-family: 'Raleway';
     font-style: normal;
     font-weight: 700;
@@ -307,6 +307,7 @@ body.lock {
     font-weight: 700;
     font-size: 80px;
     line-height: 93px;
+    color: white;
   }
 
   p {
