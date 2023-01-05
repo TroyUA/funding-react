@@ -1,0 +1,59 @@
+@use '../abstracts/' as *;
+
+.filters {
+  background-color: white;
+
+  &__form {
+    display: none;
+    flex-direction: column;
+    @include respond-to('small') {
+      display: flex;
+      // flex-direction: row;
+    }
+
+    &.show {
+      display: flex;
+    }
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    @include respond-to('small') {
+      flex-direction: row;
+    }
+  }
+
+  &__open-btn {
+    padding: 8px 30px;
+    gap: 8px;
+    @include respond-to('small') {
+      display: none;
+    }
+  }
+
+  &__apply-btn {
+    padding: 8px 16px;
+    gap: 4px;
+    order: 1;
+    @include respond-to('small') {
+      order: 2;
+    }
+  }
+
+  &__reset-btn {
+    order: 2;
+    @include respond-to('small') {
+      order: 1;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    @include respond-to('small') {
+      flex-direction: row;
+      align-self: flex-end;
+    }
+  }
+}

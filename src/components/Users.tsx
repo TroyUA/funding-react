@@ -1,16 +1,26 @@
 import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { IUser } from '../models/IUser'
-import { fetchUsers } from '../store/reducers/ActionCreators'
+import { fetchUsers } from '../store/users/asyncThunk'
+import { IUser } from '../store/users/types'
 import User from './User'
 
-const Users = () => {
-  const { error, isLoading, users } = useAppSelector((state) => state.usersReducer)
+interface IUsersProps {
+  limit: number
+}
+
+let isInitial = true
+
+const Users: React.FC<IUsersProps> = ({ limit }) => {
+  const { error, isLoading, users } = useAppSelector((state) => state.users)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(fetchUsers(3))
-  }, [])
+    if (isInitial) {
+      isInitial = false
+      return
+    }
+    dispatch(fetchUsers(limit))
+  }, [limit])
 
   if (error) {
     return <div>Error ${error}</div>
@@ -21,12 +31,12 @@ const Users = () => {
   }
 
   return (
-    <>
+    <div className="users">
       {/* {JSON.stringify(users, null, 2)} */}
       {users.map((user: IUser) => (
-        <User {...user} />
+        <User key={user.teamName} {...user} />
       ))}
-    </>
+    </div>
   )
 }
 

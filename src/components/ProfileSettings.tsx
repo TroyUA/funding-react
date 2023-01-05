@@ -16,23 +16,13 @@ const ProfileSettings = () => {
             accept="image/*"
           />
         </div>
-        <input className="profile-dialog__team input" type="text" placeholder="Team name" />
+        <input
+          className="profile-dialog__team input"
+          type="text"
+          name="teamName"
+          placeholder="Team name"
+        />
 
-        <select data-custom className="profile-dialog__continent">
-          <option value="" hidden disabled selected>
-            ---State---
-          </option>
-        </select>
-        <select data-custom className="profile-dialog__continent">
-          <option value="" hidden disabled selected>
-            ---State---
-          </option>
-        </select>
-        <select data-custom className="profile-dialog__continent">
-          <option value="" hidden disabled selected>
-            ---State---
-          </option>
-        </select>
         <select data-custom className="profile-dialog__continent">
           <option value="" hidden disabled selected>
             ---State---

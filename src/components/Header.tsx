@@ -1,8 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useAppSelector } from '../hooks/redux'
 import Button from './Button'
+import { useAppDispatch } from '../hooks/redux'
+import { logout } from '../store/auth/slice'
 
 const Header: React.FC = () => {
+  const { token } = useAppSelector((state) => state.auth)
+  const dispatch = useAppDispatch()
+
+  const handleLogout = () => {
+    console.log('logout')
+
+    dispatch(logout())
+  }
+
   return (
     <header className="header">
       <div className="wrapper">
@@ -20,12 +32,14 @@ const Header: React.FC = () => {
             imgSrc={'/src/img/user-icon-default.svg'}
             alt={'profile'}
           ></Button>
-          <Button
-            onClick={() => console.log('logout')}
-            className={'header__logout-btn btn'}
-            imgSrc={'/src/img/logout.svg'}
-            alt={'logout'}
-          ></Button>
+          {token && (
+            <Button
+              onClick={() => handleLogout()}
+              className={'header__logout-btn btn'}
+              imgSrc={'/src/img/logout.svg'}
+              alt={'logout'}
+            ></Button>
+          )}
 
           <button className="header__burger-btn btn">
             <div className="header__burger"></div>

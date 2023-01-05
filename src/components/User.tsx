@@ -1,5 +1,5 @@
 import React from 'react'
-import { IUser } from '../models/IUser'
+import { IUser } from '../store/users/types'
 import Button from './Button'
 
 // export class CUser implements UserProps {

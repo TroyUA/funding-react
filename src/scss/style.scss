@@ -7,7 +7,6 @@
 :root {
   --footer-height: 64px;
   --header-height: 70px;
-  --footer__register-donation-display: 'flex';
 }
 
 h1 {
@@ -326,8 +325,6 @@ body.lock {
 }
 
 .success {
-  // --footer__register-donation-display: 'none';
-
   .wrapper {
     display: flex;
     flex-direction: column;

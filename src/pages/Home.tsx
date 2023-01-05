@@ -6,7 +6,7 @@ import Leaderboard from '../components/Leaderboard'
 const Home = () => {
   return (
     <>
-      <Leaderboard />
+      <Leaderboard limit={3} />
       <HowItWorks />
       <CharityFunds />
     </>

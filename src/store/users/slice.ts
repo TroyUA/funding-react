@@ -1,21 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IUser } from '../../models/IUser'
+import { IUser, IUsersState } from './types'
 
-interface UsersState {
-  users: IUser[]
-  isLoading: boolean
-  error: string
-}
-
-export interface ILeaderboardResponse {
-  data: {
-    leaderboards: {
-      items: IUser[]
-    }
-  }
-}
-
-const initialState: UsersState = {
+export const initialState: IUsersState = {
   users: [],
   isLoading: false,
   error: '',
