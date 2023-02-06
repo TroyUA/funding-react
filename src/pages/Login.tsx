@@ -1,36 +1,47 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import type { FormEventHandler, FormEvent } from 'react'
 import Button from '../components/Button'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { fetchLogin } from '../store/auth/asyncThunk'
+// import { fetchLogin } from '../store/auth/asyncThunk'
+import { authFetchingError, setCredentials } from '../store/auth/slice'
+import { authAPI } from '../store/auth/service'
 import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
+import { IValidationErrors } from '../store/auth/types'
+import { setAuthTokenInSystem } from '../store/auth/helper'
 
 const loginSchema = z.object({
   teamName: z.string().min(3),
   password: z.string().min(6),
 })
 
-export type TLoginFormInput = z.infer<typeof loginSchema>
+export type TLoginModel = z.infer<typeof loginSchema>
 
 const Login = () => {
   const nameRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  // const auth = useAppSelector((state) => state.auth)
+  const [login, {}] = authAPI.useLoginMutation()
 
-  const submitHandler: FormEventHandler = (event: FormEvent) => {
+  const submitHandler: FormEventHandler = async (event: FormEvent) => {
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
     const data = Object.fromEntries(formData)
 
     try {
-      const validatedForm: TLoginFormInput = loginSchema.parse(data)
-      dispatch(fetchLogin(validatedForm.teamName, validatedForm.password))
-      navigate('/')
+      const validatedForm: TLoginModel = loginSchema.parse(data)
+      // dispatch(fetchLogin(validatedForm))
+      const response = await login(validatedForm).unwrap()
+      if (response.__typename === 'Auth') {
+        dispatch(setCredentials(response))
+        setAuthTokenInSystem(response.token)
+        navigate('/')
+      } else {
+        dispatch(authFetchingError(response))
+      }
     } catch (error) {
-      console.log(error)
+      dispatch(authFetchingError(JSON.stringify(error)))
     }
   }
 

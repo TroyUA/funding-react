@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IUser, IUsersState } from './types'
+import { fetchUsers } from './asyncThunk'
+import { IUser, IUsers } from './types'
 
-export const initialState: IUsersState = {
+export const initialState: IUsers = {
   users: [],
   isLoading: false,
   error: '',
@@ -10,22 +11,23 @@ export const initialState: IUsersState = {
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {
-    usersFetchingStart(state) {
-      state.isLoading = true
-    },
-    usersFetchingSuccess(state, action: PayloadAction<IUser[]>) {
+  reducers: {},
+  extraReducers: {
+    [fetchUsers.fulfilled.type]: (state, action: PayloadAction<IUser[]>) => {
       state.isLoading = false
       state.error = ''
       state.users = action.payload
     },
-    usersFetchingError(state, action: PayloadAction<string>) {
+    [fetchUsers.pending.type]: (state) => {
+      state.isLoading = true
+    },
+    [fetchUsers.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false
       state.error = action.payload
     },
   },
 })
 
-export const { usersFetchingStart, usersFetchingSuccess, usersFetchingError } = usersSlice.actions
+// export const { usersFetchingStart, usersFetchingSuccess, usersFetchingError } = usersSlice.actions
 
 export default usersSlice.reducer

@@ -1,69 +1,114 @@
-import { axiosApi, GraphQLApi } from '../../api/graphQL'
-import { LocalStorageApi } from '../../api/localStorage'
-import { AppDispatch } from '../store'
-import { authFetchingError, authFetchingStart, authFetchingSuccess } from './slice'
-import { ILogin, ILoginResponse, IValidationErrors } from './types'
+// import { GraphQLApi } from '../../api/graphQL'
+// import { TLoginModel } from '../../pages/Login'
+// import { AppDispatch } from '..'
+// import {
+//   authFetchingError,
+//   authFetchingStart,
+//   setCredentials,
+//   profileFetchingError,
+//   setProfile,
+// } from './slice'
+// import {
+//   ILoginSuccess,
+//   ILoginResponse,
+//   IValidationErrors,
+//   ILoginRequest,
+//   IProfileResponse,
+//   IProfileSuccess,
+//   IAuthError,
+// } from './types'
+// import { setAuthTokenInSystem } from './helper'
+// import { IProfile } from '../users/types'
 
-export interface ILoginRequest {
-  query: string
-  variables: {
-    teamName: string
-    password: string
-  }
-}
+// export const fetchLogin =
+//   ({ teamName, password }: TLoginModel) =>
+//   async (dispatch: AppDispatch) => {
+//     dispatch(authFetchingStart())
+//     try {
+//       const response = await GraphQLApi.fetch<ILoginResponse, ILoginRequest>({
+//         query: `mutation Login($teamName:String! $password:String!){
+//   login(input:{teamName:$teamName password:$password}){
+//     ...on Auth{
+//       profile{
+//         teamName
+//         avatar
+//         country{
+//           name
+//         }
+//       }
+//       token
+//     }
 
-export const fetchLogin = (teamName: string, password: string) => async (dispatch: AppDispatch) => {
-  dispatch(authFetchingStart())
-  try {
-    const response = await GraphQLApi.fetch<ILoginRequest, ILoginResponse>({
-      query: `mutation Login($teamName:String! $password:String!){
-  login(input:{teamName:$teamName password:$password}){
-    ...on Auth{
-      profile{
-        teamName
-        avatar
-        country{
-          name
-        }
-      }
-      token
-    }
-    
-    ...on ValidationErrors{
-      errors{
-        message
-        key
-      }
-    }
-__typename
-  }
-}`,
-      variables: {
-        teamName,
-        password,
-      },
-    })
+//     ...on ValidationErrors{
+//       errors{
+//         message
+//         key
+//       }
+//     }
+// __typename
+//   }
+// }`,
+//         variables: {
+//           teamName,
+//           password,
+//         },
+//       })
 
-    const login = response.data.data.login
-    if (login.__typename === 'Auth') {
-      dispatch(authFetchingSuccess(login as ILogin))
-      setAuthTokenInSystem(login.token)
-    } else if ((login.__typename = 'ValidationErrors')) {
-      dispatch(authFetchingError(login as IValidationErrors))
-    }
-  } catch (error) {
-    console.log(error)
-    dispatch(authFetchingError(JSON.stringify(error)))
-  }
-}
+//       const login = response.data.data.login
+//       if (login.__typename === 'Auth') {
+//         dispatch(authFetchingSuccess(login as ILoginSuccess))
+//         setAuthTokenInSystem(login.token)
+//       } else if ((login.__typename = 'ValidationErrors')) {
+//         dispatch(authFetchingError(login as IValidationErrors))
+//       }
+//     } catch (error) {
+//       console.log(error)
+//       dispatch(authFetchingError(JSON.stringify(error)))
+//     }
+//   }
 
-export function setAuthTokenInSystem(
-  token: string,
-  params: { setInLocalStorage?: boolean } = {}
-): void {
-  const { setInLocalStorage = true } = params
-  axiosApi.defaults.headers.common.Authorization = `Bearer ${token}`
-  if (setInLocalStorage) {
-    LocalStorageApi.setAccessToken(token)
-  }
-}
+// export const fetchProfile = () => async (dispatch: AppDispatch) => {
+//   try {
+//     const response = await GraphQLApi.fetch<IProfileResponse>({
+//       query: `query getProfile{
+//   profile{
+//     ...on Profile{
+//       teamName
+//       avatar
+//       country{id name iso2 emoji}
+//       district{id name country_id}
+//       city{id name country_id district_id}
+
+//       __typename
+//     }
+
+//     ...on AuthError{
+// 			message
+//       __typename
+//     }
+//   }
+// }`,
+//       variables: {},
+//     })
+
+//     console.log(response)
+
+//     let profile = response.data.profile
+//     if (profile.__typename === 'Profile') {
+//       delete profile['__typename']
+//       console.log('Profile fetch success: ')
+//       console.log(profile)
+
+//       dispatch(setProfile(profile as IProfile))
+//     } else if ((profile.__typename = 'AuthError')) {
+//       console.log('Profile fetch failure: ')
+//       console.log(profile)
+//       dispatch(profileFetchingError(profile as IAuthError))
+//     }
+//   } catch (error) {
+//     console.log(error)
+//     dispatch(authFetchingError(JSON.stringify(error)))
+//   }
+// }
+
+export {}

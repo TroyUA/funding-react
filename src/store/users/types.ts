@@ -2,7 +2,7 @@ import { ICity } from '../../models/ICity'
 import { ICountry } from '../../models/ICountry'
 import { IDistrict } from '../../models/IDistrict'
 
-export interface IUsersState {
+export interface IUsers {
   users: IUser[]
   isLoading: boolean
   error: string
@@ -10,20 +10,21 @@ export interface IUsersState {
 
 export interface ILeaderboardResponse {
   data: {
-    data: {
-      leaderboards: {
-        items: IUser[]
-      }
+    leaderboards: {
+      items: IUser[]
     }
   }
 }
 
-export interface IUser {
+export interface IProfile {
   teamName: string
   avatar: string
   country: ICountry
   district?: IDistrict
   city: ICity
+}
+
+export interface IUser extends IProfile {
   totalDonation: number
   position: number
 }

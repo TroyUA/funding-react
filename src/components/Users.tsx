@@ -1,29 +1,15 @@
-import { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { fetchUsers } from '../store/users/asyncThunk'
-import { IUser } from '../store/users/types'
+import { usersAPI } from '../store/users/service'
 import User from './User'
 
 interface IUsersProps {
   limit: number
 }
 
-let isInitial = true
-
 const Users: React.FC<IUsersProps> = ({ limit }) => {
-  const { error, isLoading, users } = useAppSelector((state) => state.users)
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    if (isInitial) {
-      isInitial = false
-      return
-    }
-    dispatch(fetchUsers(limit))
-  }, [limit])
+  const { data: users, isLoading, error } = usersAPI.useGetUsersQuery(limit)
 
   if (error) {
-    return <div>Error ${error}</div>
+    return <div>{`Error ${error}`}</div>
   }
 
   if (isLoading) {
@@ -33,7 +19,7 @@ const Users: React.FC<IUsersProps> = ({ limit }) => {
   return (
     <div className="users">
       {/* {JSON.stringify(users, null, 2)} */}
-      {users.map((user: IUser) => (
+      {users?.map((user) => (
         <User key={user.teamName} {...user} />
       ))}
     </div>

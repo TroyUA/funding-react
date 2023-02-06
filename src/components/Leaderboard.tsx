@@ -1,22 +1,55 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { listsAPI } from '../store/lists/service'
 import Button from './Button'
+import SelectBox, { IOption } from './SelectBox'
 import Users from './Users'
 
-interface ILeaderboard {
+interface ILeaderboardProps {
   limit: number
 }
 
-const Leaderboard: React.FC<ILeaderboard> = (props) => {
+// const DISTRICT_ID = 4689
+// const COUNTRY_ID = 230
+
+const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
   const [limit, setLimit] = useState(props.limit)
   const [showFilters, setShowFilters] = useState(false)
+
   const location = useLocation()
   const isOnLeaderboardPage = location.pathname.includes('leaderboard')
 
-  const submitHandler: React.FormEventHandler = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setShowFilters(false)
+  const [city, setCity] = useState<IOption>()
+  const [district, setDistrict] = useState<IOption>()
+  const [country, setCountry] = useState<IOption>()
+
+  const { data: countryList } = listsAPI.useGetCountriesQuery()
+  const { data: cityList } = listsAPI.useGetCitiesQuery(
+    {
+      districtId: Number(district?.value),
+      countryId: Number(country?.value),
+    },
+    { skip: !country?.value }
+  )
+  const { data: districtList } = listsAPI.useGetDistrictsQuery(
+    {
+      countryId: Number(country?.value),
+    },
+    { skip: !country?.value }
+  )
+
+  const submitHandler: React.FormEventHandler = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    // setShowFilters(false)
+    const formData = new FormData(event.target as HTMLFormElement)
+    const data = Object.fromEntries(formData)
+    console.log(data)
+  }
+
+  const countryChangeHandler = () => {
+    // reset cities
+    // reset districts
   }
 
   return (
@@ -27,19 +60,31 @@ const Leaderboard: React.FC<ILeaderboard> = (props) => {
 
           <form className={`filters__form${showFilters ? ' show' : ''}`} onSubmit={submitHandler}>
             <div className="filters__inputs">
-              <select>
-                <option>Country</option>
-              </select>
-              <select>
-                <option>City</option>
-              </select>
-              <select>
-                <option>District</option>
-              </select>
-              <select>
+              <SelectBox
+                onChange={setCountry}
+                name="Country"
+                options={countryList?.map(
+                  (country) => ({ value: country.id, label: country.name } as IOption)
+                )}
+              ></SelectBox>
+              <SelectBox
+                name="City"
+                onChange={setCity}
+                options={cityList?.map((city) => ({ value: city.id, label: city.name } as IOption))}
+                // reset={!!countryList}
+              ></SelectBox>
+              <SelectBox
+                name="District"
+                onChange={setDistrict}
+                options={districtList?.map(
+                  (district) => ({ value: district.id, label: district.name } as IOption)
+                )}
+              ></SelectBox>
+
+              {/* <select>
                 <option>Category</option>
               </select>
-              <input type="date" />
+              <input type="date" /> */}
             </div>
             <div className="filters__buttons">
               <Button type="reset" className="filters__reset-btn btn_red">

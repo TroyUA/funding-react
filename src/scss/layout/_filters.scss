@@ -6,6 +6,7 @@
   &__form {
     display: none;
     flex-direction: column;
+    gap: 25px;
     @include respond-to('small') {
       display: flex;
       // flex-direction: row;
@@ -19,6 +20,7 @@
   &__inputs {
     display: flex;
     flex-direction: column;
+    gap: 15px;
     @include respond-to('small') {
       flex-direction: row;
     }
@@ -51,6 +53,7 @@
   &__buttons {
     display: flex;
     flex-direction: column;
+    gap: 25px;
     @include respond-to('small') {
       flex-direction: row;
       align-self: flex-end;

@@ -10,8 +10,6 @@ const Header: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const handleLogout = () => {
-    console.log('logout')
-
     dispatch(logout())
   }
 

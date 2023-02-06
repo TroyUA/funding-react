@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LocalStorageApi } from '../../api/localStorage'
-import { IAuth, ILogin, IValidationErrors } from './types'
+import { IProfile } from '../users/types'
+import { IAuth, IAuthError, ILoginSuccess, IValidationErrors } from './types'
 
 const initialState: IAuth = {
-  token: null,
+  token: LocalStorageApi.getAccessToken() || null,
   profile: null,
   isLoading: false,
   error: '',
-} as const
+}
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -16,25 +17,39 @@ export const authSlice = createSlice({
     authFetchingStart(state) {
       state.isLoading = true
     },
-    authFetchingSuccess(state, action: PayloadAction<ILogin>) {
+    setCredentials(state, action: PayloadAction<ILoginSuccess>) {
       state.token = action.payload.token
       state.profile = action.payload.profile
       state.error = ''
       state.isLoading = false
     },
     authFetchingError(state, action: PayloadAction<IValidationErrors | string>) {
-      state = {
-        ...initialState,
-        error: typeof action.payload === 'string' ? action.payload : action.payload.errors,
-      }
+      state = initialState
+      state.error = typeof action.payload === 'string' ? action.payload : action.payload.errors
+    },
+    profileFetchingError(state, action: PayloadAction<IAuthError>) {
+      state.error = action.payload.message
     },
     logout() {
       LocalStorageApi.removeAccessToken()
       return { ...initialState }
     },
+    setProfile(state, action: PayloadAction<IProfile>) {
+      state.profile = action.payload
+    },
+    setToken(state, action: PayloadAction<string>) {
+      state.token = action.payload
+    },
   },
 })
 
-export const { authFetchingStart, authFetchingSuccess, authFetchingError, logout } =
-  authSlice.actions
+export const {
+  authFetchingStart,
+  setCredentials,
+  authFetchingError,
+  logout,
+  setProfile,
+  setToken,
+  profileFetchingError,
+} = authSlice.actions
 export default authSlice.reducer

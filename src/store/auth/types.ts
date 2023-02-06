@@ -1,17 +1,34 @@
-import { IUser } from '../users/types'
+import { IProfile } from '../users/types'
 
 export interface IAuth {
   token: string | null
-  profile: IUser | null
+  profile: IProfile | null
   isLoading: boolean
   error: string | IValidationError[]
 }
 
+export interface IAuthError {
+  message: string
+  __typename: 'AuthError'
+}
+
 export interface ILoginResponse {
   data: {
-    data: {
-      login: ILogin | IValidationErrors
-    }
+    login: ILoginSuccess | IValidationErrors
+  }
+}
+
+export interface ILoginRequest {
+  query: string
+  variables: {
+    teamName: string
+    password: string
+  }
+}
+
+export interface IProfileResponse {
+  data: {
+    profile: IProfileSuccess | IAuthError
   }
 }
 
@@ -25,10 +42,14 @@ export interface IValidationErrors {
   __typename: 'ValidationErrors'
 }
 
-export interface ILogin {
+export interface ILoginSuccess {
   token: string
-  profile: IUser
+  profile: IProfile
   __typename: 'Auth'
 }
 
-type TTypeName = 'Auth' | 'ValidationErrors'
+export interface IProfileSuccess extends IProfile {
+  __typename?: 'Profile'
+}
+
+// type TType = 'Auth' | 'ValidationErrors'

@@ -7,6 +7,7 @@
   outline-style: none;
   user-select: none;
   border-bottom: 1px solid black;
+  min-width: 236px;
 
   &:focus {
     background-color: $gray95;
@@ -64,11 +65,13 @@
     right: 0;
     top: 53px;
     padding: 0px;
-    height: 175px;
+    min-height: 35px;
+    max-height: 175px;
     cursor: inherit;
     border: 1px solid $gray50;
     border-top: none;
     overflow-y: auto;
+    background-color: inherit;
 
     &.show {
       display: flex;
@@ -98,7 +101,7 @@
       color: white;
     }
 
-    &[data-hidden] {
+    &.hidden {
       display: none;
     }
 

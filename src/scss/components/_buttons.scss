@@ -81,6 +81,20 @@
     }
   }
 
+  &_red {
+    @extend .btn;
+    background: none;
+    border: none;
+    .btn__text {
+      color: red;
+      font-family: 'Raleway';
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 16px;
+    }
+  }
+
   &_with-image {
     @extend .btn;
     padding: 8px;

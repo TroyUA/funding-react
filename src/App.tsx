@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
@@ -12,6 +12,11 @@ import ProfilePage from './pages/ProfilePage'
 import SignUp from './pages/SignUp'
 import LeaderboardPage from './pages/LeaderboardPage'
 import PrivateRoutes from './components/PrivateRoutes'
+import { LocalStorageApi } from './api/localStorage'
+import { useAppDispatch } from './hooks/redux'
+// import { fetchProfile } from './store/auth/asyncThunk'
+
+const accessToken = LocalStorageApi.getAccessToken()
 
 const App: React.FC = () => {
   return (
