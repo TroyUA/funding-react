@@ -1,5 +1,4 @@
 import React, { MouseEvent, useEffect, useMemo, useState } from 'react'
-import { logout } from '../store/auth/slice'
 
 interface ISelectBox {
   name: string
@@ -35,7 +34,7 @@ export interface IOption {
 // }
 
 const SelectBox: React.FC<ISelectBox> = (props) => {
-  const { name, options = [], onChange } = props
+  const { name, options: propsOptions = [], onChange } = props
   const defaultState = {
     label: name,
     value: '',
@@ -43,33 +42,35 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
     hidden: true,
   } as IOption
 
-  // const fullOptions = useMemo(() => [defaultState, ...options], [options])
-
-  const [fullOptions, setFullOptions] = useState(
-    useMemo(() => [defaultState, ...options], [options])
+  const options = useMemo(() => [defaultState, ...propsOptions], [propsOptions])
+  const [selectedValue, setSelectedValue] = useState(options[0].value)
+  const selectedOption = useMemo(
+    () => options.find((option) => option.value === selectedValue) || options[0],
+    [options, selectedValue]
   )
-  const [showList, setShowList] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(defaultState)
 
-  function getSelectedOption(options: IOption[]) {
-    return options.find((option) => option.selected)
-  }
+  const [showList, setShowList] = useState(false)
 
   const toggleShow = () => {
     setShowList((prev) => !prev)
   }
 
-  const optionClickHandler = (event: MouseEvent, option: IOption, array: IOption[]) => {
+  const optionClickHandler = (event: MouseEvent, option: IOption) => {
     event.stopPropagation()
-    if (option === getSelectedOption(array)) return
-    let previousSelected = array.find((item) => item.selected === true)
-    previousSelected!.selected = false
+    if (option === selectedOption) return
+
+    let previousSelected = selectedOption
+    if (previousSelected) previousSelected.selected = false
 
     option.selected = true
-    setSelectedOption(option)
+    setSelectedValue(option.value)
     onChange(option)
     setShowList(false)
   }
+
+  // useEffect(() => {
+  //   console.log(`${name} ${JSON.stringify(options)}`)
+  // }, [options])
 
   return (
     <>
@@ -79,20 +80,20 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
         onClick={() => toggleShow()}
         onBlur={() => setShowList(false)}
       >
-        <input type="hidden" value={selectedOption.value} name={name} />
+        {/* <input type="hidden" value={selectedOption?.value} name={name} /> */}
         {/* input for form submiting */}
         <div className="select-box__value">{selectedOption.label}</div>
-        {fullOptions && (
+        {options && (
           <ul className={`select-box__options ${showList ? 'show' : ''}`}>
-            {fullOptions.map((item, _, array) => (
+            {options.map((option) => (
               <li
-                className={`select-box__option ${item.selected ? 'selected' : ''} ${
-                  item.hidden ? 'hidden' : ''
+                className={`select-box__option ${option.selected ? 'selected' : ''} ${
+                  option.hidden ? 'hidden' : ''
                 }`}
-                key={item.value}
-                onClick={(e) => optionClickHandler(e, item, array)}
+                key={option.value}
+                onClick={(e) => optionClickHandler(e, option)}
               >
-                {item.label}
+                {option.label}
               </li>
             ))}
           </ul>
