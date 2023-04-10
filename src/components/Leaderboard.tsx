@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { listsAPI } from '../store/lists/service'
 import Button from './Button'
+import Datepicker from './Datepicker'
 import SelectBox, { IOption } from './SelectBox'
 import Users from './Users'
 
 interface ILeaderboardProps {
   limit: number
 }
-
-// const DISTRICT_ID = 4689
-// const COUNTRY_ID = 230
 
 const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
   const [limit, setLimit] = useState(props.limit)
@@ -19,37 +17,58 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
   const location = useLocation()
   const isOnLeaderboardPage = location.pathname.includes('leaderboard')
 
-  const [city, setCity] = useState<IOption>()
-  const [district, setDistrict] = useState<IOption>()
-  const [country, setCountry] = useState<IOption>()
-
+  const [selectedCityId, setSelectedCityId] = useState<string | number>()
+  const [selectedDistrictId, setSelectedDistrictId] = useState<string | number>()
+  const [selectedCountryId, setSelectedCountryId] = useState<string | number>()
+  const [selectedCategory, setSelectedCategory] = useState<string | number>()
+  //////////////////////////////////////////////////////////////////
   const { data: countryList } = listsAPI.useGetCountriesQuery()
   const { data: cityList } = listsAPI.useGetCitiesQuery(
     {
-      districtId: Number(district?.value),
-      countryId: Number(country?.value),
+      districtId: Number(selectedDistrictId),
+      countryId: Number(selectedCountryId),
     },
-    { skip: !country?.value }
+    { skip: !selectedCountryId }
   )
   const { data: districtList } = listsAPI.useGetDistrictsQuery(
     {
-      countryId: Number(country?.value),
+      countryId: Number(selectedCountryId),
     },
-    { skip: !country?.value }
+    { skip: !selectedCountryId }
   )
+  const { data: fundsList } = listsAPI.useGetFundsQuery({})
 
+  const countryOptions = useMemo(
+    () => countryList?.map((country) => ({ value: country.id, label: country.name } as IOption)),
+    [countryList]
+  )
+  const cityOptions = useMemo(
+    () => cityList?.map((city) => ({ value: city.id, label: city.name } as IOption)),
+    [cityList]
+  )
+  const districtOptions = useMemo(
+    () =>
+      districtList?.map((district) => ({ value: district.id, label: district.name } as IOption)),
+    [districtList]
+  )
+  const categoryOptions = useMemo(
+    () =>
+      fundsList
+        ?.reduce((categories: string[], fund) => {
+          if (categories.indexOf(fund.category) === -1) categories.push(fund.category)
+          return categories
+        }, [])
+        .map((category) => ({ value: category, label: category } as IOption)),
+    [fundsList]
+  )
+  /////////////////////////////////////////////////////////////////
   const submitHandler: React.FormEventHandler = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    // setShowFilters(false)
+    setShowFilters(false)
     const formData = new FormData(event.target as HTMLFormElement)
     const data = Object.fromEntries(formData)
     console.log(data)
-  }
-
-  const countryChangeHandler = () => {
-    // reset cities
-    // reset districts
   }
 
   return (
@@ -61,30 +80,24 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
           <form className={`filters__form${showFilters ? ' show' : ''}`} onSubmit={submitHandler}>
             <div className="filters__inputs">
               <SelectBox
-                onChange={setCountry}
+                onChange={setSelectedCountryId}
                 name="Country"
-                options={countryList?.map(
-                  (country) => ({ value: country.id, label: country.name } as IOption)
-                )}
+                options={countryOptions}
               ></SelectBox>
-              <SelectBox
-                name="City"
-                onChange={setCity}
-                options={cityList?.map((city) => ({ value: city.id, label: city.name } as IOption))}
-                // reset={!!countryList}
-              ></SelectBox>
+              <SelectBox name="City" onChange={setSelectedCityId} options={cityOptions}></SelectBox>
               <SelectBox
                 name="District"
-                onChange={setDistrict}
-                options={districtList?.map(
-                  (district) => ({ value: district.id, label: district.name } as IOption)
-                )}
+                onChange={setSelectedDistrictId}
+                options={districtOptions}
               ></SelectBox>
-
-              {/* <select>
-                <option>Category</option>
-              </select>
-              <input type="date" /> */}
+              <SelectBox
+                name="Category"
+                onChange={setSelectedCategory}
+                options={categoryOptions}
+              ></SelectBox>
+              <Datepicker></Datepicker>
+              {/* <input type="date" name="Datepicker" /> */}
+              {/* <Example /> */}
             </div>
             <div className="filters__buttons">
               <Button type="reset" className="filters__reset-btn btn_red">
@@ -132,62 +145,35 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
 
 export default Leaderboard
 
-{
-  /* <div className="user">
-          <img className="user__icon" alt="user icon" src="src\img\user-icon1.png" />
-          <div className="user__all-other-info">
-            <div className="user__text-info">
-              <p className="user__name">Lorem ipsum dolor sit amet.</p>
-              <p className="user__address">New York, US</p>
-            </div>
-            <div className="user__numbers">
-              <p className="user__amount">$10,000.00</p>
-              <p className="user__rank">#1</p>
-              <Button
-                className={'user__arrow-btn btn'}
-                imgSrc={'/src/img/arrow.svg'}
-                to={'#'}
-                alt={'arrow'}
-              ></Button>
-            </div>
-          </div>
-        </div>
-        <div className="user">
-          <img className="user__icon" alt="user icon" src="src\img\user-icon1.png" />
-          <div className="user__all-other-info">
-            <div className="user__text-info">
-              <p className="user__name">Lorem ipsum dolor sit amet.</p>
-              <p className="user__address">Kyiv, UKR</p>
-            </div>
-            <div className="user__numbers">
-              <p className="user__amount">$9,450.00</p>
-              <p className="user__rank">#2</p>
-              <Button
-                className={'user__arrow-btn btn'}
-                imgSrc={'/src/img/arrow.svg'}
-                to={'#'}
-                alt={'arrow'}
-              ></Button>
-            </div>
-          </div>
-        </div>
-        <div className="user">
-          <img className="user__icon" alt="user icon" src="src\img\user-icon1.png" />
-          <div className="user__all-other-info">
-            <div className="user__text-info">
-              <p className="user__name">Lorem ipsum dolor sit amet.</p>
-              <p className="user__address">Paris, FR</p>
-            </div>
-            <div className="user__numbers">
-              <p className="user__amount">$6,460.00</p>
-              <p className="user__rank">#3</p>
-              <Button
-                className={'user__arrow-btn btn'}
-                imgSrc={'/src/img/arrow.svg'}
-                to={'#'}
-                alt={'arrow'}
-              ></Button>
-            </div>
-          </div>
-        </div>*/
+function Example() {
+  return (
+    <div
+      tabIndex={1}
+      onFocus={(e) => {
+        if (e.currentTarget === e.target) {
+          console.log('фокус на родительском элементе установлен')
+        } else {
+          console.log('фокус на дочернем элементе установлен', e.target)
+        }
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          // Не срабатывает при перемещении фокуса между дочерними элементами
+          console.log('фокус находится внутри родительского элемента')
+        }
+      }}
+      onBlur={(e) => {
+        if (e.currentTarget === e.target) {
+          console.log('фокус на родительском элементе снят')
+        } else {
+          console.log('фокус на дочернем элементе снят', e.target)
+        }
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+          // Не срабатывает при перемещении фокуса между дочерними элементами
+          console.log('фокус потерян изнутри родительского элемента')
+        }
+      }}
+    >
+      <input id="1" />
+      <input id="2" />
+    </div>
+  )
 }

@@ -28,7 +28,7 @@
     align-self: stretch;
     font-feature-settings: 'pnum' on, 'lnum' on;
 
-    &[data-disabled] {
+    &.hidden {
       color: $gray50;
     }
 
@@ -46,16 +46,16 @@
     }
 
     // frame for calibration purpose
-    &::before {
-      content: '';
-      position: absolute;
-      top: calc(50% - 8px);
-      right: 16px;
-      width: 16px;
-      height: 16px;
-      border: 1px solid #ccc;
-      pointer-events: none;
-    }
+    // &::before {
+    //   content: '';
+    //   position: absolute;
+    //   top: calc(50% - 8px);
+    //   right: 16px;
+    //   width: 16px;
+    //   height: 16px;
+    //   border: 1px solid #ccc;
+    //   pointer-events: none;
+    // }
   }
 
   &__options {
@@ -63,7 +63,9 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 53px;
+    top: calc(100% + 2px);
+    // top: 53px;
+    // bottom: 0;
     padding: 0px;
     min-height: 35px;
     max-height: 175px;
@@ -121,16 +123,16 @@
       }
 
       // frame for calibration purpose
-      &:before {
-        content: '';
-        position: absolute;
-        top: calc(50% - 8px);
-        right: 16px;
-        width: 16px;
-        height: 16px;
-        border: 1px solid #ccc;
-        pointer-events: none;
-      }
+      // &:before {
+      //   content: '';
+      //   position: absolute;
+      //   top: calc(50% - 8px);
+      //   right: 16px;
+      //   width: 16px;
+      //   height: 16px;
+      //   border: 1px solid #ccc;
+      //   pointer-events: none;
+      // }
     }
   }
 }

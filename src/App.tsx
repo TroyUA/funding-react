@@ -8,7 +8,7 @@ import Donation from './pages/Donation'
 import Funds from './pages/Funds'
 import Success from './pages/Success'
 import Login from './pages/Login'
-import ProfilePage from './pages/ProfilePage'
+import Profile from './pages/Profile'
 import SignUp from './pages/SignUp'
 import LeaderboardPage from './pages/LeaderboardPage'
 import PrivateRoutes from './components/PrivateRoutes'
@@ -26,7 +26,7 @@ const App: React.FC = () => {
         <Route path="success" element={<Success />} />
         <Route element={<PrivateRoutes />}>
           <Route path="leaderboard" element={<LeaderboardPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="donation" element={<Donation />} />
           <Route path="funds" element={<Funds />} />
         </Route>

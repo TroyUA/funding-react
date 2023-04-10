@@ -52,13 +52,11 @@ __typename
       }),
     }),
     getProfile: build.query({
-      transformResponse: (response: IProfileResponse, _, __) => {
-        return response.data.profile
-      },
+      transformResponse: (response: IProfileResponse, _, __) => response.data.profile,
       query: () => ({
         url: '',
         method: 'POST',
-        credentials: 'include',
+        // credentials: 'include',
         body: {
           query: `query getProfile{
   profile{
@@ -83,3 +81,5 @@ __typename
     }),
   }),
 })
+
+export const { useLoginMutation, useGetProfileQuery } = authAPI

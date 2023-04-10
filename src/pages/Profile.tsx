@@ -1,12 +1,16 @@
 import React from 'react'
+import ProfileSettings from '../components/ProfileSettings'
 import User from '../components/User'
+import { authAPI, useGetProfileQuery } from '../store/auth/service'
 import { IUser } from '../store/users/types'
 
 interface IProfilePageProps {
   // user: IUser
 }
 
-const ProfilePage: React.FC<IProfilePageProps> = () => {
+const Profile: React.FC<IProfilePageProps> = () => {
+  // const {data:profile} =authAPI.useGetProfileQuery()
+
   return (
     <>
       <section className="profile-page__top section">
@@ -23,8 +27,9 @@ const ProfilePage: React.FC<IProfilePageProps> = () => {
           // position={user.position}
         /> */}
       </section>
+      <ProfileSettings />
     </>
   )
 }
 
-export default ProfilePage
+export default Profile

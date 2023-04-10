@@ -20,6 +20,7 @@
   &__inputs {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     gap: 15px;
     @include respond-to('small') {
       flex-direction: row;

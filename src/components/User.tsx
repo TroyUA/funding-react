@@ -13,6 +13,10 @@ import Button from './Button'
 // }
 
 const User: React.FC<IUser> = ({ avatar, teamName, city, totalDonation, position }) => {
+  const formatter = Intl.NumberFormat('en-US', {
+    currency: 'USD',
+    style: 'currency',
+  })
   return (
     <div className="user">
       <img className="user__icon" alt="user icon" src={avatar} />
@@ -22,7 +26,7 @@ const User: React.FC<IUser> = ({ avatar, teamName, city, totalDonation, position
           <p className="user__address">{city.name}</p>
         </div>
         <div className="user__numbers">
-          <p className="user__amount">${totalDonation}</p>
+          <p className="user__amount">{formatter.format(totalDonation)}</p>
           <p className="user__rank">#{position}</p>
           <Button
             className={'user__arrow-btn btn'}

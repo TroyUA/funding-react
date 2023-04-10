@@ -1,6 +1,7 @@
 import { ICity } from '../../models/ICity'
 import { ICountry } from '../../models/ICountry'
 import { IDistrict } from '../../models/IDistrict'
+import { IFund } from '../../models/IFund'
 
 export type CitiesRequest = {
   countryId?: number
@@ -25,4 +26,14 @@ export type DistrictsResponse = {
 
 export type DistrictsRequest = {
   countryId?: number
+}
+
+export type FundsRequest = {
+  limit?: number
+}
+
+export type FundsResponse = {
+  data: {
+    funds: IFund[]
+  }
 }
