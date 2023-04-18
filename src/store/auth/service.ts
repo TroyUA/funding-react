@@ -1,22 +1,31 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { TLoginModel } from '../../pages/Login'
-import { axiosBaseQuery } from '../baseQuery'
+import { baseQuery } from '../baseQuery'
 import {
+  IAuthError,
   ILoginRequest,
   ILoginResponse,
   ILoginSuccess,
   IProfileResponse,
   IValidationErrors,
 } from './types'
+import { IProfile } from '../users/types'
 
 export const authAPI = createApi({
   reducerPath: 'authAPI',
-  baseQuery: axiosBaseQuery,
-  tagTypes: ['Auth'],
+  baseQuery,
+  tagTypes: ['Auth', 'Profile'],
   endpoints: (build) => ({
     login: build.mutation<ILoginSuccess | IValidationErrors, TLoginModel>({
       transformResponse: (response: ILoginResponse, _, __) => {
-        return response.data.login
+        if (response.data.login.__typename === 'Auth') {
+          // delete response.data.login.__typename
+          return response.data.login as ILoginSuccess
+        }
+        if (response.data.login.__typename === 'ValidationErrors') {
+          throw response.data.login as IValidationErrors
+        }
+        throw response
       },
       query: ({ teamName, password }) => ({
         url: '',
@@ -51,21 +60,29 @@ __typename
         } as ILoginRequest,
       }),
     }),
-    getProfile: build.query({
-      transformResponse: (response: IProfileResponse, _, __) => response.data.profile,
+    getProfile: build.query<IProfile, void>({
+      transformResponse: (response: IProfileResponse, _, __) => {
+        if (response.data.profile.__typename === 'Profile') {
+          delete response.data.profile.__typename
+          return response.data.profile as IProfile
+        }
+        if (response.data.profile.__typename === 'AuthError') {
+          throw response.data.profile as IAuthError
+        }
+        throw response.data
+      },
       query: () => ({
         url: '',
         method: 'POST',
-        // credentials: 'include',
         body: {
           query: `query getProfile{
   profile{
     ...on Profile{
       teamName
       avatar
-      country{id name iso2 emoji}
-      district{id name country_id}
-      city{id name country_id district_id}
+      country{ name iso2 emoji}
+      district{ name }
+      city{ name }
       
       __typename
     }
@@ -78,6 +95,7 @@ __typename
 }`,
         },
       }),
+      providesTags: ['Profile'],
     }),
   }),
 })

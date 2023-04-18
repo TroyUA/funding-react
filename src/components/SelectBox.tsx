@@ -37,11 +37,12 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
 
   const optionClickHandler = (event: MouseEvent, option: IOption) => {
     event.stopPropagation()
-    if (option === selectedOption) return
+    if (option !== selectedOption) {
+      selectedOption.selected = false
+      option.selected = true
+      setSelectedValue(option.value)
+    }
 
-    selectedOption.selected = false
-    option.selected = true
-    setSelectedValue(option.value)
     setShowList(false)
   }
 

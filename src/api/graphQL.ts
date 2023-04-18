@@ -7,8 +7,8 @@ export const axiosApi = axios.create({
   },
 })
 
-export class GraphQLApi {
-  static fetch<T, U = any>(params: U): Promise<T> {
-    return axiosApi.post<T>('', params) as Promise<T>
-  }
-}
+// export class GraphQLApi {
+//   static fetch<T, U = any>(params: U): Promise<T> {
+//     return axiosApi.post<T>('', params) as Promise<T>
+//   }
+// }

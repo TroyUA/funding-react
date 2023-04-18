@@ -12,13 +12,23 @@ import Profile from './pages/Profile'
 import SignUp from './pages/SignUp'
 import LeaderboardPage from './pages/LeaderboardPage'
 import PrivateRoutes from './components/PrivateRoutes'
-import { LocalStorageApi } from './api/localStorage'
+import { useGetProfileQuery } from './store/auth/service'
 import { useAppDispatch } from './hooks/redux'
+import { setProfile } from './store/auth/slice'
 // import { fetchProfile } from './store/auth/asyncThunk'
 
-const accessToken = LocalStorageApi.getAccessToken()
+// const accessToken = LocalStorageApi.getAccessToken()
 
 const App: React.FC = () => {
+  const { data, isError, error } = useGetProfileQuery()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setProfile(data))
+    }
+    console.log(data, isError, error)
+  }, [data])
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

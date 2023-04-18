@@ -4,7 +4,7 @@ import { IProfile } from '../users/types'
 import { IAuth, IAuthError, ILoginSuccess, IValidationErrors } from './types'
 
 const initialState: IAuth = {
-  token: LocalStorageApi.getAccessToken() || null,
+  token: LocalStorageApi.getAccessToken(),
   profile: null,
   isLoading: false,
   error: '',

@@ -45,7 +45,7 @@ export interface IValidationErrors {
 export interface ILoginSuccess {
   token: string
   profile: IProfile
-  __typename: 'Auth'
+  __typename?: 'Auth'
 }
 
 export interface IProfileSuccess extends IProfile {

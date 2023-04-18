@@ -6,7 +6,6 @@ import { authAPI } from './auth/service'
 import { listsAPI } from './lists/service'
 
 const rootReducer = combineReducers({
-  // users: usersReducer,
   auth: authReducer,
   [usersAPI.reducerPath]: usersAPI.reducer,
   [authAPI.reducerPath]: authAPI.reducer,

@@ -3,7 +3,7 @@ import { ICity } from '../../models/ICity'
 import { ICountry } from '../../models/ICountry'
 import { IDistrict } from '../../models/IDistrict'
 import { IFund } from '../../models/IFund'
-import { axiosBaseQuery } from '../baseQuery'
+import { baseQuery } from '../baseQuery'
 import { providesList } from './helper'
 import type {
   CitiesRequest,
@@ -17,7 +17,7 @@ import type {
 
 export const listsAPI = createApi({
   reducerPath: 'listsApi',
-  baseQuery: axiosBaseQuery,
+  baseQuery,
   tagTypes: ['Cities', 'Districts', 'Countries', 'Funds'],
   endpoints: (build) => ({
     getCities: build.query<ICity[], CitiesRequest>({

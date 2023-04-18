@@ -20,11 +20,13 @@ interface DatePickerProps {
   visible?: boolean
   position?: string
   placeholder?: string
+  name?: string
 }
 
 const Datepicker: React.FC<DatePickerProps> = ({
   visible = false,
   placeholder = 'Calendar',
+  name = 'Datepicker',
   ...props
 }) => {
   const [showList, setShowList] = useState(visible)
@@ -68,7 +70,7 @@ const Datepicker: React.FC<DatePickerProps> = ({
         if (!e.currentTarget.contains(e.relatedTarget)) setShowList(false)
       }}
     >
-      <input type="hidden" name="Datepicker" value={selectedDay?.toString()} />
+      <input type="hidden" name={name} value={selectedDay?.toString()} />
       <div
         className={classNames('date-picker__value', !selectedDay && 'hidden')}
         onClick={toggleShow}

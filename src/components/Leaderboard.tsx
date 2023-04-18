@@ -97,7 +97,6 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
               ></SelectBox>
               <Datepicker></Datepicker>
               {/* <input type="date" name="Datepicker" /> */}
-              {/* <Example /> */}
             </div>
             <div className="filters__buttons">
               <Button type="reset" className="filters__reset-btn btn_red">
@@ -144,36 +143,3 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
 }
 
 export default Leaderboard
-
-function Example() {
-  return (
-    <div
-      tabIndex={1}
-      onFocus={(e) => {
-        if (e.currentTarget === e.target) {
-          console.log('фокус на родительском элементе установлен')
-        } else {
-          console.log('фокус на дочернем элементе установлен', e.target)
-        }
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-          // Не срабатывает при перемещении фокуса между дочерними элементами
-          console.log('фокус находится внутри родительского элемента')
-        }
-      }}
-      onBlur={(e) => {
-        if (e.currentTarget === e.target) {
-          console.log('фокус на родительском элементе снят')
-        } else {
-          console.log('фокус на дочернем элементе снят', e.target)
-        }
-        if (!e.currentTarget.contains(e.relatedTarget)) {
-          // Не срабатывает при перемещении фокуса между дочерними элементами
-          console.log('фокус потерян изнутри родительского элемента')
-        }
-      }}
-    >
-      <input id="1" />
-      <input id="2" />
-    </div>
-  )
-}

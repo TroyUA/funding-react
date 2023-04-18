@@ -5,9 +5,8 @@ export class LocalStorageApi {
     localStorage.setItem(accessToken, token)
   }
 
-  static getAccessToken(): string {
-    const token = localStorage.getItem(accessToken) || ''
-    return token === 'undefined' ? '' : token
+  static getAccessToken() {
+    return localStorage.getItem(accessToken)
   }
 
   static removeAccessToken(): void {

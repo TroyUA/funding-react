@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppSelector } from '../hooks/redux'
 import Button from './Button'
 import { useAppDispatch } from '../hooks/redux'
 import { logout } from '../store/auth/slice'
+import { classNames } from '../utils'
 
 const Header: React.FC = () => {
   const { token } = useAppSelector((state) => state.auth)
   const dispatch = useAppDispatch()
+  const [isSidebarOpened, setIsSidebarOpened] = useState(false)
 
   const handleLogout = () => {
     dispatch(logout())
+  }
+  const toggleSidebar = () => {
+    setIsSidebarOpened((prev) => !prev)
   }
 
   return (
@@ -39,18 +44,28 @@ const Header: React.FC = () => {
             ></Button>
           )}
 
-          <button className="header__burger-btn btn">
-            <div className="header__burger"></div>
+          <button className={classNames('header__burger-btn btn')} onClick={toggleSidebar}>
+            <div className={classNames('header__burger', isSidebarOpened && 'open')}></div>
           </button>
         </nav>
       </div>
 
-      <div className="header__burger-sidebar">
+      <div className={classNames('header__burger-sidebar', isSidebarOpened && 'open')}>
         <div className="header__burger-nav-links">
-          <Button to="#" className="btn_with-image_white" imgSrc="/src/img/arrow.svg" alt="arrow">
+          <Button
+            to="/funds"
+            className="btn_with-image_white"
+            imgSrc="/src/img/arrow.svg"
+            alt="arrow"
+          >
             Charity Funds
           </Button>
-          <Button to="#" className="btn_with-image_white" imgSrc="/src/img/arrow.svg" alt="arrow">
+          <Button
+            to="/leaderboard"
+            className="btn_with-image_white"
+            imgSrc="/src/img/arrow.svg"
+            alt="arrow"
+          >
             Donations Leaderboards
           </Button>
         </div>
