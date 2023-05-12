@@ -6,13 +6,13 @@ import { IFund } from '../../models/IFund'
 import { baseQuery } from '../baseQuery'
 import { providesList } from './helper'
 import type {
-  CitiesRequest,
-  CitiesResponse,
-  CountriesResponse,
-  DistrictsRequest,
-  DistrictsResponse,
-  FundsRequest,
-  FundsResponse,
+  GetCitiesArgs,
+  GetCitiesResponse,
+  GetCountriesResponse,
+  GetDistrictsArgs,
+  GetDistrictsResponse,
+  GetFundsArgs,
+  GetFundsResponse,
 } from './types'
 
 export const listsAPI = createApi({
@@ -20,7 +20,7 @@ export const listsAPI = createApi({
   baseQuery,
   tagTypes: ['Cities', 'Districts', 'Countries', 'Funds'],
   endpoints: (build) => ({
-    getCities: build.query<ICity[], CitiesRequest>({
+    getCities: build.query<ICity[], GetCitiesArgs>({
       query: ({ countryId, districtId }) => ({
         url: '',
         method: 'POST',
@@ -38,7 +38,7 @@ export const listsAPI = createApi({
           },
         },
       }),
-      transformResponse: (response: CitiesResponse) => response.data.cities,
+      transformResponse: (response: GetCitiesResponse) => response.data.cities,
       providesTags: (result) => providesList(result, 'Cities'),
     }),
     getCountries: build.query<ICountry[], void>({
@@ -57,10 +57,10 @@ export const listsAPI = createApi({
   `,
         },
       }),
-      transformResponse: (response: CountriesResponse) => response.data.countries,
+      transformResponse: (response: GetCountriesResponse) => response.data.countries,
       providesTags: (result) => providesList(result, 'Countries'),
     }),
-    getDistricts: build.query<IDistrict[], DistrictsRequest>({
+    getDistricts: build.query<IDistrict[], GetDistrictsArgs>({
       query: ({ countryId }) => ({
         url: '',
         method: 'POST',
@@ -78,10 +78,10 @@ export const listsAPI = createApi({
           },
         },
       }),
-      transformResponse: (response: DistrictsResponse) => response.data.districts,
+      transformResponse: (response: GetDistrictsResponse) => response.data.districts,
       providesTags: (result) => providesList(result, 'Districts'),
     }),
-    getFunds: build.query<IFund[], FundsRequest>({
+    getFunds: build.query<IFund[], GetFundsArgs>({
       query: ({ limit }) => ({
         url: '',
         method: 'POST',
@@ -100,7 +100,7 @@ export const listsAPI = createApi({
           },
         },
       }),
-      transformResponse: (response: FundsResponse) => response.data.funds,
+      transformResponse: (response: GetFundsResponse) => response.data.funds,
       providesTags: (result) => providesList(result, 'Funds'),
     }),
   }),

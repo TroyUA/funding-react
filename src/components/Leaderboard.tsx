@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { listsAPI } from '../store/lists/service'
+import { useState } from 'react'
 import Button from './Button'
 import Datepicker from './Datepicker'
-import SelectBox, { IOption } from './SelectBox'
+import SelectBox from './SelectBox'
 import Users from './Users'
+import { classNames } from '../utils'
+import { useFilters } from '../hooks/useFilters'
 
 interface ILeaderboardProps {
   limit: number
@@ -12,55 +12,24 @@ interface ILeaderboardProps {
 
 const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
   const [limit, setLimit] = useState(props.limit)
-  const [showFilters, setShowFilters] = useState(false)
+  const {
+    setShowFilters,
+    isOnLeaderboardPage,
+    showFilters,
+    setCountryId,
+    setDistrictId,
+    setCityId,
+    setCategoryId,
+    countryId,
+    districtId,
+    cityId,
+    categoryId,
+    countryOptions,
+    districtOptions,
+    cityOptions,
+    categoryOptions,
+  } = useFilters()
 
-  const location = useLocation()
-  const isOnLeaderboardPage = location.pathname.includes('leaderboard')
-
-  const [selectedCityId, setSelectedCityId] = useState<string | number>()
-  const [selectedDistrictId, setSelectedDistrictId] = useState<string | number>()
-  const [selectedCountryId, setSelectedCountryId] = useState<string | number>()
-  const [selectedCategory, setSelectedCategory] = useState<string | number>()
-  //////////////////////////////////////////////////////////////////
-  const { data: countryList } = listsAPI.useGetCountriesQuery()
-  const { data: cityList } = listsAPI.useGetCitiesQuery(
-    {
-      districtId: Number(selectedDistrictId),
-      countryId: Number(selectedCountryId),
-    },
-    { skip: !selectedCountryId }
-  )
-  const { data: districtList } = listsAPI.useGetDistrictsQuery(
-    {
-      countryId: Number(selectedCountryId),
-    },
-    { skip: !selectedCountryId }
-  )
-  const { data: fundsList } = listsAPI.useGetFundsQuery({})
-
-  const countryOptions = useMemo(
-    () => countryList?.map((country) => ({ value: country.id, label: country.name } as IOption)),
-    [countryList]
-  )
-  const cityOptions = useMemo(
-    () => cityList?.map((city) => ({ value: city.id, label: city.name } as IOption)),
-    [cityList]
-  )
-  const districtOptions = useMemo(
-    () =>
-      districtList?.map((district) => ({ value: district.id, label: district.name } as IOption)),
-    [districtList]
-  )
-  const categoryOptions = useMemo(
-    () =>
-      fundsList
-        ?.reduce((categories: string[], fund) => {
-          if (categories.indexOf(fund.category) === -1) categories.push(fund.category)
-          return categories
-        }, [])
-        .map((category) => ({ value: category, label: category } as IOption)),
-    [fundsList]
-  )
   /////////////////////////////////////////////////////////////////
   const submitHandler: React.FormEventHandler = (event) => {
     event.preventDefault()
@@ -76,27 +45,36 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
       {isOnLeaderboardPage && (
         <section className="filters section">
           <h1>donation leaderboard</h1>
-
-          <form className={`filters__form${showFilters ? ' show' : ''}`} onSubmit={submitHandler}>
+          <form
+            className={classNames('filters__form', showFilters && 'show')}
+            onSubmit={submitHandler}
+          >
             <div className="filters__inputs">
               <SelectBox
-                onChange={setSelectedCountryId}
-                name="Country"
+                onChange={setCountryId}
+                name="countryId"
+                placeholder="Country"
                 options={countryOptions}
               ></SelectBox>
-              <SelectBox name="City" onChange={setSelectedCityId} options={cityOptions}></SelectBox>
               <SelectBox
-                name="District"
-                onChange={setSelectedDistrictId}
+                name="cityId"
+                placeholder="City"
+                onChange={setCityId}
+                options={cityOptions}
+              ></SelectBox>
+              <SelectBox
+                name="districtId"
+                placeholder="District"
+                onChange={setDistrictId}
                 options={districtOptions}
               ></SelectBox>
               <SelectBox
-                name="Category"
-                onChange={setSelectedCategory}
+                name="categoryId"
+                placeholder="Category"
+                onChange={setCategoryId}
                 options={categoryOptions}
               ></SelectBox>
               <Datepicker></Datepicker>
-              {/* <input type="date" name="Datepicker" /> */}
             </div>
             <div className="filters__buttons">
               <Button type="reset" className="filters__reset-btn btn_red">
@@ -143,3 +121,52 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
 }
 
 export default Leaderboard
+
+// const [showFilters, setShowFilters] = useState(false)
+
+// const location = useLocation()
+// const isOnLeaderboardPage = location.pathname.includes('leaderboard')
+
+// const [countryId, setCountryId] = useState<string | number>()
+// const [cityId, setCityId] = useState<string | number>()
+// const [districtId, setDistrictId] = useState<string | number>()
+// const [categoryId, setCategoryId] = useState<string | number>()
+// //////////////////////////////////////////////////////////////////
+// const { data: countries } = listsAPI.useGetCountriesQuery()
+// const { data: cities } = listsAPI.useGetCitiesQuery(
+//   {
+//     districtId: Number(districtId),
+//     countryId: Number(countryId),
+//   },
+//   { skip: !countryId }
+// )
+// const { data: districts } = listsAPI.useGetDistrictsQuery(
+//   {
+//     countryId: Number(countryId),
+//   },
+//   { skip: !countryId }
+// )
+// const { data: fundsList } = listsAPI.useGetFundsQuery({})
+
+// const countryOptions = useMemo(
+//   () => countries?.map((country) => ({ value: country.id, label: country.name } as IOption)),
+//   [countries]
+// )
+// const cityOptions = useMemo(
+//   () => cities?.map((city) => ({ value: city.id, label: city.name } as IOption)),
+//   [cities]
+// )
+// const districtOptions = useMemo(
+//   () => districts?.map((district) => ({ value: district.id, label: district.name } as IOption)),
+//   [districts]
+// )
+// const categoryOptions = useMemo(
+//   () =>
+//     fundsList
+//       ?.reduce((categories: string[], fund) => {
+//         if (categories.indexOf(fund.category) === -1) categories.push(fund.category)
+//         return categories
+//       }, [])
+//       .map((category) => ({ value: category, label: category } as IOption)),
+//   [fundsList]
+// )

@@ -1,28 +1,23 @@
-import { useRef } from 'react'
 import type { FormEventHandler, FormEvent } from 'react'
 import Button from '../components/Button'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-// import { fetchLogin } from '../store/auth/asyncThunk'
-import { authFetchingError, setCredentials } from '../store/auth/slice'
 import { authAPI } from '../store/auth/service'
 import { z } from 'zod'
 import { useNavigate } from 'react-router-dom'
-import { IValidationErrors } from '../store/auth/types'
-import { setAuthTokenInSystem } from '../store/auth/helper'
+import { useAppDispatch } from '../hooks/redux'
+import { LocalStorageApi } from '../api/localStorage'
+import { setCredentials } from '../store/auth/slice'
 
 const loginSchema = z.object({
   teamName: z.string().min(3),
   password: z.string().min(6),
 })
 
-export type TLoginModel = z.infer<typeof loginSchema>
+export type AuthModel = z.infer<typeof loginSchema>
 
 const Login = () => {
-  const nameRef = useRef<HTMLInputElement>(null)
-  const passwordRef = useRef<HTMLInputElement>(null)
-  const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const [login, {}] = authAPI.useLoginMutation()
+  const [login, { isError, isLoading }] = authAPI.useLoginMutation()
+  const dispatch = useAppDispatch()
 
   const submitHandler: FormEventHandler = async (event: FormEvent) => {
     event.preventDefault()
@@ -30,18 +25,15 @@ const Login = () => {
     const data = Object.fromEntries(formData)
 
     try {
-      const validatedForm: TLoginModel = loginSchema.parse(data)
-      // dispatch(fetchLogin(validatedForm))
+      const validatedForm: AuthModel = loginSchema.parse(data)
       const response = await login(validatedForm).unwrap()
       if (response.__typename === 'Auth') {
         dispatch(setCredentials(response))
-        setAuthTokenInSystem(response.token)
-        navigate('/')
-      } else {
-        dispatch(authFetchingError(response))
+        LocalStorageApi.setAccessToken(response.token)
       }
+      navigate('/')
     } catch (error) {
-      dispatch(authFetchingError(JSON.stringify(error)))
+      console.log(error)
     }
   }
 
@@ -50,14 +42,7 @@ const Login = () => {
       <div className="login__container container">
         <h1>Log In</h1>
         <form className="login__form" onSubmit={submitHandler}>
-          <input
-            type="text"
-            className="input"
-            placeholder="Team Name"
-            name="teamName"
-            required
-            ref={nameRef}
-          />
+          <input type="text" className="input" placeholder="Team Name" name="teamName" required />
           <input
             type="password"
             className="input"
@@ -65,7 +50,6 @@ const Login = () => {
             name="password"
             required
             min={6}
-            ref={passwordRef}
           />
           <Button type="submit" className="submit-btn btn_black">
             LOG IN

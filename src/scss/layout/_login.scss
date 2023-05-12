@@ -1,6 +1,7 @@
 @use '../abstracts/' as *;
 
-.login {
+.login,
+.sign-up {
   &__form {
     display: flex;
     flex-direction: column;

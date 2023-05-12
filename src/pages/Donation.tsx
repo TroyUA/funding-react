@@ -1,29 +1,57 @@
-import React from 'react'
+import React, { useId } from 'react'
 import Upload from '../components/Upload'
+import SelectBox from '../components/SelectBox'
+import { useFunds } from '../hooks/useFilters'
+import Button from '../components/Button'
+import { z } from 'zod'
+
+const donationSchema = z.object({
+  file: z.instanceof(File),
+  amount: z.number().gt(0),
+  fundId: z.string(),
+})
+
+export type DonationModel = z.infer<typeof donationSchema>
+
+const submitHandler: React.FormEventHandler = (event) => {
+  event.preventDefault()
+
+  const formData = new FormData(event.target as HTMLFormElement)
+  const data = Object.fromEntries(formData)
+  console.log(data)
+}
 
 const Donation = () => {
+  const { fundOptions, setFundId, fundId } = useFunds()
+  const amountInputId = useId()
   return (
     <section className="donation">
-      <div className="donation-container container">
+      <div className="donation__container container">
         <h1>Register Donation</h1>
-        <form>
-          <div>
-            <label htmlFor="amount">US Dollar</label>
+        <form onSubmit={submitHandler} className="donation__form">
+          <fieldset className="fieldset">
+            <label htmlFor={amountInputId}>US Dollar</label>
             <input
+              className="amount"
               type="number"
-              min={5}
-              className="input"
+              min={0}
               name="amount"
-              id="amount"
+              id={amountInputId}
+              step={5}
               placeholder="Amount"
             />
-          </div>
-          <select name="funding" id="funding">
-            <option selected hidden>
-              Funding
-            </option>
-          </select>
+          </fieldset>
+          <SelectBox
+            className="stretched"
+            name="fundId"
+            placeholder="Funding"
+            options={fundOptions}
+            onChange={setFundId}
+          ></SelectBox>
           <Upload text={'Upload Screenshot'} />
+          <Button type="submit" className="submit-btn stretched">
+            Submit
+          </Button>
         </form>
       </div>
     </section>

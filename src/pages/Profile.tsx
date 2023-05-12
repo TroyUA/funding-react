@@ -1,34 +1,27 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ProfileSettings from '../components/ProfileSettings'
 import User from '../components/User'
-import { authAPI, useGetProfileQuery } from '../store/auth/service'
-import { IUser } from '../store/users/types'
+import { authAPI } from '../store/auth/service'
+import Button from '../components/Button'
 
-interface IProfilePageProps {
-  // user: IUser
-}
+interface IProfileProps {}
 
-const Profile: React.FC<IProfilePageProps> = () => {
-  // const {data:profile} =authAPI.useGetProfileQuery()
+const Profile: React.FC<IProfileProps> = () => {
+  const { data: user } = authAPI.useGetMyStatisticQuery()
+  const [isOpened, setIsOpened] = useState(false)
 
   return (
-    <>
-      <section className="profile-page__top section">
-        <h1>User Name</h1>
+    <div className="profile-page">
+      <section className="profile-page__top">
+        <img className="profile-page__icon" src={user?.avatar} alt="user avatar" />
+        <h1>{user?.teamName}</h1>
+        <Button className="profile-page__edit-btn btn_black" onClick={() => setIsOpened(true)}>
+          Edit Profile
+        </Button>
       </section>
-      <section className="profile-page__bottom section">
-        {/* <User
-          //{...user}
-          // avatar={user.avatar}
-          // teamName={user.teamName}
-          // country={user.country}
-          // city={user.city}
-          // totalDonation={user.totalDonation}
-          // position={user.position}
-        /> */}
-      </section>
-      <ProfileSettings />
-    </>
+      <section className="profile-page__bottom">{user && <User {...user} />}</section>
+      <ProfileSettings isOpened={isOpened} onClose={() => setIsOpened(false)} />
+    </div>
   )
 }
 

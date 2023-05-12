@@ -1,13 +1,18 @@
 import React, { MouseEvent, useEffect, useMemo, useState } from 'react'
+import { classNames } from '../utils'
 
+export type OptionValue = string | number
 interface ISelectBox {
+  placeholder: string
   name: string
   options: IOption[] | undefined
-  onChange: (value: string | number | undefined) => void
+  onChange: (value?: OptionValue) => void
+  className?: string
+  selectedValue?: OptionValue
 }
 
 export interface IOption {
-  value?: string | number
+  value?: OptionValue
   label: string
   selected?: boolean
   disabled?: boolean
@@ -15,26 +20,23 @@ export interface IOption {
 }
 
 const SelectBox: React.FC<ISelectBox> = (props) => {
-  const { name, options: propsOptions = [], onChange } = props
+  const { name, options: propsOptions = [], onChange, className, placeholder } = props
   const defaultState = {
-    label: name,
+    value: '',
+    label: placeholder,
     selected: true,
     hidden: true,
   } as IOption
-
   const options = useMemo(() => [defaultState, ...propsOptions], [propsOptions])
-  const [selectedValue, setSelectedValue] = useState(options[0].value)
+  const [selectedValue, setSelectedValue] = useState(props.selectedValue ?? options[0].value)
   const selectedOption = useMemo(
-    () => options.find((option) => option.value === selectedValue) || options[0],
+    () => options.find((option) => option.value === selectedValue) ?? options[0],
     [options, selectedValue]
   )
-
   const [showList, setShowList] = useState(false)
-
   const toggleShow = () => {
     setShowList((prev) => !prev)
   }
-
   const optionClickHandler = (event: MouseEvent, option: IOption) => {
     event.stopPropagation()
     if (option !== selectedOption) {
@@ -42,9 +44,14 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
       option.selected = true
       setSelectedValue(option.value)
     }
-
     setShowList(false)
   }
+
+  useEffect(() => {
+    if (props.selectedValue) {
+      setSelectedValue(props.selectedValue)
+    }
+  }, [props.selectedValue])
 
   useEffect(() => {
     onChange(selectedValue)
@@ -52,23 +59,25 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
 
   return (
     <div
-      className="select-box"
+      className={classNames('select-box', !!className && className)}
       tabIndex={0}
       onClick={() => toggleShow()}
       onBlur={() => setShowList(false)}
     >
       {/* input for form submiting */}
       <input type="hidden" value={selectedOption?.value} name={name} />
-      <div className={`select-box__value ${selectedOption.hidden ? 'hidden' : ''}`}>
+      <div className={classNames('select-box__value', !!selectedOption.hidden && 'hidden')}>
         {selectedOption.label}
       </div>
       {options && (
-        <ul className={`select-box__options ${showList ? 'show' : ''}`}>
+        <ul className={classNames('select-box__options', showList && 'show')}>
           {options.map((option) => (
             <li
-              className={`select-box__option ${option.selected ? 'selected' : ''} ${
-                option.hidden ? 'hidden' : ''
-              }`}
+              className={classNames(
+                'select-box__option',
+                !!option.selected && 'selected',
+                !!option.hidden && 'hidden'
+              )}
               key={option.value}
               onClick={(e) => optionClickHandler(e, option)}
             >

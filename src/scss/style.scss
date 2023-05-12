@@ -42,10 +42,7 @@ body.lock {
 }
 
 .user {
-  /* Auto layout */
-
   display: flex;
-  // flex-wrap: wrap;
   flex-direction: column;
   align-items: flex-start;
   padding: 16px 0;
@@ -60,18 +57,20 @@ body.lock {
   align-self: stretch;
   flex-grow: 0;
 
-  @include hover {
-    background: black;
-    .user__name,
-    .user__amount,
-    .user__rank {
-      color: white;
-    }
-    .user__arrow-btn {
-      background: inherit;
-      display: inline;
-      .btn__icon {
-        filter: invert(100%);
+  @include respond-to('small') {
+    @include hover {
+      background: black;
+      .user__name,
+      .user__amount,
+      .user__rank {
+        color: white;
+      }
+      .user__arrow-btn {
+        background: inherit;
+        display: inline;
+        .btn__icon {
+          filter: invert(100%);
+        }
       }
     }
   }

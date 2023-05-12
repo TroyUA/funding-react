@@ -1,6 +1,7 @@
 import { ICity } from '../../models/ICity'
 import { ICountry } from '../../models/ICountry'
 import { IDistrict } from '../../models/IDistrict'
+import { IAuthError } from '../auth/types'
 
 export interface IUsers {
   users: IUser[]
@@ -29,9 +30,19 @@ export interface IUser extends IProfile {
   position: number
 }
 
-export interface IUsersRequest {
+export interface GetUsersRequest {
   query: string
   variables: {
     limit?: number
   }
+}
+
+export interface GetMyStatisticResponse {
+  data: {
+    getMyStatistic: IAuthError | ILeaderboard
+  }
+}
+
+export interface ILeaderboard extends IUser {
+  __typename?: 'Leaderboard'
 }

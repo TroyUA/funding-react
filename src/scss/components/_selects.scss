@@ -1,5 +1,4 @@
 @use '../abstracts/' as *;
-// @use 'inputs' as *;
 
 .select-box {
   position: relative;
@@ -25,7 +24,6 @@
     padding: 16px 48px 16px 16px;
     border: none;
     outline-style: none;
-    align-self: stretch;
     font-feature-settings: 'pnum' on, 'lnum' on;
 
     &.hidden {
@@ -64,8 +62,6 @@
     left: 0;
     right: 0;
     top: calc(100% + 2px);
-    // top: 53px;
-    // bottom: 0;
     padding: 0px;
     min-height: 35px;
     max-height: 175px;

@@ -10,16 +10,3 @@ export const baseQuery = fetchBaseQuery({
     return headers
   },
 })
-
-// export const axiosBaseQuery = fetchBaseQuery({
-//   baseUrl: import.meta.env.VITE_API_URL,
-//   prepareHeaders(headers, { getState }) {
-//     headers.set('Content-Type', 'application/json')
-//     const token = (getState() as RootState).auth.token
-//     if (token) {
-//       headers.set('authorization', `Bearer ${token}`)
-//       setAuthTokenInSystem(token, { setInLocalStorage: false })
-//     }
-//     return headers
-//   },
-// })

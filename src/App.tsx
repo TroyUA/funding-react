@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-
+import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Layout from './components/Layout'
@@ -13,22 +12,13 @@ import SignUp from './pages/SignUp'
 import LeaderboardPage from './pages/LeaderboardPage'
 import PrivateRoutes from './components/PrivateRoutes'
 import { useGetProfileQuery } from './store/auth/service'
-import { useAppDispatch } from './hooks/redux'
-import { setProfile } from './store/auth/slice'
-// import { fetchProfile } from './store/auth/asyncThunk'
-
-// const accessToken = LocalStorageApi.getAccessToken()
+import { useAppSelector } from './hooks/redux'
+// import { skipToken } from '@reduxjs/toolkit/dist/query'
 
 const App: React.FC = () => {
-  const { data, isError, error } = useGetProfileQuery()
-  const dispatch = useAppDispatch()
+  // const { token } = useAppSelector((state) => state.auth)
+  useGetProfileQuery()
 
-  useEffect(() => {
-    if (data) {
-      dispatch(setProfile(data))
-    }
-    console.log(data, isError, error)
-  }, [data])
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

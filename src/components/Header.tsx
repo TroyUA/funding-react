@@ -5,15 +5,13 @@ import Button from './Button'
 import { useAppDispatch } from '../hooks/redux'
 import { logout } from '../store/auth/slice'
 import { classNames } from '../utils'
+import { LocalStorageApi } from '../api/localStorage'
 
 const Header: React.FC = () => {
   const { token } = useAppSelector((state) => state.auth)
   const dispatch = useAppDispatch()
   const [isSidebarOpened, setIsSidebarOpened] = useState(false)
 
-  const handleLogout = () => {
-    dispatch(logout())
-  }
   const toggleSidebar = () => {
     setIsSidebarOpened((prev) => !prev)
   }
@@ -37,7 +35,9 @@ const Header: React.FC = () => {
           ></Button>
           {token && (
             <Button
-              onClick={() => handleLogout()}
+              onClick={() => {
+                dispatch(logout())
+              }}
               className={'header__logout-btn btn'}
               imgSrc={'/src/img/logout.svg'}
               alt={'logout'}

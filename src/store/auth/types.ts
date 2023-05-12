@@ -1,10 +1,9 @@
+import { AuthModel } from '../../pages/Login'
 import { IProfile } from '../users/types'
 
 export interface IAuth {
   token: string | null
   profile: IProfile | null
-  isLoading: boolean
-  error: string | IValidationError[]
 }
 
 export interface IAuthError {
@@ -12,18 +11,15 @@ export interface IAuthError {
   __typename: 'AuthError'
 }
 
-export interface ILoginResponse {
+export interface IAuthResponse {
   data: {
-    login: ILoginSuccess | IValidationErrors
+    login: IAuthSuccess | IValidationErrors
   }
 }
 
-export interface ILoginRequest {
+export interface IAuthRequest {
   query: string
-  variables: {
-    teamName: string
-    password: string
-  }
+  variables: AuthModel
 }
 
 export interface IProfileResponse {
@@ -42,14 +38,29 @@ export interface IValidationErrors {
   __typename: 'ValidationErrors'
 }
 
-export interface ILoginSuccess {
+export interface IAuthSuccess {
   token: string
   profile: IProfile
-  __typename?: 'Auth'
+  __typename: 'Auth'
 }
 
 export interface IProfileSuccess extends IProfile {
-  __typename?: 'Profile'
+  __typename: 'Profile'
 }
 
-// type TType = 'Auth' | 'ValidationErrors'
+export interface UpdateProfileArgs {
+  teamName: string
+  avatar: File
+  countryId: number
+  districtId: number
+  cityId: number
+  password: string
+}
+
+export interface UpdateProfileResponse {
+  data: { updateProfile: IProfileSuccess | IValidationErrors | IAuthError }
+}
+
+export interface SignUpResponse {
+  data: { signUp: IAuthSuccess | IValidationErrors }
+}

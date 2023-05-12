@@ -1,20 +1,19 @@
 @use '../abstracts/' as *;
 
-.profile-dialog {
+.profile-settings {
   min-width: 375px;
   max-width: 600px;
   width: 100%;
-
-  height: min(100vh, 794px);
-
   border: none;
-
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-
   background: #ffffff;
+
+  &:modal {
+    max-height: 100%;
+  }
 
   &__upload {
     display: flex;
@@ -22,8 +21,6 @@
     align-items: center;
     padding: 25px 50px;
     background: $gray95;
-    /* Grey/50 */
-
     border: 1px solid $gray50;
 
     &-icon {
@@ -38,16 +35,9 @@
       font-weight: 400;
       font-size: 16px;
       line-height: 19px;
-      /* identical to box height */
-
       margin: auto;
       cursor: pointer;
-      // text-align: center;
-      // align-self: center;
       text-decoration-line: underline;
-
-      /* Grey/50 */
-
       color: $gray50;
     }
   }
@@ -59,8 +49,43 @@
     padding: 25px;
     gap: 25px;
   }
+  &__submit-btn {
+    padding: 20px 30px;
+  }
 
   &::backdrop {
     background: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.profile-page {
+  &__top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px;
+    gap: 25px;
+    background: #ffffff;
+    @include respond-to('small') {
+      padding: 50px 100px;
+      gap: 40px;
+    }
+  }
+  &__bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 25px;
+
+    background-color: $gray95;
+  }
+  &__icon {
+    width: 100px;
+    height: 100px;
+    border: 1px solid $gray50;
+    border-radius: 50%;
+  }
+  &__edit-btn {
+    padding: 20px 30px;
   }
 }
