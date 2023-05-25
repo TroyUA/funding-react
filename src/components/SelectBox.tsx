@@ -48,9 +48,7 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
   }
 
   useEffect(() => {
-    if (props.selectedValue) {
-      setSelectedValue(props.selectedValue)
-    }
+    if (props.selectedValue) setSelectedValue(props.selectedValue)
   }, [props.selectedValue])
 
   useEffect(() => {

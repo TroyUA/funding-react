@@ -6,10 +6,10 @@ interface IUsersProps {
 }
 
 const Users: React.FC<IUsersProps> = ({ limit }) => {
-  const { data: users, isLoading, error } = usersAPI.useGetUsersQuery(limit)
+  const { data: leaderboard, isLoading, error } = usersAPI.useGetLeaderboardQuery({ limit })
 
   if (error) {
-    return <div>{`Error ${error}`}</div>
+    return <div>{`Error: ${error}`}</div>
   }
 
   if (isLoading) {
@@ -18,8 +18,8 @@ const Users: React.FC<IUsersProps> = ({ limit }) => {
 
   return (
     <div className="users">
-      {/* {JSON.stringify(users, null, 2)} */}
-      {users?.map((user) => (
+      {/* {JSON.stringify(leaderboard?.items, null, 2)} */}
+      {leaderboard?.items?.map((user) => (
         <User key={user.teamName} {...user} />
       ))}
     </div>

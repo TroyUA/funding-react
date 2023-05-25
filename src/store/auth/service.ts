@@ -24,17 +24,6 @@ export const authAPI = createApi({
   endpoints: (build) => ({
     login: build.mutation<IAuthSuccess | IValidationErrors, AuthModel>({
       transformResponse: (response: IAuthResponse, _, __) => response.data.login,
-      // async onQueryStarted(_, { dispatch, queryFulfilled }) {
-      //   try {
-      //     const { data } = await queryFulfilled
-      //     if (data.__typename === 'Auth') {
-      //       dispatch(setCredentials(data))
-      //       LocalStorageApi.setAccessToken(data.token)
-      //     }
-      //   } catch (error) {
-      //     console.log(error)
-      //   }
-      // },
       query: (loginArgs) => ({
         url: '',
         method: 'POST',
@@ -162,12 +151,12 @@ __typename
         url: '',
         method: 'POST',
         body: {
-          query: `query getMyStatistic{
+          query: `query GetMyStatistic{
     getMyStatistic{
         ...on Leaderboard{
             avatar
             city{name}
-            country{name}
+            country{name emoji iso2 id}
             position
             teamName
             totalDonation

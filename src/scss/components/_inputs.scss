@@ -29,3 +29,73 @@
     background-color: $gray95;
   }
 }
+
+.input-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  // padding: 16px;
+  gap: 16px;
+  border: none;
+  border-bottom: 1px solid black;
+
+  &:focus-within {
+    border-bottom: 2px solid black;
+  }
+
+  input {
+    all: unset;
+    appearance: none;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 16px;
+    flex-grow: 1;
+    outline-style: none;
+    align-self: stretch;
+    background-color: transparent;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: #000000;
+
+    &::placeholder {
+      color: $gray50;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: $gray95;
+    }
+  }
+
+  &.error {
+    border-bottom: 1px solid red;
+  }
+
+  &__error {
+    position: absolute;
+    top: calc(100% + 1px);
+    right: 0;
+    left: 0;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 14px;
+    color: #ff0000;
+  }
+
+  &__label {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    padding-left: 16px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: #000000;
+    text-align: center;
+  }
+}

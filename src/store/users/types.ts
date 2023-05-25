@@ -11,12 +11,23 @@ export interface IUsers {
 
 export interface ILeaderboardResponse {
   data: {
-    leaderboards: {
-      items: IUser[]
-    }
+    leaderboards: LeaderboardModel
   }
 }
 
+export interface LeaderboardModel {
+  currentPage: number
+  totalItems: number
+  items: IUser[]
+}
+
+export interface GetLeaderboardArgs {
+  limit: number
+  page?: number
+  countryId?: number
+  districtId?: number
+  cityId?: number
+}
 export interface IProfile {
   teamName: string
   avatar: string
