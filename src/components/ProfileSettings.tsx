@@ -7,6 +7,7 @@ import { UpdateProfileArgs } from '../store/auth/types'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setProfile } from '../store/auth/slice'
 import { z } from 'zod'
+import { useFormik } from 'formik'
 
 const updateProfileFormSchema = z
   .object({
@@ -35,12 +36,20 @@ interface ProfileSettingsProps {
 
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) => {
   const profile = useAppSelector((state) => state.auth.profile)
-  // const { data: profile } = authAPI.useGetProfileQuery()
   const [updateProfile, { isError, isLoading }] = authAPI.useUpdateProfileMutation()
   const dispatch = useAppDispatch()
   const dialogRef = useRef<HTMLDialogElement>(null)
   const { cityOptions, countryOptions, districtOptions, setCountryId, setCityId, setDistrictId } =
     useFilters()
+  const formik = useFormik({
+    initialValues: {
+      teamName: profile?.teamName || '',
+    },
+    onSubmit: async (values) => {
+      console.log(values)
+    },
+    enableReinitialize: true,
+  })
 
   useEffect(() => {
     if (isOpened) {
@@ -70,7 +79,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
       const response = await updateProfile(profileArgs).unwrap()
       console.log(JSON.stringify(response, null, 2))
       if (response.__typename === 'Profile') {
-        // dispatch(setProfile(response))
+        const { __typename, ...profile } = response
+        dispatch(setProfile(profile))
         dispatch(authAPI.util.invalidateTags(['MyStatistic']))
         onClose()
       } else if (response.__typename === 'AuthError') {

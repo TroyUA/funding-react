@@ -4,74 +4,85 @@ import { ZodError, z } from 'zod'
 import { authAPI } from '../store/auth/service'
 import { useNavigate } from 'react-router-dom'
 import type { AuthModel } from './Login'
+import { Field, Form, Formik } from 'formik'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
+import Input from '../components/Input'
+import { useAppDispatch } from '../hooks/redux'
+import { setCredentials } from '../store/auth/slice'
+import { LocalStorageApi } from '../api/localStorage'
 
 const signupSchema = z
   .object({
-    teamName: z.string().min(3),
-    password: z.string().min(6),
-    confirmPassword: z.string().min(6),
+    teamName: z.string().min(3, 'TeamName should be at least 3 characters long'),
+    password: z.string().min(6, 'Password should be at least 6 characters long'),
+    confirmPassword: z.string(),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
       ctx.addIssue({
         code: 'custom',
-        message: 'The passwords did not match',
+        message: 'Passwords should match',
+        path: ['confirmPassword'],
       })
     }
   })
 
-type SignUpFormModel = z.infer<typeof signupSchema>
+// type SignUpFormModel = z.infer<typeof signupSchema>
 
 const SignUp = () => {
   const navigate = useNavigate()
   const [signUp, { isLoading }] = authAPI.useSignUpMutation()
-  const submitHandler: FormEventHandler = async (e) => {
-    e.preventDefault()
-    const form = e.target as HTMLFormElement
-    const formData = new FormData(form)
-    const data = Object.fromEntries(formData) as unknown as SignUpFormModel
-
-    try {
-      const validatedForm: SignUpFormModel = signupSchema.parse(data)
-      const { confirmPassword, ...signUpArgs } = validatedForm
-      const response = await signUp(signUpArgs as AuthModel).unwrap()
-      if (response.__typename === 'Auth') {
-        navigate('/')
-      }
-      if (response.__typename === 'ValidationErrors') {
-        console.log('ValidationErrors: ', response.errors)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const dispatch = useAppDispatch()
 
   return (
-    <div className="sign-up">
+    <section className="sign-up">
       <div className="sign-up__container container">
         <h1>Sign Up</h1>
-        <form className="sign-up__form" onSubmit={submitHandler}>
-          <input type="text" className="input" name="teamName" placeholder="Team Name" required />
-          <input
-            type="password"
-            className="input"
-            name="password"
-            placeholder="Password"
-            required
-            minLength={6}
-          />
-          <input
-            type="password"
-            className="input"
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            required
-            minLength={6}
-          />
-          <Button type="submit" className="submit-btn btn_black">
-            SIGN UP
-          </Button>
-        </form>
+        <Formik
+          initialValues={{ teamName: '', password: '', confirmPassword: '' }}
+          validateOnChange={false}
+          validationSchema={toFormikValidationSchema(signupSchema)}
+          onSubmit={async (values, { setFieldError }) => {
+            const response = await signUp(values).unwrap()
+            if (response.__typename === 'Auth') {
+              dispatch(setCredentials(response))
+              LocalStorageApi.setAccessToken(response.token)
+              navigate('/')
+            }
+            if (response.__typename === 'ValidationErrors') {
+              response.errors.forEach((error) => setFieldError(error.key, error.message))
+            }
+          }}
+        >
+          {({ errors, isSubmitting, isValid, touched }) => (
+            <Form className="sign-up__form">
+              <Field
+                type="text"
+                name="teamName"
+                placeholder="Team Name"
+                errorMsg={touched.teamName && errors.teamName}
+                as={Input}
+              />
+              <Field
+                type="password"
+                name="password"
+                placeholder="Password"
+                errorMsg={touched.password && errors.password}
+                as={Input}
+              />
+              <Field
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                errorMsg={touched.confirmPassword && errors.confirmPassword}
+                as={Input}
+              />
+              <Button type="submit" disabled={isSubmitting} className="submit-btn btn_black">
+                SIGN UP
+              </Button>
+            </Form>
+          )}
+        </Formik>
         <Button
           to={'../login'}
           className="move-to-btn btn_with-image"
@@ -80,7 +91,7 @@ const SignUp = () => {
           Log In
         </Button>
       </div>
-    </div>
+    </section>
   )
 }
 

@@ -24,7 +24,7 @@ export interface IAuthRequest {
 
 export interface IProfileResponse {
   data: {
-    profile: IProfileSuccess | IAuthError
+    profile: IGetProfileSuccess | IAuthError
   }
 }
 
@@ -44,7 +44,7 @@ export interface IAuthSuccess {
   __typename: 'Auth'
 }
 
-export interface IProfileSuccess extends IProfile {
+export interface IGetProfileSuccess extends IProfile {
   __typename: 'Profile'
 }
 
@@ -58,7 +58,7 @@ export interface UpdateProfileArgs {
 }
 
 export interface UpdateProfileResponse {
-  data: { updateProfile: IProfileSuccess | IValidationErrors | IAuthError }
+  data: { updateProfile: IGetProfileSuccess | IValidationErrors | IAuthError }
 }
 
 export interface SignUpResponse {

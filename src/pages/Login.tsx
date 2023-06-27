@@ -1,4 +1,3 @@
-import { FormEventHandler, FormEvent, useState } from 'react'
 import Button from '../components/Button'
 import { authAPI } from '../store/auth/service'
 import { z, ZodError } from 'zod'
@@ -7,76 +6,63 @@ import { useAppDispatch } from '../hooks/redux'
 import { LocalStorageApi } from '../api/localStorage'
 import { setCredentials } from '../store/auth/slice'
 import Input from '../components/Input'
-import { Formik } from 'formik/dist/Formik'
+import { Field, Form, Formik } from 'formik'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
 
 const loginSchema = z.object({
-  teamName: z.string().min(3, 'TeamName should be at least 3 symbols long'),
-  password: z.string().min(6, 'Password should be at least 6 symbols long'),
+  teamName: z.string().min(3, 'TeamName should be at least 3 characters long'),
+  password: z.string().min(6, 'Password should be at least 6 characters long'),
 })
 
 export type AuthModel = z.infer<typeof loginSchema>
 
-const initialValues = { teamName: '', password: '' }
-
 const Login = () => {
-  const [errors, setErrors] = useState(initialValues)
+  const initialValues: AuthModel = { teamName: '', password: '' }
   const navigate = useNavigate()
   const [login, { isError, isLoading }] = authAPI.useLoginMutation()
   const dispatch = useAppDispatch()
-
-  const submitHandler: FormEventHandler = async (event: FormEvent) => {
-    event.preventDefault()
-    const formData = new FormData(event.target as HTMLFormElement)
-    const data = Object.fromEntries(formData)
-    setErrors(initialValues)
-
-    try {
-      const validatedForm: AuthModel = loginSchema.parse(data)
-      const response = await login(validatedForm).unwrap()
-      if (response.__typename === 'Auth') {
-        dispatch(setCredentials(response))
-        LocalStorageApi.setAccessToken(response.token)
-        navigate('/')
-      }
-      if (response.__typename === 'ValidationErrors') {
-        response.errors.forEach((error) =>
-          setErrors((prev) => ({ ...prev, [error.key]: error.message }))
-        )
-      }
-    } catch (error) {
-      if (error instanceof ZodError) {
-        error.issues.forEach((issue) => {
-          issue.path.forEach((path) => setErrors((prev) => ({ ...prev, [path]: issue.message })))
-        })
-      } else console.log(error)
-    }
-  }
 
   return (
     <section className="login">
       <div className="login__container container">
         <h1>Log In</h1>
-        {/* <Formik initialValues={initialValues} onSubmit={submitHandler}> */}
-        <form className="login__form" onSubmit={submitHandler}>
-          <Input
-            type="text"
-            placeholder="Team Name"
-            name="teamName"
-            required
-            errorMsg={errors.teamName}
-          />
-          <Input
-            type="password"
-            placeholder="Password"
-            name="password"
-            required
-            errorMsg={errors.password}
-          />
-          <Button type="submit" className="submit-btn btn_black">
-            LOG IN
-          </Button>
-        </form>
-        {/* </Formik> */}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={toFormikValidationSchema(loginSchema)}
+          validateOnChange={false}
+          onSubmit={async (values, { setSubmitting, setFieldError }) => {
+            const response = await login(values).unwrap()
+            if (response.__typename === 'Auth') {
+              dispatch(setCredentials(response))
+              LocalStorageApi.setAccessToken(response.token)
+              navigate('/')
+            }
+            if (response.__typename === 'ValidationErrors') {
+              response.errors.forEach((error) => setFieldError(error.key, error.message))
+            }
+          }}
+        >
+          {({ errors, isSubmitting, isValid, touched }) => (
+            <Form className="login__form">
+              <Field
+                placeholder="Team Name"
+                name="teamName"
+                errorMsg={touched.teamName && errors.teamName}
+                as={Input}
+              />
+              <Field
+                type="password"
+                placeholder="Password"
+                name="password"
+                errorMsg={touched.password && errors.password}
+                as={Input}
+              />
+              <Button type="submit" disabled={isSubmitting} className="submit-btn btn_black">
+                LOG IN
+              </Button>
+            </Form>
+          )}
+        </Formik>
         <Button
           to={'../sign-up'}
           className="move-to-btn btn_with-image"

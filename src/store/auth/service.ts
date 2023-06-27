@@ -7,15 +7,14 @@ import {
   IAuthResponse,
   IAuthSuccess,
   IProfileResponse,
-  IProfileSuccess,
+  IGetProfileSuccess,
   IValidationErrors,
   SignUpResponse,
   UpdateProfileArgs,
   UpdateProfileResponse,
 } from './types'
 import { GetMyStatisticResponse, IProfile, IUser } from '../users/types'
-import { setCredentials, setProfile } from './slice'
-import { LocalStorageApi } from '../../api/localStorage'
+import { setProfile } from './slice'
 
 export const authAPI = createApi({
   reducerPath: 'authAPI',
@@ -56,17 +55,6 @@ __typename
     }),
     signUp: build.mutation<IAuthSuccess | IValidationErrors, AuthModel>({
       transformResponse: (response: SignUpResponse, _, __) => response.data.signUp,
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          if (data.__typename === 'Auth') {
-            dispatch(setCredentials(data))
-            LocalStorageApi.setAccessToken(data.token)
-          }
-        } catch (error) {
-          console.log(error)
-        }
-      },
       query: (signUpArgs) => ({
         url: '',
         method: 'POST',
@@ -97,7 +85,7 @@ __typename
         } as IAuthRequest,
       }),
     }),
-    getProfile: build.query<IProfileSuccess | IAuthError, void>({
+    getProfile: build.query<IGetProfileSuccess | IAuthError, void>({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
@@ -171,20 +159,20 @@ __typename
       }),
     }),
     updateProfile: build.mutation<
-      IProfileSuccess | IValidationErrors | IAuthError,
+      IGetProfileSuccess | IValidationErrors | IAuthError,
       Partial<UpdateProfileArgs>
     >({
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled
-          if (data.__typename === 'Profile') {
-            const { __typename, ...profile } = data
-            dispatch(setProfile(profile))
-          }
-        } catch (err) {
-          console.log(err)
-        }
-      },
+      // async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      //   try {
+      //     const { data } = await queryFulfilled
+      //     if (data.__typename === 'Profile') {
+      //       const { __typename, ...profile } = data
+      //       dispatch(setProfile(profile))
+      //     }
+      //   } catch (err) {
+      //     console.log(err)
+      //   }
+      // },
       transformResponse: (response: UpdateProfileResponse) => response.data.updateProfile,
       query: (updateProfileArgs) => ({
         url: '',

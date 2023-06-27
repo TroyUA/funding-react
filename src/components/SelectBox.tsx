@@ -2,7 +2,7 @@ import React, { MouseEvent, useEffect, useMemo, useState } from 'react'
 import { classNames } from '../utils'
 
 export type OptionValue = string | number
-interface ISelectBox {
+interface ISelectBoxProps {
   placeholder: string
   name: string
   options: IOption[] | undefined
@@ -19,7 +19,7 @@ export interface IOption {
   hidden?: boolean
 }
 
-const SelectBox: React.FC<ISelectBox> = (props) => {
+const SelectBox: React.FC<ISelectBoxProps> = (props) => {
   const { name, options: propsOptions = [], onChange, className, placeholder } = props
   const defaultState = {
     value: '',
@@ -28,7 +28,9 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
     hidden: true,
   } as IOption
   const options = useMemo(() => [defaultState, ...propsOptions], [propsOptions])
-  const [selectedValue, setSelectedValue] = useState(props.selectedValue ?? options[0].value)
+  const [selectedValue, setSelectedValue] = useState<OptionValue>(
+    props.selectedValue ?? options[0].value!
+  )
   const selectedOption = useMemo(
     () => options.find((option) => option.value === selectedValue) ?? options[0],
     [options, selectedValue]
@@ -42,7 +44,7 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
     if (option !== selectedOption) {
       selectedOption.selected = false
       option.selected = true
-      setSelectedValue(option.value)
+      setSelectedValue(option.value!)
     }
     setShowList(false)
   }
@@ -63,7 +65,12 @@ const SelectBox: React.FC<ISelectBox> = (props) => {
       onBlur={() => setShowList(false)}
     >
       {/* input for form submiting */}
-      <input type="hidden" value={selectedOption?.value} name={name} />
+      <input
+        type="hidden"
+        value={selectedOption?.value}
+        name={name}
+        // onChange={(e) => setSelectedValue(e.target.value)}
+      />
       <div className={classNames('select-box__value', !!selectedOption.hidden && 'hidden')}>
         {selectedOption.label}
       </div>

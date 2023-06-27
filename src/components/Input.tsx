@@ -1,6 +1,5 @@
 import React, { DetailedHTMLProps, InputHTMLAttributes, useId } from 'react'
 import { classNames } from '../utils'
-import { Field } from 'formik'
 
 const Input: React.FC<
   DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
@@ -9,7 +8,7 @@ const Input: React.FC<
   }
 > = (props) => {
   const id = useId()
-  const { ref, errorMsg, label, ...rest } = props
+  const { errorMsg, label, ...rest } = props
   return (
     <div className={classNames('input-box', !!errorMsg && 'error')}>
       {label && (
@@ -18,11 +17,7 @@ const Input: React.FC<
         </label>
       )}
       <input {...rest} id={id} />
-      {errorMsg && (
-        <span className="input-box__error" ref={ref}>
-          {errorMsg}
-        </span>
-      )}
+      {errorMsg && <span className="input-box__error">{errorMsg}</span>}
     </div>
   )
 }

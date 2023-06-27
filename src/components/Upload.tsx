@@ -1,22 +1,25 @@
-import React, { useId } from 'react'
+import React, { DetailedHTMLProps, InputHTMLAttributes, useId } from 'react'
 
-interface IUpload {
+interface IUploadProps {
   text: string
-  name?: string
+  name: string
 }
-const Upload: React.FC<IUpload> = ({ text, name = 'upload' }) => {
-  const uploadInputId = useId()
+const Upload: React.FC<
+  DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & IUploadProps
+> = ({ text, name = 'upload', ...rest }) => {
+  const uploadId = useId()
   return (
     <div className="upload-box" tabIndex={0}>
-      <label className="upload-box__label" htmlFor={uploadInputId}>
+      <label className="upload-box__label" htmlFor={uploadId}>
         {text}
       </label>
       <input
         className="upload-box__input"
-        type="file"
         name={name}
-        id={uploadInputId}
-        accept="image/*"
+        type="file"
+        id={uploadId}
+        accept="image/png, image/jpeg, image/jpg"
+        {...rest}
       />
     </div>
   )
