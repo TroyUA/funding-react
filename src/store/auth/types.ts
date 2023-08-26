@@ -13,7 +13,7 @@ export interface IAuthError {
 
 export interface IAuthResponse {
   data: {
-    login: IAuthSuccess | IValidationErrors
+    login: IAuthSuccess | ValidationErrors
   }
 }
 
@@ -28,19 +28,17 @@ export interface IProfileResponse {
   }
 }
 
-export interface IValidationError {
+export interface ValidationError {
   message: string
   key: string
 }
 
-export interface IValidationErrors {
-  errors: IValidationError[]
+export interface ValidationErrors {
+  errors: ValidationError[]
   __typename: 'ValidationErrors'
 }
 
-export interface IAuthSuccess {
-  token: string
-  profile: IProfile
+export interface IAuthSuccess extends IAuth {
   __typename: 'Auth'
 }
 
@@ -49,18 +47,33 @@ export interface IGetProfileSuccess extends IProfile {
 }
 
 export interface UpdateProfileArgs {
-  teamName: string
-  avatar: File
-  countryId: number
-  districtId: number
-  cityId: number
-  password: string
+  teamName?: string
+  avatar?: File | null
+  countryId?: number
+  districtId?: number
+  cityId?: number
+  password?: string
 }
 
 export interface UpdateProfileResponse {
-  data: { updateProfile: IGetProfileSuccess | IValidationErrors | IAuthError }
+  data: { updateProfile: IGetProfileSuccess | ValidationErrors | IAuthError }
 }
 
 export interface SignUpResponse {
-  data: { signUp: IAuthSuccess | IValidationErrors }
+  data: { signUp: IAuthSuccess | ValidationErrors }
+}
+
+export interface RegisterDonateArgs {
+  file: File
+  amount: number
+  fundId: string
+}
+
+export interface DonateResultSuccess {
+  message: string
+  __typename: 'DonateResultSuccess'
+}
+
+export interface RegisterDonateResponse {
+  data: { registerDonate: DonateResultSuccess | IAuthError | ValidationErrors }
 }

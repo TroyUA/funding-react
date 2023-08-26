@@ -20,64 +20,60 @@
       gap: 50px;
     }
   }
+}
 
-  &__item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    isolation: isolate;
+.fund {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  isolation: isolate;
+  background: #ffffff;
+  /* Inside auto layout */
 
-    /* White */
+  flex: none;
+  align-self: stretch;
+  flex-grow: 0;
 
-    background: #ffffff;
+  &__fon {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+
+    // background-image: url(../img/charity-fund-fon.png);
+    background-size: cover;
+    /* Grey/50 */
+
+    border: 1px solid $gray50;
 
     /* Inside auto layout */
 
     flex: none;
+    order: 0;
     align-self: stretch;
     flex-grow: 0;
+    z-index: 0;
+  }
 
-    &-fon {
-      width: 100%;
-      height: 150px;
-      padding: 10px;
+  &__category-btn {
+    border: none;
+    padding: 8px;
+    width: fit-content;
 
-      background-image: url(../img/charity-fund-fon.png);
-      background-size: cover;
-      /* Grey/50 */
-
-      border: 1px solid $gray50;
-
-      /* Inside auto layout */
-
-      flex: none;
-      order: 0;
-      align-self: stretch;
-      flex-grow: 0;
-      z-index: 0;
+    .btn__text {
+      color: white;
+      font-family: 'Raleway';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 10px;
+      line-height: 12px;
     }
+  }
 
-    &-defence-btn {
-      border: none;
-      padding: 8px;
-      width: fit-content;
-
-      .btn__text {
-        color: white;
-        font-family: 'Raleway';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 10px;
-        line-height: 12px;
-      }
-    }
-
-    &-make-donation-btn {
-      justify-content: flex-end;
-      .btn__text {
-        text-transform: none;
-      }
+  &__donation-btn {
+    justify-content: flex-end;
+    .btn__text {
+      text-transform: none;
     }
   }
 }

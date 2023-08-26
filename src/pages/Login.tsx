@@ -34,7 +34,7 @@ const Login = () => {
             const response = await login(values).unwrap()
             if (response.__typename === 'Auth') {
               dispatch(setCredentials(response))
-              LocalStorageApi.setAccessToken(response.token)
+              LocalStorageApi.setAccessToken(response.token!)
               navigate('/')
             }
             if (response.__typename === 'ValidationErrors') {

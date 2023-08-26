@@ -4,7 +4,7 @@ import Home from './pages/Home'
 import Layout from './components/Layout'
 import NotFound from './pages/NotFound'
 import Donation from './pages/Donation'
-import Funds from './pages/Funds'
+import FundsPage from './pages/FundsPage'
 import Success from './pages/Success'
 import Login from './pages/Login'
 import Profile from './pages/Profile'
@@ -28,7 +28,7 @@ const App: React.FC = () => {
           <Route path="leaderboard" element={<LeaderboardPage />} />
           <Route path="profile" element={<Profile />} />
           <Route path="donation" element={<Donation />} />
-          <Route path="funds" element={<Funds />} />
+          <Route path="funds" element={<FundsPage />} />
         </Route>
         <Route path="auth">
           <Route path="login" element={<Login />} />

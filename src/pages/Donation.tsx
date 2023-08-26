@@ -18,7 +18,8 @@ const submitHandler: React.FormEventHandler = (event) => {
 
   const formData = new FormData(event.target as HTMLFormElement)
   const data = Object.fromEntries(formData)
-  console.log(data)
+
+  console.log({ formData, data })
 }
 
 const Donation = () => {
@@ -48,7 +49,8 @@ const Donation = () => {
             options={fundOptions}
             onChange={setFundId}
           ></SelectBox>
-          <Upload text={'Upload Screenshot'} />
+          {/* <Upload text='Upload Screenshot' name="file" /> */}
+          <input type="file" name="file" />
           <Button type="submit" className="submit-btn stretched">
             Submit
           </Button>

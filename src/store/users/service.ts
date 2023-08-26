@@ -6,33 +6,6 @@ export const usersAPI = createApi({
   reducerPath: 'usersAPI',
   baseQuery,
   endpoints: (build) => ({
-    // getUsers: build.query({
-    //   transformResponse: (response: ILeaderboardResponse, _, __) =>
-    //     response.data.leaderboards.items,
-    //   query: (limit: number) => ({
-    //     url: '',
-    //     method: 'POST',
-    //     body: {
-    //       query: `query getUsers($limit:Int!){
-    //         leaderboards(limit:$limit){
-    //           items{
-    //             teamName
-    //             avatar
-    //             country{
-    //               name emoji iso2
-    //             }
-    //             city{name}
-    //             totalDonation
-    //             position
-    //           }
-    //         }
-    //       }`,
-    //       variables: {
-    //         limit,
-    //       },
-    //     },
-    //   }),
-    // }),
     getLeaderboard: build.query<LeaderboardModel, GetLeaderboardArgs>({
       transformResponse: (response: ILeaderboardResponse, _, __) => response.data.leaderboards,
       query: (args: GetLeaderboardArgs) => ({

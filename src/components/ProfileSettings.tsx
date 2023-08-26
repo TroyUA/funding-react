@@ -1,34 +1,38 @@
-import React, { FormEvent, FormEventHandler, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Upload from './Upload'
 import { useFilters } from '../hooks/useFilters'
 import SelectBox from './SelectBox'
 import { authAPI } from '../store/auth/service'
-import { UpdateProfileArgs } from '../store/auth/types'
+import type { UpdateProfileArgs } from '../store/auth/types'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setProfile } from '../store/auth/slice'
 import { z } from 'zod'
-import { useFormik } from 'formik'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
+import Input from './Input'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
+import { uploadAPI } from '../store/upload/service'
 
 const updateProfileFormSchema = z
   .object({
-    avatar: z.instanceof(File),
-    cityId: z.string(),
-    countryId: z.string(),
-    districtId: z.string(),
-    teamName: z.string(),
-    password: z.string(),
-    confirmPassword: z.string(),
+    avatar: z.string().optional(), //instanceof(File).optional(),
+    cityId: z.number().optional(),
+    countryId: z.number().optional(),
+    districtId: z.number().optional(),
+    teamName: z.string().optional(),
+    password: z.string().min(3, 'Password should be at least 3 characters long').optional(),
+    confirmPassword: z.string().optional(),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
       ctx.addIssue({
         code: 'custom',
-        message: 'The passwords did not match',
+        message: `The 'password' and 'confirm password' fields must match`,
+        path: ['confirmPassword'],
       })
     }
   })
 
-type UpdateProfileFormModel = z.infer<typeof updateProfileFormSchema>
+// type UpdateProfileFormModel = z.infer<typeof updateProfileFormSchema>
 interface ProfileSettingsProps {
   isOpened: boolean
   onClose: () => void
@@ -36,20 +40,21 @@ interface ProfileSettingsProps {
 
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) => {
   const profile = useAppSelector((state) => state.auth.profile)
-  const [updateProfile, { isError, isLoading }] = authAPI.useUpdateProfileMutation()
+  const [updateProfile, { isLoading }] = uploadAPI.useUpdateProfileMutation()
   const dispatch = useAppDispatch()
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const { cityOptions, countryOptions, districtOptions, setCountryId, setCityId, setDistrictId } =
-    useFilters()
-  const formik = useFormik({
-    initialValues: {
-      teamName: profile?.teamName || '',
-    },
-    onSubmit: async (values) => {
-      console.log(values)
-    },
-    enableReinitialize: true,
-  })
+  const {
+    cityOptions,
+    countryOptions,
+    districtOptions,
+    setCountryId,
+    setCityId,
+    setDistrictId,
+    cityId,
+    districtId,
+    countryId,
+  } = useFilters()
+  const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (isOpened) {
@@ -60,38 +65,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
       document.body.classList.remove('lock')
     }
   }, [isOpened])
-
-  const submitHandler: FormEventHandler = async (e: FormEvent) => {
-    e.preventDefault()
-    const form = e.target as HTMLFormElement
-    const formData = new FormData(form)
-    const data = Object.fromEntries(formData) as unknown as UpdateProfileFormModel
-
-    const profileArgs: Partial<UpdateProfileArgs> = {
-      avatar: data.avatar?.name ? data.avatar : undefined,
-      cityId: Number(data.cityId) || undefined,
-      countryId: Number(data.countryId) || undefined,
-      districtId: Number(data.districtId) || undefined,
-      password: data.password || undefined,
-      teamName: data.teamName || undefined,
-    }
-    try {
-      const response = await updateProfile(profileArgs).unwrap()
-      console.log(JSON.stringify(response, null, 2))
-      if (response.__typename === 'Profile') {
-        const { __typename, ...profile } = response
-        dispatch(setProfile(profile))
-        dispatch(authAPI.util.invalidateTags(['MyStatistic']))
-        onClose()
-      } else if (response.__typename === 'AuthError') {
-        console.log('AuthError: ', response.message)
-      } else if (response.__typename === 'ValidationErrors') {
-        console.log('ValidationErrors: ', response.errors)
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   const dialogClickHandler: React.MouseEventHandler = (e) => {
     const dialogDimensions = e.currentTarget.getBoundingClientRect()
@@ -112,55 +85,113 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
       onCancel={onClose}
       onClick={dialogClickHandler}
     >
-      <form method="dialog" className="profile-settings__form" onSubmit={submitHandler}>
-        <h1>Profile settings</h1>
-        <Upload text="Upload icon" name="avatar" />
-        <input
-          className="profile-settings__team input"
-          type="text"
-          name="teamName"
-          placeholder="Team name"
-          defaultValue={profile?.teamName}
-        />
+      <Formik
+        enableReinitialize
+        validationSchema={toFormikValidationSchema(updateProfileFormSchema)}
+        initialValues={{
+          teamName: profile?.teamName || '',
+          password: '',
+          confirmPassword: '',
+        }}
+        onSubmit={async (values, { setFieldError }) => {
+          const variables: UpdateProfileArgs = {
+            avatar: null, // The 'avatar' variable will be populated by the FormData
+            teamName: values.teamName,
+            countryId: Number(countryId),
+            cityId: Number(cityId),
+            districtId: Number(districtId),
+            password: values.password,
+          }
+          const file = fileRef.current?.files![0]
 
-        <SelectBox
-          name="countryId"
-          placeholder="Country"
-          options={countryOptions}
-          onChange={setCountryId}
-          selectedValue={profile?.country?.id}
-        />
-        <SelectBox
-          name="cityId"
-          placeholder="City"
-          options={cityOptions}
-          onChange={setCityId}
-          selectedValue={profile?.city?.id}
-        />
-        <SelectBox
-          name="districtId"
-          placeholder="District"
-          options={districtOptions}
-          onChange={setDistrictId}
-          selectedValue={profile?.district?.id}
-        />
-
-        <input
-          className="profile-settings__password input"
-          type="password"
-          placeholder="New password"
-          name="password"
-        />
-        <input
-          className="profile-settings__confirm-password input"
-          type="password"
-          placeholder="Confirm new password"
-          name="confirmPassword"
-        />
-        <button type="submit" className="profile-settings__submit-btn btn_black">
-          <div className="btn__text">save</div>
-        </button>
-      </form>
+          try {
+            const response = await updateProfile({ variables, file }).unwrap()
+            switch (response.__typename) {
+              case 'Profile':
+                const { __typename, ...profile } = response
+                dispatch(setProfile(profile))
+                dispatch(authAPI.util.invalidateTags(['MyStatistic']))
+                onClose()
+                break
+              case 'ValidationErrors':
+                response.errors.forEach((error) => setFieldError(error.key, error.message))
+                break
+              case 'AuthError':
+                console.log(response.message)
+                break
+              default:
+                throw new Error('Unexpected __typename in response')
+            }
+          } catch (error) {
+            console.log(error)
+          }
+        }}
+      >
+        {({ errors, touched, values, setFieldValue }) => (
+          <Form method="dialog" className="profile-settings__form">
+            <h1>Profile settings</h1>
+            {/* <input
+              ref={fileRef}
+              type="file"
+              name="avatar"
+              // onChange={(e) => setFieldValue('avatar', e.target.files![0])}
+              accept="image/png, image/jpeg, image/jpg"
+            /> */}
+            <Upload
+              text="Upload icon"
+              name="avatar"
+              ref={fileRef}
+              accept="image/png, image/jpeg, image/jpg"
+            />
+            <ErrorMessage name="avatar" />
+            <Field name="teamName" placeholder="Team name" errorMsg={errors.teamName} as={Input} />
+            <SelectBox
+              name="countryId"
+              placeholder="Country"
+              options={countryOptions}
+              onChange={setCountryId}
+              selectedValue={profile?.country?.id}
+            />
+            <SelectBox
+              name="cityId"
+              placeholder="City"
+              options={cityOptions}
+              onChange={setCityId}
+              selectedValue={profile?.city?.id}
+            />
+            <SelectBox
+              name="districtId"
+              placeholder="District"
+              options={districtOptions}
+              onChange={setDistrictId}
+              selectedValue={profile?.district?.id}
+            />
+            <Field
+              // className="profile-settings__password input"
+              type="password"
+              placeholder="New password"
+              name="password"
+              errorMsg={touched.password && errors.password}
+              as={Input}
+            />
+            <Field
+              // className="profile-settings__confirm-password input"
+              type="password"
+              placeholder="Confirm new password"
+              name="confirmPassword"
+              errorMsg={touched.confirmPassword && errors.confirmPassword}
+              as={Input}
+            />
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="profile-settings__submit-btn btn_black"
+            >
+              <div className="btn__text">save</div>
+            </button>
+          </Form>
+        )}
+      </Formik>
     </dialog>
   )
 }

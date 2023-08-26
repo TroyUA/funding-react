@@ -8,10 +8,11 @@ import {
   IAuthSuccess,
   IProfileResponse,
   IGetProfileSuccess,
-  IValidationErrors,
+  ValidationErrors,
   SignUpResponse,
-  UpdateProfileArgs,
-  UpdateProfileResponse,
+  RegisterDonateArgs,
+  DonateResultSuccess,
+  RegisterDonateResponse,
 } from './types'
 import { GetMyStatisticResponse, IProfile, IUser } from '../users/types'
 import { setProfile } from './slice'
@@ -21,7 +22,7 @@ export const authAPI = createApi({
   baseQuery,
   tagTypes: ['Auth', 'Profile', 'MyStatistic'],
   endpoints: (build) => ({
-    login: build.mutation<IAuthSuccess | IValidationErrors, AuthModel>({
+    login: build.mutation<IAuthSuccess | ValidationErrors, AuthModel>({
       transformResponse: (response: IAuthResponse, _, __) => response.data.login,
       query: (loginArgs) => ({
         url: '',
@@ -53,7 +54,7 @@ __typename
         } as IAuthRequest,
       }),
     }),
-    signUp: build.mutation<IAuthSuccess | IValidationErrors, AuthModel>({
+    signUp: build.mutation<IAuthSuccess | ValidationErrors, AuthModel>({
       transformResponse: (response: SignUpResponse, _, __) => response.data.signUp,
       query: (signUpArgs) => ({
         url: '',
@@ -158,51 +159,37 @@ __typename
         },
       }),
     }),
-    updateProfile: build.mutation<
-      IGetProfileSuccess | IValidationErrors | IAuthError,
-      Partial<UpdateProfileArgs>
+    registerDonate: build.mutation<
+      DonateResultSuccess | ValidationErrors | IAuthError,
+      RegisterDonateArgs
     >({
-      // async onQueryStarted(_, { dispatch, queryFulfilled }) {
-      //   try {
-      //     const { data } = await queryFulfilled
-      //     if (data.__typename === 'Profile') {
-      //       const { __typename, ...profile } = data
-      //       dispatch(setProfile(profile))
-      //     }
-      //   } catch (err) {
-      //     console.log(err)
-      //   }
-      // },
-      transformResponse: (response: UpdateProfileResponse) => response.data.updateProfile,
-      query: (updateProfileArgs) => ({
+      transformResponse: (response: RegisterDonateResponse) => response.data.registerDonate,
+      query: (registerDonateArgs) => ({
         url: '',
         method: 'POST',
         body: {
-          query: `mutation UpdateProfile($avatar: Upload
-          $teamName: String
-          $countryId: Int
-          $districtId: Int
-          $cityId: Int
-          $password: String){
-              updateProfile(input:{avatar:$avatar teamName:$teamName countryId:$countryId districtId:$districtId cityId:$cityId password:$password}){
-          ...on Profile{
-              teamName
-                avatar
-                country{ name iso2 emoji id}
-                district{name id}
-                city{ name id }
-                __typename
-          }
-          ...on AuthError{
-              message
-          }
-          ...on ValidationErrors{
-            errors{
-                message
-                key
-            }     
-          }}}`,
-          variables: updateProfileArgs,
+          query: `mutation RegisterDonate($file: Upload!
+          $amount: Float!
+          $fundId: String!){
+            registerDonate(file:$file amount:$amount fundId:$fundId){
+                ...on DonateResultSuccess{
+                  message
+                  __typename
+                }
+                ...on AuthError{
+                  message
+                  __typename
+                }
+                ...on ValidationErrors{
+                  errors{
+                    message
+                    key
+                  }
+                  __typename
+                }
+            }
+          }`,
+          variables: registerDonateArgs,
         },
       }),
     }),

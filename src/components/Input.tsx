@@ -16,7 +16,7 @@ const Input: React.FC<
           {label}
         </label>
       )}
-      <input {...rest} id={id} />
+      <input className="input-box__input" {...rest} id={id} />
       {errorMsg && <span className="input-box__error">{errorMsg}</span>}
     </div>
   )
