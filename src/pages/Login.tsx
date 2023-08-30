@@ -42,21 +42,10 @@ const Login = () => {
             }
           }}
         >
-          {({ errors, isSubmitting, isValid, touched }) => (
+          {({ isSubmitting }) => (
             <Form className="login__form">
-              <Field
-                placeholder="Team Name"
-                name="teamName"
-                errorMsg={touched.teamName && errors.teamName}
-                as={Input}
-              />
-              <Field
-                type="password"
-                placeholder="Password"
-                name="password"
-                errorMsg={touched.password && errors.password}
-                as={Input}
-              />
+              <Field placeholder="Team Name" name="teamName" as={Input} />
+              <Field type="password" placeholder="Password" name="password" as={Input} />
               <Button type="submit" disabled={isSubmitting} className="submit-btn btn_black">
                 LOG IN
               </Button>

@@ -3,10 +3,14 @@ import User from './User'
 
 interface IUsersProps {
   limit: number
+  page?: number
+  countryId?: number
+  districtId?: number
+  cityId?: number
 }
 
-const Users: React.FC<IUsersProps> = ({ limit }) => {
-  const { data: leaderboard, isLoading, error } = usersAPI.useGetLeaderboardQuery({ limit })
+const Users: React.FC<IUsersProps> = (props) => {
+  const { data: leaderboard, isLoading, error } = usersAPI.useGetLeaderboardQuery({ ...props })
 
   if (error) {
     return <div>{`Error: ${error}`}</div>
@@ -18,7 +22,6 @@ const Users: React.FC<IUsersProps> = ({ limit }) => {
 
   return (
     <div className="users">
-      {/* {JSON.stringify(leaderboard?.items, null, 2)} */}
       {leaderboard?.items?.map((user) => (
         <User key={user.teamName} {...user} />
       ))}

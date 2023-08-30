@@ -1,20 +1,17 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
 import { AuthModel } from '../../pages/Login'
 import { baseQuery } from '../baseQuery'
-import {
-  IAuthError,
-  IAuthRequest,
-  IAuthResponse,
-  IAuthSuccess,
-  IProfileResponse,
-  IGetProfileSuccess,
+import type {
+  AuthError,
+  AuthRequest,
+  AuthResponse,
+  AuthSuccess,
+  GetProfileResponse,
+  GetProfileSuccess,
   ValidationErrors,
   SignUpResponse,
-  RegisterDonateArgs,
-  DonateResultSuccess,
-  RegisterDonateResponse,
 } from './types'
-import { GetMyStatisticResponse, IProfile, IUser } from '../users/types'
+import { GetMyStatisticResponse, GetLeaderboardSuccess } from '../users/types'
 import { setProfile } from './slice'
 
 export const authAPI = createApi({
@@ -22,39 +19,18 @@ export const authAPI = createApi({
   baseQuery,
   tagTypes: ['Auth', 'Profile', 'MyStatistic'],
   endpoints: (build) => ({
-    login: build.mutation<IAuthSuccess | ValidationErrors, AuthModel>({
-      transformResponse: (response: IAuthResponse, _, __) => response.data.login,
+    login: build.mutation<AuthSuccess | ValidationErrors, AuthModel>({
+      transformResponse: (response: AuthResponse, _, __) => response.data.login,
       query: (loginArgs) => ({
         url: '',
         method: 'POST',
         body: {
-          query: `mutation Login($teamName:String! $password:String!){
-  login(input:{teamName:$teamName password:$password}){
-    ...on Auth{
-      profile{
-        teamName
-        avatar
-        country{ name iso2 emoji id}
-        district{ name id}
-        city{ name id}
-        }
-      token
-    }
-    
-    ...on ValidationErrors{
-      errors{
-        message
-        key
-      }
-    }
-__typename
-  }
-}`,
+          query: `mutation Login($teamName:String! $password:String!){login(input:{teamName:$teamName password:$password}){ ...on Auth{profile { teamName avatar country{ name iso2 emoji id} district{ name id} city{ name id}} token } ...on ValidationErrors{ errors{ message key }} __typename }}`,
           variables: loginArgs,
-        } as IAuthRequest,
+        } as AuthRequest,
       }),
     }),
-    signUp: build.mutation<IAuthSuccess | ValidationErrors, AuthModel>({
+    signUp: build.mutation<AuthSuccess | ValidationErrors, AuthModel>({
       transformResponse: (response: SignUpResponse, _, __) => response.data.signUp,
       query: (signUpArgs) => ({
         url: '',
@@ -83,10 +59,10 @@ __typename
   }
 }`,
           variables: signUpArgs,
-        } as IAuthRequest,
+        } as AuthRequest,
       }),
     }),
-    getProfile: build.query<IGetProfileSuccess | IAuthError, void>({
+    getProfile: build.query<GetProfileSuccess | AuthError, void>({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
@@ -98,7 +74,7 @@ __typename
           console.log(err)
         }
       },
-      transformResponse: (response: IProfileResponse, _, __) => response.data.profile,
+      transformResponse: (response: GetProfileResponse, _, __) => response.data.profile,
       query: () => ({
         url: '',
         method: 'POST',
@@ -125,71 +101,14 @@ __typename
       }),
       providesTags: ['Profile'],
     }),
-    getMyStatistic: build.query<IUser, void>({
+    getMyStatistic: build.query<AuthError | GetLeaderboardSuccess, void>({
       providesTags: ['MyStatistic'],
-      transformResponse: (response: GetMyStatisticResponse) => {
-        if (response.data.getMyStatistic.__typename === 'Leaderboard') {
-          delete response.data.getMyStatistic.__typename
-          return response.data.getMyStatistic as IUser
-        } else if (response.data.getMyStatistic.__typename === 'AuthError') {
-          throw response.data.getMyStatistic as IAuthError
-        }
-        throw response
-      },
+      transformResponse: (response: GetMyStatisticResponse) => response.data.getMyStatistic,
       query: () => ({
         url: '',
         method: 'POST',
         body: {
-          query: `query GetMyStatistic{
-    getMyStatistic{
-        ...on Leaderboard{
-            avatar
-            city{name}
-            country{name emoji iso2 id}
-            position
-            teamName
-            totalDonation
-        }
-        ...on AuthError{
-            message
-        }
-        __typename
-    }
-}`,
-        },
-      }),
-    }),
-    registerDonate: build.mutation<
-      DonateResultSuccess | ValidationErrors | IAuthError,
-      RegisterDonateArgs
-    >({
-      transformResponse: (response: RegisterDonateResponse) => response.data.registerDonate,
-      query: (registerDonateArgs) => ({
-        url: '',
-        method: 'POST',
-        body: {
-          query: `mutation RegisterDonate($file: Upload!
-          $amount: Float!
-          $fundId: String!){
-            registerDonate(file:$file amount:$amount fundId:$fundId){
-                ...on DonateResultSuccess{
-                  message
-                  __typename
-                }
-                ...on AuthError{
-                  message
-                  __typename
-                }
-                ...on ValidationErrors{
-                  errors{
-                    message
-                    key
-                  }
-                  __typename
-                }
-            }
-          }`,
-          variables: registerDonateArgs,
+          query: `query GetMyStatistic{ getMyStatistic{ ...on Leaderboard{ avatar city{name} country{name emoji iso2 id} position teamName totalDonation} ...on AuthError{ message } __typename }}`,
         },
       }),
     }),

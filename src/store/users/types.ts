@@ -1,7 +1,5 @@
-import { ICity } from '../../models/ICity'
-import { ICountry } from '../../models/ICountry'
-import { IDistrict } from '../../models/IDistrict'
-import { IAuthError } from '../auth/types'
+import type { City, Country, District } from '../lists/types'
+import type { AuthError } from '../auth/types'
 
 export interface IUsers {
   users: IUser[]
@@ -9,7 +7,7 @@ export interface IUsers {
   error: string
 }
 
-export interface ILeaderboardResponse {
+export interface GetLeaderboardResponse {
   data: {
     leaderboards: LeaderboardModel
   }
@@ -28,15 +26,15 @@ export interface GetLeaderboardArgs {
   districtId?: number
   cityId?: number
 }
-export interface IProfile {
+export interface Profile {
   teamName: string
   avatar: string
-  country: ICountry
-  district?: IDistrict
-  city: ICity
+  country: Country
+  district?: District
+  city: City
 }
 
-export interface IUser extends IProfile {
+export interface IUser extends Profile {
   totalDonation: number
   position: number
 }
@@ -50,10 +48,10 @@ export interface GetUsersRequest {
 
 export interface GetMyStatisticResponse {
   data: {
-    getMyStatistic: IAuthError | ILeaderboard
+    getMyStatistic: AuthError | GetLeaderboardSuccess
   }
 }
 
-export interface ILeaderboard extends IUser {
-  __typename?: 'Leaderboard'
+export interface GetLeaderboardSuccess extends IUser {
+  __typename: 'Leaderboard'
 }

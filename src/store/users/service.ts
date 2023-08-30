@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { GetLeaderboardArgs, ILeaderboardResponse, LeaderboardModel } from './types'
+import { GetLeaderboardArgs, GetLeaderboardResponse, LeaderboardModel } from './types'
 import { baseQuery } from '../baseQuery'
 
 export const usersAPI = createApi({
@@ -7,7 +7,7 @@ export const usersAPI = createApi({
   baseQuery,
   endpoints: (build) => ({
     getLeaderboard: build.query<LeaderboardModel, GetLeaderboardArgs>({
-      transformResponse: (response: ILeaderboardResponse, _, __) => response.data.leaderboards,
+      transformResponse: (response: GetLeaderboardResponse, _, __) => response.data.leaderboards,
       query: (args: GetLeaderboardArgs) => ({
         url: '',
         method: 'POST',

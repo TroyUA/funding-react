@@ -1,7 +1,29 @@
-import { ICity } from '../../models/ICity'
-import { ICountry } from '../../models/ICountry'
-import { IDistrict } from '../../models/IDistrict'
-import { IFund } from '../../models/IFund'
+export interface City {
+  id: number
+  name: string
+  country_id: number
+  district_id: number
+}
+export interface Country {
+  id: number
+  name: string
+  iso2: string
+  emoji: string
+}
+
+export interface District {
+  id: number
+  name: string
+  country_id: number
+}
+
+export interface IFund {
+  id: string
+  name: string
+  link: string
+  category: string
+  img: string
+}
 
 export type GetCitiesArgs = {
   countryId?: number
@@ -10,17 +32,17 @@ export type GetCitiesArgs = {
 
 export type GetCitiesResponse = {
   data: {
-    cities: ICity[]
+    cities: City[]
   }
 }
 export type GetCountriesResponse = {
   data: {
-    countries: ICountry[]
+    countries: Country[]
   }
 }
 export type GetDistrictsResponse = {
   data: {
-    districts: IDistrict[]
+    districts: District[]
   }
 }
 

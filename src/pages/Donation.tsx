@@ -1,60 +1,97 @@
-import React, { useId } from 'react'
+import React, { useRef } from 'react'
 import Upload from '../components/Upload'
 import SelectBox from '../components/SelectBox'
 import { useFunds } from '../hooks/useFilters'
 import Button from '../components/Button'
 import { z } from 'zod'
+import Input from '../components/Input'
+import { Field, Form, Formik } from 'formik'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
+import { uploadAPI } from '../store/upload/service'
+import { useNavigate } from 'react-router-dom'
 
 const donationSchema = z.object({
-  file: z.instanceof(File),
-  amount: z.number().gt(0),
+  file: z
+    .instanceof(File, { message: 'Select a file to upload' })
+    .refine((file) => file.size < 1024 * 8, { message: 'File size should be less than 8Kb' }),
+  amount: z.number().gt(0, 'Amount must be greater than 0'),
   fundId: z.string(),
 })
 
 export type DonationModel = z.infer<typeof donationSchema>
 
-const submitHandler: React.FormEventHandler = (event) => {
-  event.preventDefault()
-
-  const formData = new FormData(event.target as HTMLFormElement)
-  const data = Object.fromEntries(formData)
-
-  console.log({ formData, data })
-}
-
-const Donation = () => {
+const Donation: React.FC = () => {
+  const navigate = useNavigate()
+  const fileRef = useRef<HTMLInputElement>(null)
   const { fundOptions, setFundId, fundId } = useFunds()
-  const amountInputId = useId()
+  const [registerDonate, { isLoading }] = uploadAPI.useRegisterDonateMutation()
+
   return (
     <section className="donation">
       <div className="donation__container container">
         <h1>Register Donation</h1>
-        <form onSubmit={submitHandler} className="donation__form">
-          <fieldset className="fieldset">
-            <label htmlFor={amountInputId}>US Dollar</label>
-            <input
-              className="amount"
-              type="number"
-              min={0}
-              name="amount"
-              id={amountInputId}
-              step={5}
-              placeholder="Amount"
-            />
-          </fieldset>
-          <SelectBox
-            className="stretched"
-            name="fundId"
-            placeholder="Funding"
-            options={fundOptions}
-            onChange={setFundId}
-          ></SelectBox>
-          {/* <Upload text='Upload Screenshot' name="file" /> */}
-          <input type="file" name="file" />
-          <Button type="submit" className="submit-btn stretched">
-            Submit
-          </Button>
-        </form>
+        <Formik
+          // enableReinitialize
+          initialValues={{ amount: '', file: null, fundId: '' }}
+          validationSchema={toFormikValidationSchema(donationSchema)}
+          onSubmit={async (values, { setFieldError }) => {
+            const dto: DonationModel = {
+              file: values.file!,
+              amount: Number(values.amount),
+              fundId: String(fundId),
+            }
+            try {
+              const response = await registerDonate(dto).unwrap()
+              switch (response.__typename) {
+                case 'DonateResultSuccess': {
+                  navigate('/success')
+                  break
+                }
+                case 'ValidationErrors': {
+                  response.errors.forEach((error) => setFieldError(error.key, error.message))
+                  break
+                }
+                case 'AuthError': {
+                  navigate('/auth/login')
+                  break
+                }
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }}
+        >
+          {({ setFieldValue }) => (
+            <Form className="donation__form">
+              <Field
+                type="number"
+                min={0}
+                name="amount"
+                step={5}
+                placeholder="Amount"
+                label="US Dollar"
+                as={Input}
+              />
+              <SelectBox
+                className="stretched"
+                name="fundId"
+                placeholder="Funding"
+                options={fundOptions}
+                onChange={setFundId}
+              ></SelectBox>
+              <Upload
+                text="Upload Screenshot"
+                name="file"
+                accept="image/png, image/jpeg, image/jpg"
+                ref={fileRef}
+                onChange={(e) => setFieldValue('file', e.target.files![0])}
+              />
+              <Button type="submit" className="submit-btn" disabled={isLoading}>
+                Submit
+              </Button>
+            </Form>
+          )}
+        </Formik>
       </div>
     </section>
   )

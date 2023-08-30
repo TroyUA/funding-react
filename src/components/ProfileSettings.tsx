@@ -11,6 +11,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import Input from './Input'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { uploadAPI } from '../store/upload/service'
+import Button from './Button'
 
 const updateProfileFormSchema = z
   .object({
@@ -94,18 +95,17 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
           confirmPassword: '',
         }}
         onSubmit={async (values, { setFieldError }) => {
-          const variables: UpdateProfileArgs = {
-            avatar: null, // The 'avatar' variable will be populated by the FormData
+          const dto: UpdateProfileArgs = {
+            avatar: fileRef.current?.files![0], // The 'avatar' variable will be populated by the FormData
             teamName: values.teamName,
             countryId: Number(countryId),
             cityId: Number(cityId),
             districtId: Number(districtId),
             password: values.password,
           }
-          const file = fileRef.current?.files![0]
 
           try {
-            const response = await updateProfile({ variables, file }).unwrap()
+            const response = await updateProfile(dto).unwrap()
             switch (response.__typename) {
               case 'Profile':
                 const { __typename, ...profile } = response
@@ -130,21 +130,13 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
         {({ errors, touched, values, setFieldValue }) => (
           <Form method="dialog" className="profile-settings__form">
             <h1>Profile settings</h1>
-            {/* <input
-              ref={fileRef}
-              type="file"
-              name="avatar"
-              // onChange={(e) => setFieldValue('avatar', e.target.files![0])}
-              accept="image/png, image/jpeg, image/jpg"
-            /> */}
             <Upload
               text="Upload icon"
               name="avatar"
               ref={fileRef}
               accept="image/png, image/jpeg, image/jpg"
             />
-            <ErrorMessage name="avatar" />
-            <Field name="teamName" placeholder="Team name" errorMsg={errors.teamName} as={Input} />
+            <Field name="teamName" placeholder="Team name" as={Input} />
             <SelectBox
               name="countryId"
               placeholder="Country"
@@ -166,29 +158,20 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
               onChange={setDistrictId}
               selectedValue={profile?.district?.id}
             />
+            <Field type="password" placeholder="New password" name="password" as={Input} />
             <Field
-              // className="profile-settings__password input"
-              type="password"
-              placeholder="New password"
-              name="password"
-              errorMsg={touched.password && errors.password}
-              as={Input}
-            />
-            <Field
-              // className="profile-settings__confirm-password input"
               type="password"
               placeholder="Confirm new password"
               name="confirmPassword"
-              errorMsg={touched.confirmPassword && errors.confirmPassword}
               as={Input}
             />
-            <button
+            <Button
               type="submit"
               disabled={isLoading}
               className="profile-settings__submit-btn btn_black"
             >
               <div className="btn__text">save</div>
-            </button>
+            </Button>
           </Form>
         )}
       </Formik>

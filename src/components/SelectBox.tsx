@@ -1,5 +1,6 @@
 import React, { MouseEvent, useEffect, useMemo, useState } from 'react'
 import { classNames } from '../utils'
+import { ErrorMessage, useField } from 'formik'
 
 export type OptionValue = string | number
 interface ISelectBoxProps {
@@ -49,12 +50,15 @@ const SelectBox: React.FC<ISelectBoxProps> = (props) => {
     setShowList(false)
   }
 
+  const [field, meta, helpers] = useField(name)
+
   useEffect(() => {
     if (props.selectedValue) setSelectedValue(props.selectedValue)
   }, [props.selectedValue])
 
   useEffect(() => {
     onChange(selectedValue)
+    helpers?.setValue(selectedValue)
   }, [selectedValue])
 
   return (
@@ -64,13 +68,7 @@ const SelectBox: React.FC<ISelectBoxProps> = (props) => {
       onClick={() => toggleShow()}
       onBlur={() => setShowList(false)}
     >
-      {/* input for form submiting */}
-      <input
-        type="hidden"
-        value={selectedOption?.value}
-        name={name}
-        // onChange={(e) => setSelectedValue(e.target.value)}
-      />
+      <input type="hidden" value={selectedOption?.value} name={name} />
       <div className={classNames('select-box__value', !!selectedOption.hidden && 'hidden')}>
         {selectedOption.label}
       </div>
@@ -91,6 +89,7 @@ const SelectBox: React.FC<ISelectBoxProps> = (props) => {
           ))}
         </ul>
       )}
+      <ErrorMessage name={name} className="error-msg" component="span" />
     </div>
   )
 }

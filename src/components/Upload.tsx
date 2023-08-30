@@ -1,4 +1,4 @@
-import { Field, useField } from 'formik'
+import { ErrorMessage, Field, useField } from 'formik'
 import React, { DetailedHTMLProps, InputHTMLAttributes, RefAttributes, useId } from 'react'
 
 interface IUploadProps {
@@ -9,7 +9,7 @@ const Upload: React.FC<
   DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> &
     IUploadProps &
     RefAttributes<HTMLInputElement>
-> = React.forwardRef(({ text, name = 'upload', ...rest }, ref) => {
+> = React.forwardRef(({ text, name, ...rest }, ref) => {
   const uploadId = useId()
   // const [field, , helpers] = useField(name)
   return (
@@ -26,9 +26,9 @@ const Upload: React.FC<
         // onChange={(e) => {
         //   if (e.currentTarget.files) helpers.setValue(e.currentTarget.files[0])
         // }}
-        // accept="image/png, image/jpeg, image/jpg"
         {...rest}
       />
+      <ErrorMessage name={name} className="error-msg" component="span" />
     </div>
   )
 })

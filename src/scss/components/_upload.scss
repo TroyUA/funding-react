@@ -1,6 +1,7 @@
 @use '../abstracts/variables' as *;
 
 .upload-box {
+  position: relative;
   text-align: center;
   padding: 25px 50px;
   background: $gray95;

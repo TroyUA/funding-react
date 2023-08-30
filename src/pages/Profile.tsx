@@ -7,21 +7,23 @@ import Button from '../components/Button'
 interface IProfileProps {}
 
 const Profile: React.FC<IProfileProps> = () => {
-  const { data: user } = authAPI.useGetMyStatisticQuery()
+  const { data } = authAPI.useGetMyStatisticQuery()
   const [isOpened, setIsOpened] = useState(false)
 
-  return (
+  return data?.__typename === 'Leaderboard' ? (
     <div className="profile-page">
       <section className="profile-page__top">
-        <img className="profile-page__icon" src={user?.avatar} alt="user avatar" />
-        <h1>{user?.teamName}</h1>
+        <img className="profile-page__icon" src={data?.avatar} alt="user avatar" />
+        <h1>{data?.teamName}</h1>
         <Button className="profile-page__edit-btn btn_black" onClick={() => setIsOpened(true)}>
           Edit Profile
         </Button>
       </section>
-      <section className="profile-page__bottom">{user && <User {...user} />}</section>
+      <section className="profile-page__bottom">{data && <User {...data} />}</section>
       <ProfileSettings isOpened={isOpened} onClose={() => setIsOpened(false)} />
     </div>
+  ) : (
+    <h1>Loading...</h1>
   )
 }
 

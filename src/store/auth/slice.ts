@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LocalStorageApi } from '../../api/localStorage'
-import { IProfile } from '../users/types'
-import { IAuth, IAuthSuccess } from './types'
+import { Profile } from '../users/types'
+import { IAuth, AuthSuccess } from './types'
 
 const initialState: IAuth = {
   token: LocalStorageApi.getAccessToken(),
@@ -12,7 +12,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCredentials(state, action: PayloadAction<IAuthSuccess>) {
+    setCredentials(state, action: PayloadAction<AuthSuccess>) {
       state.token = action.payload.token
       state.profile = action.payload.profile
     },
@@ -21,7 +21,7 @@ export const authSlice = createSlice({
       state.profile = null
       state.token = null
     },
-    setProfile(state, action: PayloadAction<IProfile>) {
+    setProfile(state, action: PayloadAction<Profile>) {
       state.profile = action.payload
     },
   },

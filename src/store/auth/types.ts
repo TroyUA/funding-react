@@ -1,30 +1,30 @@
 import { AuthModel } from '../../pages/Login'
-import { IProfile } from '../users/types'
+import { Profile } from '../users/types'
 
 export interface IAuth {
   token: string | null
-  profile: IProfile | null
+  profile: Profile | null
 }
 
-export interface IAuthError {
+export interface AuthError {
   message: string
   __typename: 'AuthError'
 }
 
-export interface IAuthResponse {
+export interface AuthResponse {
   data: {
-    login: IAuthSuccess | ValidationErrors
+    login: AuthSuccess | ValidationErrors
   }
 }
 
-export interface IAuthRequest {
+export interface AuthRequest {
   query: string
   variables: AuthModel
 }
 
-export interface IProfileResponse {
+export interface GetProfileResponse {
   data: {
-    profile: IGetProfileSuccess | IAuthError
+    profile: GetProfileSuccess | AuthError
   }
 }
 
@@ -38,17 +38,17 @@ export interface ValidationErrors {
   __typename: 'ValidationErrors'
 }
 
-export interface IAuthSuccess extends IAuth {
+export interface AuthSuccess extends IAuth {
   __typename: 'Auth'
 }
 
-export interface IGetProfileSuccess extends IProfile {
+export interface GetProfileSuccess extends Profile {
   __typename: 'Profile'
 }
 
 export interface UpdateProfileArgs {
   teamName?: string
-  avatar?: File | null
+  avatar?: File
   countryId?: number
   districtId?: number
   cityId?: number
@@ -56,17 +56,11 @@ export interface UpdateProfileArgs {
 }
 
 export interface UpdateProfileResponse {
-  data: { updateProfile: IGetProfileSuccess | ValidationErrors | IAuthError }
+  data: { updateProfile: GetProfileSuccess | ValidationErrors | AuthError }
 }
 
 export interface SignUpResponse {
-  data: { signUp: IAuthSuccess | ValidationErrors }
-}
-
-export interface RegisterDonateArgs {
-  file: File
-  amount: number
-  fundId: string
+  data: { signUp: AuthSuccess | ValidationErrors }
 }
 
 export interface DonateResultSuccess {
@@ -75,5 +69,5 @@ export interface DonateResultSuccess {
 }
 
 export interface RegisterDonateResponse {
-  data: { registerDonate: DonateResultSuccess | IAuthError | ValidationErrors }
+  data: { registerDonate: DonateResultSuccess | AuthError | ValidationErrors }
 }

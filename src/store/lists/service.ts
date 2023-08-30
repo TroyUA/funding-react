@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { ICity } from '../../models/ICity'
-import { ICountry } from '../../models/ICountry'
-import { IDistrict } from '../../models/IDistrict'
+import { City } from './ICity'
+import { Country } from '../../models/ICountry'
+import { District } from '../../models/IDistrict'
 import { IFund } from '../../models/IFund'
 import { baseQuery } from '../baseQuery'
 import { providesList } from './helper'
@@ -20,7 +20,7 @@ export const listsAPI = createApi({
   baseQuery,
   tagTypes: ['Cities', 'Districts', 'Countries', 'Funds'],
   endpoints: (build) => ({
-    getCities: build.query<ICity[], GetCitiesArgs>({
+    getCities: build.query<City[], GetCitiesArgs>({
       query: ({ countryId, districtId }) => ({
         url: '',
         method: 'POST',
@@ -41,7 +41,7 @@ export const listsAPI = createApi({
       transformResponse: (response: GetCitiesResponse) => response.data.cities,
       providesTags: (result) => providesList(result, 'Cities'),
     }),
-    getCountries: build.query<ICountry[], void>({
+    getCountries: build.query<Country[], void>({
       query: () => ({
         url: '',
         method: 'POST',
@@ -60,7 +60,7 @@ export const listsAPI = createApi({
       transformResponse: (response: GetCountriesResponse) => response.data.countries,
       providesTags: (result) => providesList(result, 'Countries'),
     }),
-    getDistricts: build.query<IDistrict[], GetDistrictsArgs>({
+    getDistricts: build.query<District[], GetDistrictsArgs>({
       query: ({ countryId }) => ({
         url: '',
         method: 'POST',

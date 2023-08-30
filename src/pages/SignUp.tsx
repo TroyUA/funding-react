@@ -54,27 +54,14 @@ const SignUp = () => {
             }
           }}
         >
-          {({ errors, isSubmitting, isValid, touched }) => (
+          {({ isSubmitting }) => (
             <Form className="sign-up__form">
-              <Field
-                type="text"
-                name="teamName"
-                placeholder="Team Name"
-                errorMsg={touched.teamName && errors.teamName}
-                as={Input}
-              />
-              <Field
-                type="password"
-                name="password"
-                placeholder="Password"
-                errorMsg={touched.password && errors.password}
-                as={Input}
-              />
+              <Field type="text" name="teamName" placeholder="Team Name" as={Input} />
+              <Field type="password" name="password" placeholder="Password" as={Input} />
               <Field
                 type="password"
                 name="confirmPassword"
                 placeholder="Confirm Password"
-                errorMsg={touched.confirmPassword && errors.confirmPassword}
                 as={Input}
               />
               <Button type="submit" disabled={isSubmitting} className="submit-btn btn_black">
