@@ -148,9 +148,9 @@
 
       @include respond-to('small') {
         --footer-height: 0px;
-        .footer {
-          height: var(--footer-height);
-        }
+        // .footer {
+        //   height: var(--footer-height);
+        // }
       }
     }
   }
@@ -161,8 +161,6 @@
     align-items: flex-start;
     gap: 25px;
     isolation: isolate;
-
-    /* Inside auto layout */
   }
 
   &__burger-contact-us {

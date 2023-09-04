@@ -5,16 +5,13 @@ import Button from './Button'
 import { useAppDispatch } from '../hooks/redux'
 import { logout } from '../store/auth/slice'
 import { classNames } from '../utils'
-import { LocalStorageApi } from '../api/localStorage'
+import { setIsSidebarOpen, toggleOpen } from '../store/layout/slice'
+import Sidebar from './Sidebar'
 
 const Header: React.FC = () => {
   const { token } = useAppSelector((state) => state.auth)
+  const { isOpen } = useAppSelector((state) => state.layout.sidebar)
   const dispatch = useAppDispatch()
-  const [isSidebarOpened, setIsSidebarOpened] = useState(false)
-
-  const toggleSidebar = () => {
-    setIsSidebarOpened((prev) => !prev)
-  }
 
   return (
     <header className="header">
@@ -22,7 +19,6 @@ const Header: React.FC = () => {
         <Link to="/" className={'header__logo'}>
           Ukraine Angels
         </Link>
-        {/* <label className="header__logo">Ukraine angels</label> */}
         <Button to="/donation" className="header__register-donation-btn btn_white">
           register donation
         </Button>
@@ -44,35 +40,16 @@ const Header: React.FC = () => {
             ></Button>
           )}
 
-          <button className={classNames('header__burger-btn btn')} onClick={toggleSidebar}>
-            <div className={classNames('header__burger', isSidebarOpened && 'open')}></div>
+          <button
+            className={classNames('header__burger-btn btn')}
+            onClick={() => dispatch(setIsSidebarOpen(!isOpen))}
+          >
+            <div className={classNames('header__burger', isOpen && 'open')}></div>
           </button>
         </nav>
       </div>
 
-      <div className={classNames('header__burger-sidebar', isSidebarOpened && 'open')}>
-        <div className="header__burger-nav-links">
-          <Button
-            to="/funds"
-            className="btn_with-image_white"
-            imgSrc="/src/img/arrow.svg"
-            alt="arrow"
-          >
-            Charity Funds
-          </Button>
-          <Button
-            to="/leaderboard"
-            className="btn_with-image_white"
-            imgSrc="/src/img/arrow.svg"
-            alt="arrow"
-          >
-            Donations Leaderboards
-          </Button>
-        </div>
-        <a href="#" className="header__burger-contact-us">
-          supportua@gmail.com
-        </a>
-      </div>
+      <Sidebar />
     </header>
   )
 }

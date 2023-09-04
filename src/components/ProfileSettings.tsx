@@ -3,7 +3,6 @@ import Upload from './Upload'
 import { useFilters } from '../hooks/useFilters'
 import SelectBox from './SelectBox'
 import { authAPI } from '../store/auth/service'
-import type { UpdateProfileArgs } from '../store/auth/types'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setProfile } from '../store/auth/slice'
 import { z } from 'zod'
@@ -15,7 +14,15 @@ import Button from './Button'
 
 const updateProfileFormSchema = z
   .object({
-    avatar: z.string().optional(), //instanceof(File).optional(),
+    avatar: z
+      .instanceof(File)
+      .optional()
+      .refine(
+        (file) => {
+          if (file) return file.size < 1024 * 8
+        },
+        { message: 'File size should be less than 8Kb ' }
+      ),
     cityId: z.number().optional(),
     countryId: z.number().optional(),
     districtId: z.number().optional(),
@@ -33,7 +40,7 @@ const updateProfileFormSchema = z
     }
   })
 
-// type UpdateProfileFormModel = z.infer<typeof updateProfileFormSchema>
+export type UpdateProfileModel = z.infer<typeof updateProfileFormSchema>
 interface ProfileSettingsProps {
   isOpened: boolean
   onClose: () => void
@@ -95,8 +102,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
           confirmPassword: '',
         }}
         onSubmit={async (values, { setFieldError }) => {
-          const dto: UpdateProfileArgs = {
-            avatar: fileRef.current?.files![0], // The 'avatar' variable will be populated by the FormData
+          const dto: Omit<UpdateProfileModel, 'confirmPassword'> = {
+            avatar: fileRef.current?.files![0],
             teamName: values.teamName,
             countryId: Number(countryId),
             cityId: Number(cityId),
@@ -120,14 +127,14 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
                 console.log(response.message)
                 break
               default:
-                throw new Error('Unexpected __typename in response')
+                throw new Error(`Unexpected response`)
             }
           } catch (error) {
             console.log(error)
           }
         }}
       >
-        {({ errors, touched, values, setFieldValue }) => (
+        {({ setFieldValue }) => (
           <Form method="dialog" className="profile-settings__form">
             <h1>Profile settings</h1>
             <Upload
@@ -135,6 +142,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
               name="avatar"
               ref={fileRef}
               accept="image/png, image/jpeg, image/jpg"
+              onChange={(e) => setFieldValue('avatar', e.target.files![0])}
             />
             <Field name="teamName" placeholder="Team name" as={Input} />
             <SelectBox

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from './Button'
 import Datepicker from './Datepicker'
 import SelectBox from './SelectBox'
@@ -6,6 +6,7 @@ import Users from './Users'
 import { classNames } from '../utils'
 import { useFilters } from '../hooks/useFilters'
 import { Form, Formik } from 'formik'
+import { usersAPI } from '../store/users/service'
 
 interface ILeaderboardProps {
   limit: number
@@ -31,13 +32,38 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
     categoryOptions,
   } = useFilters()
 
+  const [getLeaderboard, { data: leaderboard, isLoading, error }] =
+    usersAPI.useLazyGetLeaderboardQuery()
+
+  useEffect(() => {
+    getLeaderboard({
+      limit,
+      // page
+      countryId: Number(countryId),
+      districtId: Number(districtId),
+      cityId: Number(cityId),
+    })
+  }, [limit])
+
   return (
     <>
       {isOnLeaderboardPage && (
         <section className="filters section">
           <h1>donation leaderboard</h1>
-          <Formik initialValues={{}} onSubmit={() => {}}>
-            {({}) => (
+          <Formik
+            initialValues={{ countryId: '', cityId: '', districtId: '', categoryId: '', date: '' }}
+            onSubmit={({ cityId, countryId, districtId }) => {
+              getLeaderboard({
+                limit,
+                // page
+                countryId: Number(countryId),
+                districtId: Number(districtId),
+                cityId: Number(cityId),
+              })
+              setShowFilters(false)
+            }}
+          >
+            {({ resetForm }) => (
               <Form className={classNames('filters__form', showFilters && 'show')}>
                 <div className="filters__inputs">
                   <SelectBox
@@ -64,10 +90,17 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
                     onChange={setCategoryId}
                     options={categoryOptions}
                   ></SelectBox>
-                  <Datepicker></Datepicker>
+                  <Datepicker name="date"></Datepicker>
                 </div>
                 <div className="filters__buttons">
-                  <Button type="reset" className="filters__reset-btn btn_red">
+                  <Button
+                    type="button"
+                    className="filters__reset-btn btn_red"
+                    onClick={() => {
+                      resetForm()
+                      console.log('inside reset')
+                    }}
+                  >
                     Reset
                   </Button>
                   <Button type="submit" className="filters__apply-btn btn_black">
@@ -87,7 +120,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
       )}
       <section className="leaderboard section">
         {!isOnLeaderboardPage && <h1>donation leaderboard</h1>}
-        <Users limit={limit} />
+        <Users leaderboard={leaderboard} isLoading={isLoading} error={error} />
         {isOnLeaderboardPage ? (
           <Button
             className="see-all-btn btn_with-image"

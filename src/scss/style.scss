@@ -294,11 +294,6 @@ body.lock {
   /* Inside auto layout */
   color: #ffffff;
 
-  // flex: none;
-  // order: 0;
-  // align-self: stretch;
-  // flex-grow: 1;
-
   h1 {
     font-family: 'Play';
     font-style: normal;
@@ -320,6 +315,7 @@ body.lock {
 
   &__home-btn {
     padding: 16px 24px;
+    border: 1px solid white;
   }
 }
 

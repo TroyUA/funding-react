@@ -1,10 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from './Button'
+import { useAppSelector } from '../hooks/redux'
+import { classNames } from '../utils'
 
 const Footer: React.FC = () => {
+  const { token } = useAppSelector((state) => state.auth)
+  const { isOpen: isSidebarOpen } = useAppSelector((state) => state.layout.sidebar)
   return (
-    <footer className="footer">
+    <footer className={classNames('footer', isSidebarOpen && 'hide')}>
       <div className="wrapper">
         <nav className="footer__nav">
           <ul className="footer__nav-links">
@@ -18,11 +22,13 @@ const Footer: React.FC = () => {
                 Leadboard
               </Link>
             </li>
-            <li>
-              <Link to={'/login'} className="footer__nav-link">
-                Log In
-              </Link>
-            </li>
+            {!token && (
+              <li>
+                <Link to={'/auth/login'} className="footer__nav-link">
+                  Log In
+                </Link>
+              </li>
+            )}
             <li>
               <Link to={'/donation'} className="footer__nav-link">
                 Register donation

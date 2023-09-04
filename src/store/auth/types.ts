@@ -46,15 +46,6 @@ export interface GetProfileSuccess extends Profile {
   __typename: 'Profile'
 }
 
-export interface UpdateProfileArgs {
-  teamName?: string
-  avatar?: File
-  countryId?: number
-  districtId?: number
-  cityId?: number
-  password?: string
-}
-
 export interface UpdateProfileResponse {
   data: { updateProfile: GetProfileSuccess | ValidationErrors | AuthError }
 }

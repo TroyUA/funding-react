@@ -7,7 +7,7 @@ const NotFound = () => {
       <label className="logo">Ukraine angels</label>
       <h1>404</h1>
       <p>Page not found</p>
-      <Button to="/" className="not-found__home-btn btn_black btn">
+      <Button to="/" className="not-found__home-btn btn_black">
         HOME
       </Button>
     </div>

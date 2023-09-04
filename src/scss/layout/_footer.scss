@@ -7,7 +7,7 @@
   background-color: #000000;
   width: 100vw;
   height: var(--footer-height);
-  // @include transition-ease;
+  @include transition-ease(height);
 
   .wrapper {
     max-width: 1440px;

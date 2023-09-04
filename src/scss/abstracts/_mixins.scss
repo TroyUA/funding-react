@@ -12,8 +12,8 @@
   flex-direction: $direction;
 }
 
-@mixin transition-ease {
-  transition: all 0.3s ease-in-out;
+@mixin transition-ease($property: all) {
+  transition: $property 0.3s ease-in-out;
 }
 
 @mixin hover {

@@ -48,7 +48,7 @@
   &_black {
     @extend .btn;
     background: black;
-    border: 1px solid white;
+    border: 1px solid black;
     &:hover,
     &:focus {
       background: $gray25;
