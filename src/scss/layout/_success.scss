@@ -1,0 +1,80 @@
+@use '../abstracts/' as *;
+
+.success {
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px;
+    gap: 25px;
+
+    /* White */
+
+    background: #ffffff;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 1;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+  .check {
+    position: relative;
+    width: 50px;
+    height: 50px;
+
+    &::before {
+      content: '';
+      height: 20px;
+      width: 30px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+
+      border-left: 2.5px solid #000000;
+      border-bottom: 2.5px solid #000000;
+    }
+  }
+
+  .return-home-btn {
+    padding: 20px 30px;
+  }
+
+  .donation-link {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+
+    /* Black */
+
+    color: #000000;
+  }
+
+  &__message {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+
+    /* Black */
+
+    color: #000000;
+  }
+
+  @include respond-to('small') {
+    padding: 100px 200px;
+  }
+}
