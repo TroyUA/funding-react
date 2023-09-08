@@ -9,6 +9,7 @@ import { Field, Form, Formik } from 'formik'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { uploadAPI } from '../store/upload/service'
 import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '../routes'
 
 const donationSchema = z.object({
   file: z
@@ -35,16 +36,16 @@ const Donation: React.FC = () => {
           initialValues={{ amount: '', file: null, fundId: '' }}
           validationSchema={toFormikValidationSchema(donationSchema)}
           onSubmit={async (values, { setFieldError }) => {
-            const dto: DonationModel = {
+            const donation: DonationModel = {
               file: values.file!,
               amount: Number(values.amount),
               fundId: String(fundId),
             }
             try {
-              const response = await registerDonate(dto).unwrap()
+              const response = await registerDonate(donation).unwrap()
               switch (response.__typename) {
                 case 'DonateResultSuccess': {
-                  navigate('/success')
+                  navigate(ROUTES.SUCCESS)
                   break
                 }
                 case 'ValidationErrors': {
@@ -52,7 +53,7 @@ const Donation: React.FC = () => {
                   break
                 }
                 case 'AuthError': {
-                  navigate('/auth/login')
+                  navigate(ROUTES.LOGIN)
                   break
                 }
               }

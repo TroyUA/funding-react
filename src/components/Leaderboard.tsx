@@ -7,6 +7,7 @@ import { classNames } from '../utils'
 import { useFilters } from '../hooks/useFilters'
 import { Form, Formik } from 'formik'
 import { usersAPI } from '../store/users/service'
+import { ROUTES } from '../routes'
 
 interface ILeaderboardProps {
   limit: number
@@ -135,7 +136,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
             className="see-all-btn btn_with-image"
             alt={'arrow'}
             imgSrc={'/src/img/arrow.svg'}
-            to={'leaderboard'}
+            to={ROUTES.LEADERBOARD}
           >
             See All
           </Button>

@@ -10,6 +10,7 @@ import Input from '../components/Input'
 import { useAppDispatch } from '../hooks/redux'
 import { setCredentials } from '../store/auth/slice'
 import { LocalStorageApi } from '../api/localStorage'
+import { ROUTES } from '../routes'
 
 const signupSchema = z
   .object({
@@ -43,14 +44,22 @@ const SignUp = () => {
           validateOnChange={false}
           validationSchema={toFormikValidationSchema(signupSchema)}
           onSubmit={async (values, { setFieldError }) => {
-            const response = await signUp(values).unwrap()
-            if (response.__typename === 'Auth') {
-              dispatch(setCredentials(response))
-              LocalStorageApi.setAccessToken(response.token!)
-              navigate('/')
-            }
-            if (response.__typename === 'ValidationErrors') {
-              response.errors.forEach((error) => setFieldError(error.key, error.message))
+            try {
+              const response = await signUp(values).unwrap()
+              switch (response.__typename) {
+                case 'Auth':
+                  dispatch(setCredentials(response))
+                  LocalStorageApi.setAccessToken(response.token!)
+                  navigate(ROUTES.HOME)
+                  break
+                case 'ValidationErrors':
+                  response.errors.forEach((error) => setFieldError(error.key, error.message))
+                  break
+                default:
+                  throw new Error('Unexpected response')
+              }
+            } catch (err) {
+              console.log(err)
             }
           }}
         >
@@ -71,7 +80,7 @@ const SignUp = () => {
           )}
         </Formik>
         <Button
-          to={'../login'}
+          to={ROUTES.LOGIN}
           className="move-to-btn btn_with-image"
           imgSrc={'/src/img/arrow.svg'}
         >

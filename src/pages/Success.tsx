@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
+import { ROUTES } from '../routes'
 
 const Success = () => {
   return (
@@ -12,10 +13,10 @@ const Success = () => {
           You screenshot has been sent. Once it will be approved, it will be added to your general
           balance
         </p>
-        <Button to="/" className="return-home-btn btn_black">
+        <Button to={ROUTES.HOME} className="return-home-btn btn_black">
           return home
         </Button>
-        <Link to={'/donation'} className="donation-link">
+        <Link to={ROUTES.DONATION} className="donation-link">
           Register another donation
         </Link>
       </div>

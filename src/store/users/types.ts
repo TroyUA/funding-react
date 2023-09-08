@@ -1,5 +1,6 @@
 import type { City, Country, District } from '../lists/types'
 import type { AuthError } from '../auth/types'
+import type { ResponseTypes } from '../helpers'
 
 export interface IUsers {
   users: IUser[]
@@ -53,5 +54,5 @@ export interface GetMyStatisticResponse {
 }
 
 export interface GetLeaderboardSuccess extends IUser {
-  __typename: 'Leaderboard'
+  __typename: ResponseTypes['LEADERBOARD']
 }

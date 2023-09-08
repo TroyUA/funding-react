@@ -1,13 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-// interface IButtonProps {
-//   text?: string
-//   src?: string
-//   className: string
-//   onClick?: () => void
-//   href?: string
-// }
+import type { Route } from '../routes'
 
 export interface IButtonProps
   extends React.DetailedHTMLProps<
@@ -17,14 +10,13 @@ export interface IButtonProps
   imgSrc?: string
   className?: string
   onClick?: () => void
-  to?: string
+  to?: Route
   alt?: string
 }
 
 const Button: React.FC<IButtonProps> = (props) => {
   const { children, to, imgSrc, className, onClick, alt, ...rest } = props
 
-  // return <button {...rest}>{children}</button>
   const componentInnerStructure = (
     <>
       {children && <div className="btn__text">{children}</div>}

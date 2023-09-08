@@ -1,5 +1,6 @@
 import React from 'react'
 import Button from './Button'
+import { ROUTES } from '../routes'
 
 const HowItWorks = () => {
   return (
@@ -27,7 +28,7 @@ const HowItWorks = () => {
           <h3 className="how-it-works__step-description">Compete with others</h3>
         </article>
       </div>
-      <Button to="/donation" className="how-it-works__register-donation-btn btn_black">
+      <Button to={ROUTES.DONATION} className="how-it-works__register-donation-btn btn_black">
         <span className="btn__text">register donation</span>
       </Button>
     </section>

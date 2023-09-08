@@ -1,14 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProfileSettings from '../components/ProfileSettings'
 import User from '../components/User'
 import { authAPI } from '../store/auth/service'
 import Button from '../components/Button'
+import { useNavigate } from 'react-router-dom'
+import { ROUTES } from '../routes'
 
 interface IProfileProps {}
 
 const Profile: React.FC<IProfileProps> = () => {
   const { data } = authAPI.useGetMyStatisticQuery()
   const [isOpened, setIsOpened] = useState(false)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (data?.__typename === 'AuthError') navigate(ROUTES.LOGIN)
+  }, [data])
 
   return data?.__typename === 'Leaderboard' ? (
     <div className="profile-page">

@@ -1,4 +1,5 @@
 import { AuthModel } from '../../pages/Login'
+import { ResponseTypes } from '../helpers'
 import { Profile } from '../users/types'
 
 export interface IAuth {
@@ -8,7 +9,7 @@ export interface IAuth {
 
 export interface AuthError {
   message: string
-  __typename: 'AuthError'
+  __typename: ResponseTypes['AUTH_ERROR']
 }
 
 export interface AuthResponse {
@@ -35,15 +36,15 @@ export interface ValidationError {
 
 export interface ValidationErrors {
   errors: ValidationError[]
-  __typename: 'ValidationErrors'
+  __typename: ResponseTypes['VALIDATION_ERRORS']
 }
 
 export interface AuthSuccess extends IAuth {
-  __typename: 'Auth'
+  __typename: ResponseTypes['AUTH']
 }
 
 export interface GetProfileSuccess extends Profile {
-  __typename: 'Profile'
+  __typename: ResponseTypes['PROFILE']
 }
 
 export interface UpdateProfileResponse {
@@ -56,7 +57,7 @@ export interface SignUpResponse {
 
 export interface DonateResultSuccess {
   message: string
-  __typename: 'DonateResultSuccess'
+  __typename: ResponseTypes['DONATE_SUCCESS']
 }
 
 export interface RegisterDonateResponse {

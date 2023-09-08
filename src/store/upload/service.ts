@@ -22,7 +22,7 @@ export const uploadAPI = createApi({
       query: (updateProfileArgs) => {
         const { avatar, ...variables } = updateProfileArgs
         const query =
-          'mutation UpdateAvatar($avatar: Upload $teamName: String $countryId: Int $districtId: Int $cityId: Int $password: String) { updateProfile(input:{avatar:$avatar teamName:$teamName countryId:$countryId districtId:$districtId cityId:$cityId password:$password}) { ...on Profile { teamName avatar country{ name iso2 emoji id} district{name id} city{ name id } __typename } ...on ValidationErrors { errors { message key } __typename} ...on AuthError{ message __typename }}}'
+          'mutation UpdateAvatar($avatar: Upload $teamName: String $countryId: Int $districtId: Int $cityId: Int $password: String) { updateProfile(input:{avatar:$avatar teamName:$teamName countryId:$countryId districtId:$districtId cityId:$cityId password:$password}) { ...on Profile { teamName avatar country{ name iso2 emoji id} district{name id} city{ name id } } ...on ValidationErrors { errors { message key }} ...on AuthError{ message } __typename}}'
 
         const formData = new FormData()
         if (avatar) {

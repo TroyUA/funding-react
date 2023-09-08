@@ -4,6 +4,7 @@ import Button from './Button'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setIsSidebarOpen } from '../store/layout/slice'
 import useScrollLock from '../hooks/useScrollLock'
+import { ROUTES } from '../routes'
 
 const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -48,7 +49,7 @@ const Sidebar: React.FC = () => {
     >
       <div className="header__burger-nav-links">
         <Button
-          to="/funds"
+          to={ROUTES.FUNDS}
           className="btn_with-image_white"
           imgSrc="/src/img/arrow.svg"
           alt="arrow"
@@ -56,7 +57,7 @@ const Sidebar: React.FC = () => {
           Charity Funds
         </Button>
         <Button
-          to="/leaderboard"
+          to={ROUTES.LEADERBOARD}
           className="btn_with-image_white"
           imgSrc="/src/img/arrow.svg"
           alt="arrow"

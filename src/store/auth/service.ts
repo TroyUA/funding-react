@@ -79,24 +79,7 @@ __typename
         url: '',
         method: 'POST',
         body: {
-          query: `query getProfile{
-  profile{
-    ...on Profile{
-      teamName
-      avatar
-      country{ name iso2 emoji id}
-      district{ name id}
-      city{ name id}
-      
-      __typename
-    }
-    
-    ...on AuthError{
-			message
-      __typename
-    }
-  }
-}`,
+          query: `query getProfile{ profile{ ...on Profile{ teamName avatar country{ name iso2 emoji id} district{ name id} city{ name id}} ...on AuthError{ message } __typename  }}`,
         },
       }),
       providesTags: ['Profile'],

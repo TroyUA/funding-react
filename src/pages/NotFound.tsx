@@ -1,5 +1,6 @@
 import React from 'react'
 import Button from '../components/Button'
+import { ROUTES } from '../routes'
 
 const NotFound = () => {
   return (
@@ -7,7 +8,7 @@ const NotFound = () => {
       <label className="logo">Ukraine angels</label>
       <h1>404</h1>
       <p>Page not found</p>
-      <Button to="/" className="not-found__home-btn btn_black">
+      <Button to={ROUTES.HOME} className="not-found__home-btn btn_black">
         HOME
       </Button>
     </div>

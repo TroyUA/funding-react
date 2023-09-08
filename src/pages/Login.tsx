@@ -8,6 +8,7 @@ import { setCredentials } from '../store/auth/slice'
 import Input from '../components/Input'
 import { Field, Form, Formik } from 'formik'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
+import { ROUTES } from '../routes'
 
 const loginSchema = z.object({
   teamName: z.string().min(3, 'TeamName should be at least 3 characters long'),
@@ -30,15 +31,23 @@ const Login = () => {
           initialValues={initialValues}
           validationSchema={toFormikValidationSchema(loginSchema)}
           validateOnChange={false}
-          onSubmit={async (values, { setSubmitting, setFieldError }) => {
-            const response = await login(values).unwrap()
-            if (response.__typename === 'Auth') {
-              dispatch(setCredentials(response))
-              LocalStorageApi.setAccessToken(response.token!)
-              navigate('/')
-            }
-            if (response.__typename === 'ValidationErrors') {
-              response.errors.forEach((error) => setFieldError(error.key, error.message))
+          onSubmit={async (values, { setFieldError }) => {
+            try {
+              const response = await login(values).unwrap()
+              switch (response.__typename) {
+                case 'Auth':
+                  dispatch(setCredentials(response))
+                  LocalStorageApi.setAccessToken(response.token!)
+                  navigate(ROUTES.HOME)
+                  break
+                case 'ValidationErrors':
+                  response.errors.forEach((error) => setFieldError(error.key, error.message))
+                  break
+                default:
+                  throw new Error('Unexpected response')
+              }
+            } catch (err) {
+              console.log(err)
             }
           }}
         >
@@ -53,7 +62,7 @@ const Login = () => {
           )}
         </Formik>
         <Button
-          to={'../sign-up'}
+          to={ROUTES.SIGN_UP}
           className="move-to-btn btn_with-image"
           imgSrc={'/src/img/arrow.svg'}
         >

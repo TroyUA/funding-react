@@ -7,6 +7,7 @@ import { logout } from '../store/auth/slice'
 import { classNames } from '../utils'
 import { setIsSidebarOpen, toggleOpen } from '../store/layout/slice'
 import Sidebar from './Sidebar'
+import { ROUTES } from '../routes'
 
 const Header: React.FC = () => {
   const { token } = useAppSelector((state) => state.auth)
@@ -16,15 +17,15 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="wrapper">
-        <Link to="/" className={'header__logo'}>
+        <Link to={ROUTES.HOME} className={'header__logo'}>
           Ukraine Angels
         </Link>
-        <Button to="/donation" className="header__register-donation-btn btn_white">
+        <Button to={ROUTES.DONATION} className="header__register-donation-btn btn_white">
           register donation
         </Button>
         <nav className="header__menu">
           <Button
-            to="/profile"
+            to={ROUTES.PROFILE}
             className={'header__profile-btn btn'}
             imgSrc={'/src/img/user-icon-default.svg'}
             alt={'profile'}

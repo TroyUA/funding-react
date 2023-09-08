@@ -12,34 +12,26 @@ import SignUp from './pages/SignUp'
 import LeaderboardPage from './pages/LeaderboardPage'
 import PrivateRoutes from './components/PrivateRoutes'
 import { useGetProfileQuery } from './store/auth/service'
-import { useAppSelector } from './hooks/redux'
-// import { skipToken } from '@reduxjs/toolkit/dist/query'
+import { ROUTES } from './routes'
 
 const App: React.FC = () => {
-  // const { token } = useAppSelector((state) => state.auth)
   useGetProfileQuery()
 
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path={ROUTES.HOME} element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="success" element={<Success />} />
+        <Route path={ROUTES.SUCCESS} element={<Success />} />
         <Route element={<PrivateRoutes />}>
-          <Route path="leaderboard" element={<LeaderboardPage />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="donation" element={<Donation />} />
-          <Route path="funds" element={<FundsPage />} />
+          <Route path={ROUTES.LEADERBOARD} element={<LeaderboardPage />} />
+          <Route path={ROUTES.PROFILE} element={<Profile />} />
+          <Route path={ROUTES.DONATION} element={<Donation />} />
+          <Route path={ROUTES.FUNDS} element={<FundsPage />} />
         </Route>
-        <Route path="auth">
-          <Route path="login" element={<Login />} />
-          <Route path="sign-up" element={<SignUp />} />
-        </Route>
-
-        {/* Using path="*"" means "match anything", so this route
-                acts like a catch-all for URLs that we don't have explicit
-              routes for. */}
+        <Route path={ROUTES.LOGIN} element={<Login />} />
+        <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
       </Route>
-      <Route path="*" element={<NotFound />} />
+      <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
     </Routes>
   )
 }

@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    padding: 50px 25px;
+    padding: 25px;
     @include respond-to('small') {
       padding: 50px 100px;
     }
@@ -60,11 +60,10 @@
     }
   }
 
-  &:has(.success, .sign-up, .donation, .login) + .footer {
-    display: none;
-
-    @include respond-to('small') {
-      display: block;
-    }
-  }
+  // &:has(.success, .sign-up, .donation, .login) + .footer {
+  //   --footer-height: 0px;
+  //   @include respond-to('small') {
+  //     --footer-height: 64px;
+  //   }
+  // }
 }
