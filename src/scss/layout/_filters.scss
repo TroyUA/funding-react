@@ -2,6 +2,14 @@
 
 .filters {
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  gap: 25px;
+
+  @include respond-to('small') {
+    padding: 50px 100px;
+  }
 
   &__form {
     display: none;

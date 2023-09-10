@@ -49,7 +49,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
   return (
     <>
       {isOnLeaderboardPage && (
-        <section className="filters section">
+        <section className="filters">
           <h1>donation leaderboard</h1>
           <Formik
             initialValues={{ countryId: '', cityId: '', districtId: '', categoryId: '', date: '' }}
@@ -119,7 +119,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
           )}
         </section>
       )}
-      <section className="leaderboard section">
+      <section className="leaderboard">
         {!isOnLeaderboardPage && <h1>donation leaderboard</h1>}
         <Users leaderboard={leaderboard} isLoading={isLoading} error={error} />
         {isOnLeaderboardPage ? (

@@ -12,3 +12,5 @@ export const ROUTES = {
 
 type TypeOfRoutes = typeof ROUTES
 export type Route = TypeOfRoutes[keyof TypeOfRoutes]
+export const { DONATION, FUNDS, HOME, LEADERBOARD, LOGIN, NOT_FOUND, PROFILE, SIGN_UP, SUCCESS } =
+  ROUTES

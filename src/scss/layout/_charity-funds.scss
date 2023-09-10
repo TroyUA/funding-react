@@ -2,6 +2,15 @@
 
 .charity-funds {
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 25px;
+  gap: 25px;
+
+  @include respond-to('small') {
+    padding: 100px;
+    gap: 50px;
+  }
 
   &__see-all-btn {
     align-self: stretch;
@@ -39,11 +48,7 @@
     width: 100%;
     height: 150px;
     padding: 10px;
-
-    // background-image: url(../img/charity-fund-fon.png);
     background-size: cover;
-    /* Grey/50 */
-
     border: 1px solid $gray50;
 
     /* Inside auto layout */

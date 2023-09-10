@@ -3,10 +3,11 @@
 @use '../abstracts' as *;
 
 .main {
-  margin-bottom: var(--footer-height);
-  margin-top: var(--header-height);
-  width: 100vw;
-
+  padding-bottom: var(--footer-height);
+  padding-top: var(--header-height);
+  width: 100dvw;
+  min-height: 100dvh;
+  display: flex;
   .see-all-btn {
     align-self: stretch;
     order: 2;
@@ -16,21 +17,12 @@
     }
   }
 
-  .section {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    padding: 25px;
-    @include respond-to('small') {
-      padding: 50px 100px;
-    }
-  }
-
   &__wrapper {
     margin: 0 auto;
     max-width: 1440px;
     display: flex;
     flex-direction: column;
+    flex: 1;
   }
 
   .container {
@@ -59,11 +51,4 @@
       width: 380px;
     }
   }
-
-  // &:has(.success, .sign-up, .donation, .login) + .footer {
-  //   --footer-height: 0px;
-  //   @include respond-to('small') {
-  //     --footer-height: 64px;
-  //   }
-  // }
 }

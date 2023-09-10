@@ -1,5 +1,15 @@
 @use '../abstracts/' as *;
 
 .leaderboard {
+  display: flex;
+  flex-direction: column;
+  padding: 50px 25px;
+  gap: 25px;
   background-color: $gray95;
+  flex: 1;
+
+  @include respond-to('small') {
+    padding: 100px;
+    gap: 50px;
+  }
 }

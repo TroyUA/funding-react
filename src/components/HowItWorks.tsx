@@ -4,7 +4,7 @@ import { ROUTES } from '../routes'
 
 const HowItWorks = () => {
   return (
-    <section className="how-it-works section">
+    <section className="how-it-works">
       <h1>how it works</h1>
       <div className="how-it-works__steps">
         <article className="how-it-works__step article">
