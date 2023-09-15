@@ -7,6 +7,12 @@
 :root {
   --footer-height: 64px;
   --header-height: 70px;
+  :has(.sign-up, .login, .donation, .success) {
+    --footer-height: 0px;
+    @include respond-to('small') {
+      --footer-height: 64px;
+    }
+  }
 }
 
 h1 {

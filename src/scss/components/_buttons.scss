@@ -49,8 +49,7 @@
     @extend .btn;
     background: black;
     border: 1px solid black;
-    &:hover,
-    &:focus {
+    &:hover {
       background: $gray25;
     }
     &:disabled {
@@ -64,8 +63,7 @@
     background: white;
     border: 1px solid black;
 
-    &:hover,
-    &:focus {
+    &:hover {
       background: $gray95;
     }
     &:disabled {

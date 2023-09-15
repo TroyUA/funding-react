@@ -37,7 +37,7 @@ const Sidebar: React.FC = () => {
   }, [isOpen, handleKeyDown])
 
   return (
-    <div
+    <aside
       tabIndex={0}
       className={classNames('header__burger-sidebar', isOpen && 'open')}
       onClick={(e) => {
@@ -68,7 +68,7 @@ const Sidebar: React.FC = () => {
       <a href="#" className="header__burger-contact-us">
         supportua@gmail.com
       </a>
-    </div>
+    </aside>
   )
 }
 

@@ -5,7 +5,7 @@
   bottom: 0;
   left: 0;
   background-color: #000000;
-  width: 100vw;
+  width: 100dvw;
   height: var(--footer-height);
   @include transition-ease(height);
 
@@ -78,9 +78,13 @@
   }
 
   &.hide {
-    // @include respond-to('small') {
+    @include respond-to('small') {
+      --footer-height: 0;
+    }
+  }
+
+  &.on-certain-page {
     --footer-height: 0;
-    // }
     @include respond-to('small') {
       --footer-height: 64px;
     }

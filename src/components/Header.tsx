@@ -17,7 +17,7 @@ const Header: React.FC = () => {
   return (
     <header className="header">
       <div className="wrapper">
-        <Link to={ROUTES.HOME} className={'header__logo'}>
+        <Link to={ROUTES.HOME} className="header__logo">
           Ukraine Angels
         </Link>
         <Button to={ROUTES.DONATION} className="header__register-donation-btn btn_white">
@@ -26,18 +26,18 @@ const Header: React.FC = () => {
         <nav className="header__menu">
           <Button
             to={ROUTES.PROFILE}
-            className={'header__profile-btn btn'}
-            imgSrc={'/src/img/user-icon-default.svg'}
-            alt={'profile'}
+            className="header__profile-btn btn"
+            imgSrc="/src/img/user-icon-default.svg"
+            alt="profile"
           ></Button>
           {token && (
             <Button
               onClick={() => {
                 dispatch(logout())
               }}
-              className={'header__logout-btn btn'}
-              imgSrc={'/src/img/logout.svg'}
-              alt={'logout'}
+              className="header__logout-btn btn"
+              imgSrc="/src/img/logout.svg"
+              alt="logout"
             ></Button>
           )}
 

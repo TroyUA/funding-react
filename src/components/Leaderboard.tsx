@@ -8,6 +8,7 @@ import { useFilters } from '../hooks/useFilters'
 import { Form, Formik } from 'formik'
 import { usersAPI } from '../store/users/service'
 import { ROUTES } from '../routes'
+import { useSearchParams } from 'react-router-dom'
 
 interface ILeaderboardProps {
   limit: number
@@ -35,6 +36,8 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
 
   const [getLeaderboard, { data: leaderboard, isLoading, error }] =
     usersAPI.useLazyGetLeaderboardQuery()
+
+  // const [searchParams, setSearchParams] = useSearchParams()
 
   useEffect(() => {
     getLeaderboard({

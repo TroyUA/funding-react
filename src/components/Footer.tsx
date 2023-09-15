@@ -11,10 +11,15 @@ const Footer: React.FC = () => {
   const { pathname } = useLocation()
   const { DONATION, LOGIN, SIGN_UP, SUCCESS } = ROUTES
   const isOnCertainePage = ([DONATION, LOGIN, SIGN_UP, SUCCESS] as string[]).includes(pathname)
-  console.log({ isOnCertainePage, isSidebarOpen })
 
   return (
-    <footer className={classNames('footer', (isSidebarOpen || isOnCertainePage) && 'hide')}>
+    <footer
+      className={classNames(
+        'footer',
+        isSidebarOpen && 'hide'
+        // isOnCertainePage && 'on-certain-page'
+      )}
+    >
       <div className="wrapper">
         <nav className="footer__nav">
           <ul className="footer__nav-links">
