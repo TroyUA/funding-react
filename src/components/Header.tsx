@@ -7,7 +7,7 @@ import { logout } from '../store/auth/slice'
 import { classNames } from '../utils'
 import { setIsSidebarOpen, toggleOpen } from '../store/layout/slice'
 import Sidebar from './Sidebar'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 const Header: React.FC = () => {
   const { token } = useAppSelector((state) => state.auth)

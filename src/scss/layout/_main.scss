@@ -45,10 +45,8 @@
   }
 
   .article {
-    width: 325px;
-
-    @include respond-to('small') {
-      width: 380px;
-    }
+    min-width: 325px;
+    max-width: 380px;
+    flex: 1;
   }
 }

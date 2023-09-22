@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import type { Route } from '../routes'
+import type { Route } from '../router'
 
 export interface IButtonProps
   extends React.DetailedHTMLProps<

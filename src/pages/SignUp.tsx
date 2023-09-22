@@ -10,7 +10,7 @@ import Input from '../components/Input'
 import { useAppDispatch } from '../hooks/redux'
 import { setCredentials } from '../store/auth/slice'
 import { LocalStorageApi } from '../api/localStorage'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 const signupSchema = z
   .object({

@@ -2,7 +2,7 @@ import React from 'react'
 import Button from './Button'
 import { listsAPI } from '../store/lists/service'
 import Fund from './Fund'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 interface CharityFundsProps {
   limit?: number

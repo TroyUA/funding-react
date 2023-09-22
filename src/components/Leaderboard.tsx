@@ -7,7 +7,7 @@ import { classNames } from '../utils'
 import { useFilters } from '../hooks/useFilters'
 import { Form, Formik } from 'formik'
 import { usersAPI } from '../store/users/service'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 import { useSearchParams } from 'react-router-dom'
 
 interface ILeaderboardProps {

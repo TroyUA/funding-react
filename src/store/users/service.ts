@@ -1,12 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { GetLeaderboardArgs, GetLeaderboardResponse, LeaderboardModel } from './types'
+import { GetLeaderboardArgs, GetLeaderboardResponse, LeaderboardPagination } from './types'
 import { baseQuery } from '../baseQuery'
 
 export const usersAPI = createApi({
   reducerPath: 'usersAPI',
   baseQuery,
   endpoints: (build) => ({
-    getLeaderboard: build.query<LeaderboardModel, GetLeaderboardArgs>({
+    getLeaderboard: build.query<LeaderboardPagination, GetLeaderboardArgs>({
       transformResponse: (response: GetLeaderboardResponse, _, __) => response.data.leaderboards,
       query: (args: GetLeaderboardArgs) => ({
         url: '',

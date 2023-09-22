@@ -4,12 +4,10 @@ import User from '../components/User'
 import { authAPI } from '../store/auth/service'
 import Button from '../components/Button'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
-interface IProfileProps {}
-
-const Profile: React.FC<IProfileProps> = () => {
-  const { data } = authAPI.useGetMyStatisticQuery()
+const Profile: React.FC = () => {
+  const { data, isLoading } = authAPI.useGetMyStatisticQuery()
   const [isOpened, setIsOpened] = useState(false)
   const navigate = useNavigate()
 
@@ -22,7 +20,11 @@ const Profile: React.FC<IProfileProps> = () => {
       <section className="profile-page__top">
         <img className="profile-page__icon" src={data?.avatar} alt="user avatar" />
         <h1>{data?.teamName}</h1>
-        <Button className="profile-page__edit-btn btn_black" onClick={() => setIsOpened(true)}>
+        <Button
+          className="profile-page__edit-btn btn_black"
+          disabled={isLoading}
+          onClick={() => setIsOpened(true)}
+        >
           Edit Profile
         </Button>
       </section>

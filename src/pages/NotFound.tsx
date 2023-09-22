@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from '../components/Button'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 const NotFound = () => {
   return (

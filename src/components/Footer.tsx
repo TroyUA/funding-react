@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import Button from './Button'
 import { useAppSelector } from '../hooks/redux'
 import { classNames } from '../utils'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 const Footer: React.FC = () => {
   const { token } = useAppSelector((state) => state.auth)

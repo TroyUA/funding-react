@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { listsAPI } from '../store/lists/service'
 import type { OptionValue, IOption } from '../components/SelectBox'
 import { useLocation } from 'react-router-dom'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 export function useFunds() {
   const [fundId, setFundId] = useState<OptionValue>()

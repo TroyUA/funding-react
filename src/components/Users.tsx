@@ -1,6 +1,6 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 import { usersAPI } from '../store/users/service'
-import { LeaderboardModel } from '../store/users/types'
+import { LeaderboardPagination } from '../store/users/types'
 import User from './User'
 import { SerializedError } from '@reduxjs/toolkit'
 
@@ -12,7 +12,7 @@ import { SerializedError } from '@reduxjs/toolkit'
 //   cityId?: number
 // }
 interface UserProps {
-  leaderboard?: LeaderboardModel
+  leaderboard?: LeaderboardPagination
   isLoading: boolean
   error?: FetchBaseQueryError | SerializedError
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 const Success = () => {
   return (

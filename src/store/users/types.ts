@@ -10,11 +10,11 @@ export interface IUsers {
 
 export interface GetLeaderboardResponse {
   data: {
-    leaderboards: LeaderboardModel
+    leaderboards: LeaderboardPagination
   }
 }
 
-export interface LeaderboardModel {
+export interface LeaderboardPagination {
   currentPage: number
   totalItems: number
   items: IUser[]
@@ -29,10 +29,10 @@ export interface GetLeaderboardArgs {
 }
 export interface Profile {
   teamName: string
-  avatar: string
-  country: Country
+  avatar?: string
+  country?: Country
   district?: District
-  city: City
+  city?: City
 }
 
 export interface IUser extends Profile {

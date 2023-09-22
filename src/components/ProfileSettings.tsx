@@ -16,13 +16,13 @@ const updateProfileFormSchema = z
   .object({
     avatar: z
       .instanceof(File)
-      .optional()
       .refine(
         (file) => {
           if (file) return file.size < 1024 * 8
         },
         { message: 'File size should be less than 8Kb ' }
-      ),
+      )
+      .nullish(),
     cityId: z.number().optional(),
     countryId: z.number().optional(),
     districtId: z.number().optional(),
@@ -97,6 +97,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
         enableReinitialize
         validationSchema={toFormikValidationSchema(updateProfileFormSchema)}
         initialValues={{
+          avatar: null,
           teamName: profile?.teamName || '',
           password: '',
           confirmPassword: '',
@@ -113,6 +114,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
 
           try {
             const response = await updateProfile(dto).unwrap()
+            if (!response) throw new Error('Null response')
             switch (response.__typename) {
               case 'Profile':
                 const { __typename, ...profile } = response

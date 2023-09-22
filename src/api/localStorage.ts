@@ -1,7 +1,7 @@
 const accessToken = 'accessToken'
 
 export class LocalStorageApi {
-  static setAccessToken(token: string): void {
+  static setAccessToken(token: string) {
     localStorage.setItem(accessToken, token)
   }
 
@@ -9,7 +9,7 @@ export class LocalStorageApi {
     return localStorage.getItem(accessToken)
   }
 
-  static removeAccessToken(): void {
+  static removeAccessToken() {
     localStorage.removeItem(accessToken)
   }
 }

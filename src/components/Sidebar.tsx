@@ -4,7 +4,7 @@ import Button from './Button'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setIsSidebarOpen } from '../store/layout/slice'
 import useScrollLock from '../hooks/useScrollLock'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 const Sidebar: React.FC = () => {
   const dispatch = useAppDispatch()

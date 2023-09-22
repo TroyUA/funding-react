@@ -8,7 +8,7 @@ import { setCredentials } from '../store/auth/slice'
 import Input from '../components/Input'
 import { Field, Form, Formik } from 'formik'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 const loginSchema = z.object({
   teamName: z.string().min(3, 'TeamName should be at least 3 characters long'),

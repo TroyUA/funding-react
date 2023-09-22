@@ -9,7 +9,7 @@ import { Field, Form, Formik } from 'formik'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { uploadAPI } from '../store/upload/service'
 import { useNavigate } from 'react-router-dom'
-import { ROUTES } from '../routes'
+import { ROUTES } from '../router'
 
 const donationSchema = z.object({
   file: z
