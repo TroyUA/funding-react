@@ -3,12 +3,14 @@ import Button from './Button'
 import { listsAPI } from '../store/lists/service'
 import Fund from './Fund'
 import { ROUTES } from '../router'
+import { useLocation } from 'react-router-dom'
 
 interface CharityFundsProps {
   limit?: number
 }
 const CharityFunds: React.FC<CharityFundsProps> = ({ limit = 3 }) => {
-  const { data: funds, isLoading, isError } = listsAPI.useGetFundsQuery({ limit })
+  const { data: funds, isLoading } = listsAPI.useGetFundsQuery({ limit })
+  const isOnCharityFundsPage = useLocation().pathname.includes(ROUTES.FUNDS)
 
   return (
     <section className="charity-funds">
@@ -18,14 +20,16 @@ const CharityFunds: React.FC<CharityFundsProps> = ({ limit = 3 }) => {
           <Fund key={fund.id} {...fund} />
         ))}
       </div>
-      <Button
-        className="see-all-btn btn_with-image"
-        imgSrc="/src/img/arrow.svg"
-        alt="arrow"
-        to={ROUTES.FUNDS}
-      >
-        See All
-      </Button>
+      {!isOnCharityFundsPage && (
+        <Button
+          className="see-all-btn btn_with-image"
+          imgSrc="/src/img/arrow.svg"
+          alt="arrow"
+          to={ROUTES.FUNDS}
+        >
+          See All
+        </Button>
+      )}
     </section>
   )
 }
