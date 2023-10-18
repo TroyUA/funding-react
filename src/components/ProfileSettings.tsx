@@ -6,7 +6,7 @@ import { authAPI } from '../store/auth/service'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import { setProfile } from '../store/auth/slice'
 import { z } from 'zod'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { Field, Form, Formik } from 'formik'
 import Input from './Input'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 import { uploadAPI } from '../store/upload/service'
@@ -114,9 +114,13 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
 
           try {
             const response = await updateProfile(dto).unwrap()
-            if (!response) throw new Error('Null response')
+            if (!response)
+              throw new Error(
+                'Null response during profile update (Probably, there is no "images" directory created on the backend)'
+              )
             switch (response.__typename) {
               case 'Profile':
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { __typename, ...profile } = response
                 dispatch(setProfile(profile))
                 dispatch(authAPI.util.invalidateTags(['MyStatistic']))

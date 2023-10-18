@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Button from './Button'
 import { useAppSelector } from '../hooks/redux'
 import { classNames } from '../utils'
@@ -8,9 +8,6 @@ import { ROUTES } from '../router'
 const Footer: React.FC = () => {
   const { token } = useAppSelector((state) => state.auth)
   const { isOpen: isSidebarOpen } = useAppSelector((state) => state.layout.sidebar)
-  const { pathname } = useLocation()
-  const { DONATION, LOGIN, SIGN_UP, SUCCESS } = ROUTES
-  const isOnCertainePage = ([DONATION, LOGIN, SIGN_UP, SUCCESS] as string[]).includes(pathname)
 
   return (
     <footer
