@@ -50,7 +50,7 @@ const SelectBox: React.FC<ISelectBoxProps> = (props) => {
     setShowList(false)
   }
 
-  const [field, meta, helpers] = useField(name)
+  const [, , helpers] = useField(name)
 
   useEffect(() => {
     if (props.selectedValue) setSelectedValue(props.selectedValue)

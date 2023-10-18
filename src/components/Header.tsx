@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { useAppSelector } from '../hooks/redux'
 import Button from './Button'
 import { useAppDispatch } from '../hooks/redux'
 import { logout } from '../store/auth/slice'
 import { classNames } from '../utils'
-import { setIsSidebarOpen, toggleOpen } from '../store/layout/slice'
+import { setIsSidebarOpen } from '../store/layout/slice'
 import Sidebar from './Sidebar'
 import { ROUTES } from '../router'
 

@@ -114,9 +114,13 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
 
           try {
             const response = await updateProfile(dto).unwrap()
-            if (!response) throw new Error('Null response')
+            if (!response)
+              throw new Error(
+                'Null response during profile update (Probably, there is no "images" directory created on the backend)'
+              )
             switch (response.__typename) {
               case 'Profile':
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const { __typename, ...profile } = response
                 dispatch(setProfile(profile))
                 dispatch(authAPI.util.invalidateTags(['MyStatistic']))

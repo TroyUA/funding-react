@@ -10,7 +10,7 @@ const Input: React.FC<
 > = (props) => {
   const id = useId()
   const { label, ...rest } = props
-  const [field, meta, helpers] = useField(rest)
+  const [, meta] = useField(rest)
   return (
     <div className={classNames('input-box', Boolean(meta.error && meta.touched) && 'error')}>
       {label && (

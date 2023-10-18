@@ -8,7 +8,7 @@ import { useFilters } from '../hooks/useFilters'
 import { Form, Formik } from 'formik'
 import { usersAPI } from '../store/users/service'
 import { ROUTES } from '../router'
-import { useSearchParams } from 'react-router-dom'
+// import { useSearchParams } from 'react-router-dom'
 
 interface ILeaderboardProps {
   limit: number
@@ -27,7 +27,6 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
     countryId,
     districtId,
     cityId,
-    categoryId,
     countryOptions,
     districtOptions,
     cityOptions,
