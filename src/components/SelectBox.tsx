@@ -22,12 +22,12 @@ export interface IOption {
 
 const SelectBox: React.FC<ISelectBoxProps> = (props) => {
   const { name, options: propsOptions = [], onChange, className, placeholder } = props
-  const defaultState = {
+  const defaultState: IOption = {
     value: '',
     label: placeholder,
     selected: true,
     hidden: true,
-  } as IOption
+  }
   const options = useMemo(() => [defaultState, ...propsOptions], [propsOptions])
   const [selectedValue, setSelectedValue] = useState<OptionValue>(
     props.selectedValue ?? options[0].value!

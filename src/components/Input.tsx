@@ -1,13 +1,13 @@
-import React, { DetailedHTMLProps, InputHTMLAttributes, useId } from 'react'
+import { useId } from 'react'
 import { classNames } from '../utils'
 import { ErrorMessage, useField } from 'formik'
 
-const Input: React.FC<
-  DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
-    label?: string
-    name: string
-  }
-> = (props) => {
+type InputProps = React.ComponentProps<'input'> & {
+  label?: string
+  name: string
+}
+
+const Input: React.FC<InputProps> = (props) => {
   const id = useId()
   const { label, ...rest } = props
   const [, meta] = useField(rest)
@@ -20,7 +20,6 @@ const Input: React.FC<
       )}
       <input className="input-box__input" {...rest} id={id} />
       <ErrorMessage name={rest.name} className="error-msg" component="span" />
-      {/* {errorMsg && <span className="error-msg">{errorMsg}</span>} */}
     </div>
   )
 }

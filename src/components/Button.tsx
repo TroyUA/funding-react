@@ -1,12 +1,8 @@
-import React from 'react'
+import React, { ComponentProps } from 'react'
 import { Link } from 'react-router-dom'
 import type { Route } from '../router'
 
-export interface IButtonProps
-  extends React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {
+export interface IButtonProps extends ComponentProps<'button'> {
   imgSrc?: string
   className?: string
   onClick?: () => void

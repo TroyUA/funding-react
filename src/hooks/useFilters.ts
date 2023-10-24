@@ -78,10 +78,7 @@ export function useCategories() {
 
 export function useFilters() {
   const [showFilters, setShowFilters] = useState(false)
-
-  const location = useLocation()
-  const isOnLeaderboardPage = location.pathname.includes(ROUTES.LEADERBOARD)
-
+  const isOnLeaderboardPage = useLocation().pathname.includes(ROUTES.LEADERBOARD)
   const { countryId, setCountryId, countryOptions } = useCountries()
   const { districtId, setDistrictId, districtOptions } = useDistricts(countryId)
   const { cityId, setCityId, cityOptions } = useCities(countryId, districtId)
