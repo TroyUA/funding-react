@@ -1,8 +1,6 @@
 import { useMemo, useState } from 'react'
 import { listsAPI } from '../store/lists/service'
 import type { OptionValue, IOption } from '../components/SelectBox'
-import { useLocation } from 'react-router-dom'
-import { ROUTES } from '../router'
 
 export function useFunds() {
   const [fundId, setFundId] = useState<OptionValue>()
@@ -77,17 +75,12 @@ export function useCategories() {
 }
 
 export function useFilters() {
-  const [showFilters, setShowFilters] = useState(false)
-  const isOnLeaderboardPage = useLocation().pathname.includes(ROUTES.LEADERBOARD)
   const { countryId, setCountryId, countryOptions } = useCountries()
   const { districtId, setDistrictId, districtOptions } = useDistricts(countryId)
   const { cityId, setCityId, cityOptions } = useCities(countryId, districtId)
   const { categoryId, setCategoryId, categoryOptions } = useCategories()
 
   return {
-    setShowFilters,
-    isOnLeaderboardPage,
-    showFilters,
     setCountryId,
     setDistrictId,
     setCityId,

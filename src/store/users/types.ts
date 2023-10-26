@@ -2,12 +2,6 @@ import type { City, Country, District } from '../lists/types'
 import type { AuthError } from '../auth/types'
 import type { ResponseTypes } from '../helpers'
 
-export interface IUsers {
-  users: IUser[]
-  isLoading: boolean
-  error: string
-}
-
 export interface GetLeaderboardResponse {
   data: {
     leaderboards: LeaderboardPagination

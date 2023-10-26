@@ -17,7 +17,7 @@ export const uploadAPI = createApi({
   endpoints: (build) => ({
     updateProfile: build.mutation<
       GetProfileSuccess | ValidationErrors | AuthError,
-      Omit<UpdateProfileModel, 'confirmPassword'>
+      UpdateProfileModel
     >({
       query: (updateProfileArgs) => {
         const { avatar, ...variables } = updateProfileArgs

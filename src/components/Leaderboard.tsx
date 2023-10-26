@@ -8,6 +8,7 @@ import { useFilters } from '../hooks/useFilters'
 import { Form, Formik } from 'formik'
 import { usersAPI } from '../store/users/service'
 import { ROUTES } from '../router'
+import { useLocation } from 'react-router-dom'
 // import { useSearchParams } from 'react-router-dom'
 
 interface ILeaderboardProps {
@@ -16,10 +17,10 @@ interface ILeaderboardProps {
 
 const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
   const [limit, setLimit] = useState(props.limit)
+  const isOnLeaderboardPage = useLocation().pathname.includes(ROUTES.LEADERBOARD)
+  const [showFilters, setShowFilters] = useState(false)
+
   const {
-    setShowFilters,
-    isOnLeaderboardPage,
-    showFilters,
     setCountryId,
     setDistrictId,
     setCityId,

@@ -15,7 +15,7 @@ const donationSchema = z.object({
   file: z
     .instanceof(File, { message: 'Select a file to upload' })
     .refine((file) => file.size < 1024 * 8, { message: 'File size should be less than 8Kb' }),
-  amount: z.number().gt(0, 'Amount must be greater than 0'),
+  amount: z.number().positive('Amount must be greater than 0'),
   fundId: z.string(),
 })
 
@@ -68,7 +68,6 @@ const Donation: React.FC = () => {
                 type="number"
                 min={0}
                 name="amount"
-                step={5}
                 placeholder="Amount"
                 label="US Dollar"
                 as={Input}

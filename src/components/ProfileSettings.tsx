@@ -34,12 +34,18 @@ const updateProfileFormSchema = z
     if (confirmPassword !== password) {
       ctx.addIssue({
         code: 'custom',
-        message: `The 'password' and 'confirm password' fields must match`,
-        path: ['confirmPassword'],
+        message: `'Password' and 'Confirm password' must match`,
+        path: ['confirmPassword', 'password'],
       })
     }
   })
+  .transform((profile) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { confirmPassword, ...rest } = profile
+    return rest
+  })
 
+// type UpdateProfileInput=z.input<typeof updateProfileFormSchema>
 export type UpdateProfileModel = z.infer<typeof updateProfileFormSchema>
 interface ProfileSettingsProps {
   isOpened: boolean
@@ -103,7 +109,8 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
           confirmPassword: '',
         }}
         onSubmit={async (values, { setFieldError }) => {
-          const dto: Omit<UpdateProfileModel, 'confirmPassword'> = {
+          // dto - Data Transfer Object
+          const dto: UpdateProfileModel = {
             avatar: fileRef.current?.files![0],
             teamName: values.teamName,
             countryId: Number(countryId),
@@ -116,7 +123,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
             const response = await updateProfile(dto).unwrap()
             if (!response)
               throw new Error(
-                'Null response during profile update (Probably, there is no "images" directory created on the backend)'
+                'Null response during profile update (Probably, there is no "/images" directory created on the backend)'
               )
             switch (response.__typename) {
               case 'Profile':
@@ -133,7 +140,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
                 console.log(response.message)
                 break
               default:
-                throw new Error(`Unexpected response`)
+                throw new Error(`Unexpected response __typename`)
             }
           } catch (error) {
             console.log(error)

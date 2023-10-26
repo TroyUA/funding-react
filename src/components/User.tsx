@@ -10,11 +10,18 @@ const User: React.FC<IUser> = ({ avatar, teamName, city, totalDonation, position
 
   return (
     <div className="user">
-      <img className="user__icon" alt="user icon" src={avatar} />
+      <img
+        className="user__icon"
+        alt="user icon"
+        src={avatar}
+        onError={(e) => {
+          e.currentTarget.src = '/src/img/user-icon3.svg'
+        }}
+      />
       <div className="user__all-other-info">
         <div className="user__text-info">
           <p className="user__name">{teamName}</p>
-          <p className="user__address">{`${city.name}, ${country.iso2} ${country.emoji}`}</p>
+          <p className="user__address">{`${city?.name}, ${country?.iso2} ${country?.emoji}`}</p>
         </div>
         <div className="user__numbers">
           <p className="user__amount">{formatter.format(totalDonation)}</p>

@@ -1,23 +1,15 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
-import { usersAPI } from '../store/users/service'
 import { LeaderboardPagination } from '../store/users/types'
 import User from './User'
 import { SerializedError } from '@reduxjs/toolkit'
 
-// interface IUsersProps {
-//   limit: number
-//   page?: number
-//   countryId?: number
-//   districtId?: number
-//   cityId?: number
-// }
-interface UserProps {
+interface UsersProps {
   leaderboard?: LeaderboardPagination
   isLoading: boolean
   error?: FetchBaseQueryError | SerializedError
 }
 
-const Users: React.FC<UserProps> = ({ error, isLoading, leaderboard }) => {
+const Users: React.FC<UsersProps> = ({ error, isLoading, leaderboard }) => {
   if (error) {
     return <div>{`Error: ${error}`}</div>
   }

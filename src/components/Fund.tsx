@@ -4,7 +4,10 @@ import type { IFund } from '../store/lists/types'
 const Fund: React.FC<IFund> = (props) => {
   return (
     <article className="fund article">
-      <div className="fund__fon" style={{ backgroundImage: `url(${props.img})` }}>
+      <div
+        className="fund__fon"
+        style={{ backgroundImage: `url('${props.img}'), url('/src/img/charity-fund-fon.png')` }}
+      >
         <div className="fund__category-btn btn_black">
           <span className="btn__text">{props.category}</span>
         </div>
