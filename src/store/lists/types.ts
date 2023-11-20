@@ -17,7 +17,7 @@ export interface District {
   country_id: number
 }
 
-export interface IFund {
+export interface Fund {
   id: string
   name: string
   link: string
@@ -56,6 +56,6 @@ export type GetFundsArgs = {
 
 export type GetFundsResponse = {
   data: {
-    funds: IFund[]
+    funds: Fund[]
   }
 }

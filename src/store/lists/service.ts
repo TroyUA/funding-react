@@ -1,11 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react'
-import { City } from './ICity'
-import { Country } from '../../models/ICountry'
-import { District } from '../../models/IDistrict'
-import { IFund } from '../../models/IFund'
-import { baseQuery } from '../baseQuery'
-import { providesList } from './helper'
 import type {
+  City,
+  Country,
+  District,
+  Fund,
   GetCitiesArgs,
   GetCitiesResponse,
   GetCountriesResponse,
@@ -14,6 +12,8 @@ import type {
   GetFundsArgs,
   GetFundsResponse,
 } from './types'
+import { baseQuery } from '../baseQuery'
+import { providesList } from './helper'
 
 export const listsAPI = createApi({
   reducerPath: 'listsApi',
@@ -81,7 +81,7 @@ export const listsAPI = createApi({
       transformResponse: (response: GetDistrictsResponse) => response.data.districts,
       providesTags: (result) => providesList(result, 'Districts'),
     }),
-    getFunds: build.query<IFund[], GetFundsArgs>({
+    getFunds: build.query<Fund[], GetFundsArgs>({
       query: ({ limit }) => ({
         url: '',
         method: 'POST',

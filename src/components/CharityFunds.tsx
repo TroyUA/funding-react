@@ -1,15 +1,15 @@
 import React from 'react'
-import Button from './Button'
-import { listsAPI } from '../store/lists/service'
-import Fund from './Fund'
-import { ROUTES } from '../router'
 import { useLocation } from 'react-router-dom'
+import { ROUTES } from '../router'
+import { listsAPI } from '../store/lists/service'
+import Button from './Button'
+import FundView from './FundView'
 
 interface CharityFundsProps {
   limit?: number
 }
 const CharityFunds: React.FC<CharityFundsProps> = ({ limit = 3 }) => {
-  const { data: funds, isLoading } = listsAPI.useGetFundsQuery({ limit })
+  const { data: funds } = listsAPI.useGetFundsQuery({ limit })
   const isOnCharityFundsPage = useLocation().pathname.includes(ROUTES.FUNDS)
 
   return (
@@ -17,7 +17,7 @@ const CharityFunds: React.FC<CharityFundsProps> = ({ limit = 3 }) => {
       <h1>charity funds</h1>
       <div className="charity-funds__list">
         {funds?.map((fund) => (
-          <Fund key={fund.id} {...fund} />
+          <FundView key={fund.id} {...fund} />
         ))}
       </div>
       {!isOnCharityFundsPage && (

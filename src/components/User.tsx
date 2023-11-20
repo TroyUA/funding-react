@@ -1,5 +1,5 @@
 import React from 'react'
-import { IUser } from '../store/users/types'
+import type { IUser } from '../store/users/types'
 import Button from './Button'
 
 const User: React.FC<IUser> = ({ avatar, teamName, city, totalDonation, position, country }) => {
@@ -14,6 +14,7 @@ const User: React.FC<IUser> = ({ avatar, teamName, city, totalDonation, position
         className="user__icon"
         alt="user icon"
         src={avatar}
+        loading="lazy"
         onError={(e) => {
           e.currentTarget.src = '/src/img/user-icon3.svg'
         }}

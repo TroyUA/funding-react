@@ -21,6 +21,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
   const [showFilters, setShowFilters] = useState(false)
 
   const {
+    reset,
     setCountryId,
     setDistrictId,
     setCityId,
@@ -67,7 +68,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
               setShowFilters(false)
             }}
           >
-            {({ resetForm }) => (
+            {() => (
               <Form className={classNames('filters__form', showFilters && 'show')}>
                 <div className="filters__inputs">
                   <SelectBox
@@ -101,7 +102,8 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
                     type="button"
                     className="filters__reset-btn btn_red"
                     onClick={() => {
-                      resetForm()
+                      // resetForm()
+                      reset()
                       console.log('inside reset')
                     }}
                   >

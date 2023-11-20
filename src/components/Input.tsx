@@ -1,13 +1,13 @@
-import { useId } from 'react'
+import { useId, FC, ComponentProps } from 'react'
 import { classNames } from '../utils'
 import { ErrorMessage, useField } from 'formik'
 
-type InputProps = React.ComponentProps<'input'> & {
+type InputProps = ComponentProps<'input'> & {
   label?: string
   name: string
 }
 
-const Input: React.FC<InputProps> = (props) => {
+const Input: FC<InputProps> = (props) => {
   const id = useId()
   const { label, ...rest } = props
   const [, meta] = useField(rest)
@@ -18,7 +18,7 @@ const Input: React.FC<InputProps> = (props) => {
           {label}
         </label>
       )}
-      <input className="input-box__input" {...rest} id={id} />
+      <input {...rest} className="input-box__input" id={id} />
       <ErrorMessage name={rest.name} className="error-msg" component="span" />
     </div>
   )

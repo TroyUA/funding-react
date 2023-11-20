@@ -80,7 +80,15 @@ export function useFilters() {
   const { cityId, setCityId, cityOptions } = useCities(countryId, districtId)
   const { categoryId, setCategoryId, categoryOptions } = useCategories()
 
+  const reset = () => {
+    setCountryId('')
+    setDistrictId('')
+    setCityId('')
+    setCategoryId('')
+  }
+
   return {
+    reset,
     setCountryId,
     setDistrictId,
     setCityId,

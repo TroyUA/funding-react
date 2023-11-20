@@ -1,7 +1,7 @@
 import React from 'react'
-import type { IFund } from '../store/lists/types'
+import type { Fund } from '../store/lists/types'
 
-const Fund: React.FC<IFund> = (props) => {
+const FundView: React.FC<Fund> = (props) => {
   return (
     <article className="fund article">
       <div
@@ -22,4 +22,4 @@ const Fund: React.FC<IFund> = (props) => {
   )
 }
 
-export default Fund
+export default FundView

@@ -7,7 +7,7 @@ export const usersAPI = createApi({
   baseQuery,
   endpoints: (build) => ({
     getLeaderboard: build.query<LeaderboardPagination, GetLeaderboardArgs>({
-      transformResponse: (response: GetLeaderboardResponse, _, __) => response.data.leaderboards,
+      transformResponse: (response: GetLeaderboardResponse) => response.data.leaderboards,
       query: (args: GetLeaderboardArgs) => ({
         url: '',
         method: 'POST',
