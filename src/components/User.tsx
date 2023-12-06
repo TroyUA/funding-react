@@ -1,8 +1,8 @@
 import React from 'react'
-import type { IUser } from '../store/users/types'
+import type { User } from '../store/users/types'
 import Button from './Button'
 
-const User: React.FC<IUser> = ({ avatar, teamName, city, totalDonation, position, country }) => {
+const User: React.FC<User> = ({ avatar, teamName, city, totalDonation, position, country }) => {
   const formatter = Intl.NumberFormat('en-US', {
     currency: 'USD',
     style: 'currency',

@@ -1,47 +1,43 @@
 import { useMemo, useState } from 'react'
 import { listsAPI } from '../store/lists/service'
-import type { OptionValue, IOption } from '../components/SelectBox'
+import type { Value, Option } from '../components/SelectBox'
 
-export function useFunds() {
-  const [fundId, setFundId] = useState<OptionValue>()
-  const { data: funds } = listsAPI.useGetFundsQuery({})
-  const fundOptions = useMemo(
-    () => funds?.map((fund) => ({ value: fund.id, label: fund.name } as IOption)),
-    [funds]
-  )
+const useOptions = <T, V extends keyof T = keyof T, L extends keyof T = keyof T>(
+  data: T[] | undefined,
+  value: V,
+  label: L
+) =>
+  useMemo(() => data?.map((item) => ({ value: item[value], label: item[label] } as Option)), [data])
 
+export function useFunds(limit?: number) {
+  const [fundId, setFundId] = useState<Value>()
+  const { data: funds } = listsAPI.useGetFundsQuery({ limit })
+  const fundOptions = useOptions(funds, 'id', 'name')
   return { fundId, setFundId, fundOptions }
 }
 
 export function useCountries() {
-  const [countryId, setCountryId] = useState<OptionValue>()
+  const [countryId, setCountryId] = useState<Value>()
   const { data: countries } = listsAPI.useGetCountriesQuery()
-  const countryOptions = useMemo(
-    () => countries?.map((country) => ({ value: country.id, label: country.name } as IOption)),
-    [countries]
-  )
-
+  const countryOptions = useOptions(countries, 'id', 'name')
   return { countryId, setCountryId, countryOptions }
 }
 
-export function useDistricts(countryId?: OptionValue) {
-  const [districtId, setDistrictId] = useState<OptionValue>()
+export function useDistricts(countryId?: Value) {
+  const [districtId, setDistrictId] = useState<Value>()
   const { data: districts } = listsAPI.useGetDistrictsQuery(
     {
       countryId: Number(countryId),
     },
     { skip: !countryId }
   )
-  const districtOptions = useMemo(
-    () => districts?.map((district) => ({ value: district.id, label: district.name } as IOption)),
-    [districts]
-  )
+  const districtOptions = useOptions(districts, 'id', 'name')
 
   return { districtId, setDistrictId, districtOptions }
 }
 
-export function useCities(countryId?: OptionValue, districtId?: OptionValue) {
-  const [cityId, setCityId] = useState<OptionValue>()
+export function useCities(countryId?: Value, districtId?: Value) {
+  const [cityId, setCityId] = useState<Value>()
   const { data: cities } = listsAPI.useGetCitiesQuery(
     {
       districtId: Number(districtId),
@@ -49,16 +45,12 @@ export function useCities(countryId?: OptionValue, districtId?: OptionValue) {
     },
     { skip: !countryId }
   )
-  const cityOptions = useMemo(
-    () => cities?.map((city) => ({ value: city.id, label: city.name } as IOption)),
-    [cities]
-  )
-
+  const cityOptions = useOptions(cities, 'id', 'name')
   return { cityId, setCityId, cityOptions }
 }
 
 export function useCategories() {
-  const [categoryId, setCategoryId] = useState<OptionValue>()
+  const [categoryId, setCategoryId] = useState<Value>()
   const { data: fundsList } = listsAPI.useGetFundsQuery({})
   const categoryOptions = useMemo(
     () =>
@@ -67,7 +59,7 @@ export function useCategories() {
           if (categories.indexOf(fund.category) === -1) categories.push(fund.category)
           return categories
         }, [])
-        .map((category) => ({ value: category, label: category } as IOption)),
+        .map((category) => ({ value: category, label: category } as Option)),
     [fundsList]
   )
 

@@ -16,13 +16,13 @@ const updateProfileFormSchema = z
   .object({
     avatar: z
       .instanceof(File)
-      .nullish()
       .refine(
         (file) => {
           if (file) return file.size < 1024 * 8
         },
         { message: 'File size should be less than 8Kb ' }
-      ),
+      )
+      .nullish(),
     cityId: z.number().optional(),
     countryId: z.number().optional(),
     districtId: z.number().optional(),
@@ -163,21 +163,21 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ isOpened, onClose }) 
               placeholder="Country"
               options={countryOptions}
               onChange={setCountryId}
-              selectedValue={profile?.country?.id}
+              defaultValue={profile?.country?.id}
             />
             <SelectBox
               name="cityId"
               placeholder="City"
               options={cityOptions}
               onChange={setCityId}
-              selectedValue={profile?.city?.id}
+              defaultValue={profile?.city?.id}
             />
             <SelectBox
               name="districtId"
               placeholder="District"
               options={districtOptions}
               onChange={setDistrictId}
-              selectedValue={profile?.district?.id}
+              defaultValue={profile?.district?.id}
             />
             <Field type="password" placeholder="New password" name="password" as={Input} />
             <Field

@@ -33,13 +33,13 @@ const Donation: React.FC = () => {
         <h1>Register Donation</h1>
         <Formik
           // enableReinitialize
-          initialValues={{ amount: '', file: null, fundId: '' }}
+          initialValues={{ amount: '', file: null, fundId }}
           validationSchema={toFormikValidationSchema(donationSchema)}
           onSubmit={async (values, { setFieldError }) => {
             const donation: DonationModel = {
               file: values.file!,
               amount: Number(values.amount),
-              fundId: String(fundId),
+              fundId: String(values.fundId),
             }
             try {
               const response = await registerDonate(donation).unwrap()

@@ -11,7 +11,7 @@ export interface GetLeaderboardResponse {
 export interface LeaderboardPagination {
   currentPage: number
   totalItems: number
-  items: IUser[]
+  items: User[]
 }
 
 export interface GetLeaderboardArgs {
@@ -29,7 +29,7 @@ export interface Profile {
   city?: City
 }
 
-export interface IUser extends Profile {
+export interface User extends Profile {
   totalDonation: number
   position: number
 }
@@ -47,6 +47,6 @@ export interface GetMyStatisticResponse {
   }
 }
 
-export interface GetLeaderboardSuccess extends IUser {
+export interface GetLeaderboardSuccess extends User {
   __typename: ResponseTypes['LEADERBOARD']
 }

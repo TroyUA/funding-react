@@ -1,6 +1,6 @@
-import { AuthModel } from '../../pages/Login'
-import { ResponseTypes } from '../helpers'
-import { Profile } from '../users/types'
+import type { AuthModel } from '../../pages/Login'
+import type { ResponseTypes } from '../helpers'
+import type { Profile } from '../users/types'
 
 export interface IAuth {
   token: string | null

@@ -9,6 +9,7 @@ import { Form, Formik } from 'formik'
 import { usersAPI } from '../store/users/service'
 import { ROUTES } from '../router'
 import { useLocation } from 'react-router-dom'
+import { Option, Select } from '@mui/base'
 // import { useSearchParams } from 'react-router-dom'
 
 interface ILeaderboardProps {
@@ -21,7 +22,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
   const [showFilters, setShowFilters] = useState(false)
 
   const {
-    reset,
+    // reset,
     setCountryId,
     setDistrictId,
     setCityId,
@@ -68,9 +69,22 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
               setShowFilters(false)
             }}
           >
-            {() => (
+            {({ resetForm }) => (
               <Form className={classNames('filters__form', showFilters && 'show')}>
                 <div className="filters__inputs">
+                  <Select
+                    placeholder="Country"
+                    // slots={{ root: 'div' }}
+                    // slotProps={{ popper: {  } }}
+                    // className="stretched"
+                    onChange={(e) => console.log(e?.target)}
+                  >
+                    {countryOptions?.map((item) => (
+                      <Option key={item.value} value={item.value}>
+                        {item.label}
+                      </Option>
+                    ))}
+                  </Select>
                   <SelectBox
                     onChange={setCountryId}
                     name="countryId"
@@ -102,8 +116,8 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
                     type="button"
                     className="filters__reset-btn btn_red"
                     onClick={() => {
-                      // resetForm()
-                      reset()
+                      resetForm()
+                      // reset()
                       console.log('inside reset')
                     }}
                   >

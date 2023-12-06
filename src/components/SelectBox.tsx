@@ -1,65 +1,46 @@
-import React, { MouseEvent, useEffect, useMemo, useState } from 'react'
+import React, { MouseEvent, useEffect, useState } from 'react'
 import { classNames } from '../utils'
 import { ErrorMessage, useField } from 'formik'
 
-export type OptionValue = string | number
-interface ISelectBoxProps {
+export type Value = string | number
+interface SelectBoxProps {
   placeholder: string
   name: string
-  options: IOption[] | undefined
-  onChange: (value?: OptionValue) => void
+  options: Option[] | undefined | null
+  onChange: (value?: Value) => void
   className?: string
-  selectedValue?: OptionValue
+  defaultValue?: Value
 }
 
-export interface IOption {
-  value?: OptionValue
+export interface Option {
+  value: Value
   label: string
-  selected?: boolean
-  disabled?: boolean
-  hidden?: boolean
 }
 
-const SelectBox: React.FC<ISelectBoxProps> = (props) => {
-  const { name, options: propsOptions = [], onChange, className, placeholder } = props
-  const defaultState: IOption = {
-    value: '',
-    label: placeholder,
-    selected: true,
-    hidden: true,
-  }
-  const options = useMemo(() => [defaultState, ...propsOptions], [propsOptions])
-  const [selectedValue, setSelectedValue] = useState<OptionValue>(
-    props.selectedValue ?? options[0].value!
-  )
-  const selectedOption = useMemo(
-    () => options.find((option) => option.value === selectedValue) ?? options[0],
-    [options, selectedValue]
-  )
+const SelectBox: React.FC<SelectBoxProps> = (props) => {
+  const { name, options, onChange, className, placeholder, defaultValue } = props
+  const [selected, setSelected] = useState<Option | null>(null)
+  const value = selected?.value
   const [showList, setShowList] = useState(false)
   const toggleShow = () => {
     setShowList((prev) => !prev)
   }
-  const optionClickHandler = (event: MouseEvent, option: IOption) => {
+  const optionClickHandler = (event: MouseEvent, option: Option) => {
     event.stopPropagation()
-    if (option !== selectedOption) {
-      selectedOption.selected = false
-      option.selected = true
-      setSelectedValue(option.value!)
-    }
+    if (option !== selected) setSelected(option)
     setShowList(false)
   }
 
   const [, , helpers] = useField(name)
 
   useEffect(() => {
-    if (props.selectedValue) setSelectedValue(props.selectedValue)
-  }, [props.selectedValue])
+    if (options) setSelected(options.find((option) => defaultValue === option.value) || null)
+  }, [defaultValue, options])
 
   useEffect(() => {
-    onChange(selectedValue)
-    helpers?.setValue(selectedValue)
-  }, [selectedValue])
+    onChange(value)
+    helpers?.setValue(value)
+  }, [value])
 
   return (
     <div
@@ -68,19 +49,15 @@ const SelectBox: React.FC<ISelectBoxProps> = (props) => {
       onClick={() => toggleShow()}
       onBlur={() => setShowList(false)}
     >
-      <input type="hidden" value={selectedOption?.value} name={name} />
-      <div className={classNames('select-box__value', !!selectedOption.hidden && 'hidden')}>
-        {selectedOption.label}
+      <input type="hidden" value={value || ''} name={name} />
+      <div className={classNames('select-box__value', !selected && 'hidden')}>
+        {selected?.label || placeholder}
       </div>
       {options && (
         <ul className={classNames('select-box__options', showList && 'show')}>
           {options.map((option) => (
             <li
-              className={classNames(
-                'select-box__option',
-                !!option.selected && 'selected',
-                !!option.hidden && 'hidden'
-              )}
+              className={classNames('select-box__option', option === selected && 'selected')}
               key={option.value}
               onClick={(e) => optionClickHandler(e, option)}
             >
