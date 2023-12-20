@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { listsAPI } from '../store/lists/service'
 import type { Value, Option } from '../components/SelectBox'
+import useDebounce from './useDebounce'
 
 const useOptions = <T extends object, V extends keyof T = keyof T, L extends keyof T = keyof T>(
   data: T[] | undefined,
@@ -25,11 +26,12 @@ export function useCountries() {
 
 export function useDistricts(countryId?: Value) {
   const [districtId, setDistrictId] = useState<Value>()
+  const debouncedCountryId = useDebounce(countryId)
   const { data: districts } = listsAPI.useGetDistrictsQuery(
     {
-      countryId: Number(countryId),
+      countryId: Number(debouncedCountryId),
     },
-    { skip: !countryId }
+    { skip: !debouncedCountryId }
   )
   const districtOptions = useOptions(countryId ? districts : [], 'id', 'name')
 
@@ -38,12 +40,14 @@ export function useDistricts(countryId?: Value) {
 
 export function useCities(countryId?: Value, districtId?: Value) {
   const [cityId, setCityId] = useState<Value>()
+  const debouncedCountryId = useDebounce(countryId)
+  const debouncedDistrictId = useDebounce(districtId)
   const { data: cities } = listsAPI.useGetCitiesQuery(
     {
-      districtId: Number(districtId),
-      countryId: Number(countryId),
+      districtId: Number(debouncedDistrictId),
+      countryId: Number(debouncedCountryId),
     },
-    { skip: !countryId }
+    { skip: !debouncedCountryId }
   )
   const cityOptions = useOptions(countryId ? cities : [], 'id', 'name')
   return { cityId, setCityId, cityOptions }

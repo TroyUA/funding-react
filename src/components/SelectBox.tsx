@@ -88,12 +88,11 @@ const SelectBox: React.FC<SelectBoxProps> = (props) => {
       case 'ArrowDown':
         {
           e.preventDefault()
-          const nextOption =
-            options && selectedIndex != null
+          const nextOption = options
+            ? selectedIndex != null
               ? options[selectedIndex + 1]
-              : options
-              ? options[0]
-              : null
+              : options[0]
+            : null
           if (nextOption) setSelectedOption(nextOption)
         }
         break
