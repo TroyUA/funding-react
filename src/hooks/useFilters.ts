@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { listsAPI } from '../store/lists/service'
 import type { Value, Option } from '../components/SelectBox'
 
-const useOptions = <T, V extends keyof T = keyof T, L extends keyof T = keyof T>(
+const useOptions = <T extends object, V extends keyof T = keyof T, L extends keyof T = keyof T>(
   data: T[] | undefined,
   value: V,
   label: L
@@ -31,7 +31,7 @@ export function useDistricts(countryId?: Value) {
     },
     { skip: !countryId }
   )
-  const districtOptions = useOptions(districts, 'id', 'name')
+  const districtOptions = useOptions(countryId ? districts : [], 'id', 'name')
 
   return { districtId, setDistrictId, districtOptions }
 }
@@ -45,12 +45,12 @@ export function useCities(countryId?: Value, districtId?: Value) {
     },
     { skip: !countryId }
   )
-  const cityOptions = useOptions(cities, 'id', 'name')
+  const cityOptions = useOptions(countryId ? cities : [], 'id', 'name')
   return { cityId, setCityId, cityOptions }
 }
 
 export function useCategories() {
-  const [categoryId, setCategoryId] = useState<Value>()
+  const [categoryId, setCategoryId] = useState<Value>(null)
   const { data: fundsList } = listsAPI.useGetFundsQuery({})
   const categoryOptions = useMemo(
     () =>
@@ -73,10 +73,10 @@ export function useFilters() {
   const { categoryId, setCategoryId, categoryOptions } = useCategories()
 
   const reset = () => {
-    setCountryId('')
-    setDistrictId('')
-    setCityId('')
-    setCategoryId('')
+    setCountryId(null)
+    setDistrictId(null)
+    setCityId(null)
+    setCategoryId(null)
   }
 
   return {

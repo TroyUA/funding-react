@@ -1,3 +1,2 @@
-export function classNames(...classes: (string | boolean)[]) {
-  return classes.filter(Boolean).join(' ')
-}
+export * from './types'
+export * from './functions'

@@ -6,7 +6,8 @@
   padding-bottom: var(--footer-height);
   padding-top: var(--header-height);
   width: 100dvw;
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   .see-all-btn {
     align-self: stretch;
@@ -45,7 +46,7 @@
   }
 
   .article {
-    min-width: 325px;
+    min-width: 300px;
     max-width: 380px;
     flex: 1;
   }

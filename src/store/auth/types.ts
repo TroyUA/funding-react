@@ -2,7 +2,7 @@ import type { AuthModel } from '../../pages/Login'
 import type { ResponseTypes } from '../helpers'
 import type { Profile } from '../users/types'
 
-export interface IAuth {
+export interface Auth {
   token: string | null
   profile: Profile | null
 }
@@ -39,7 +39,7 @@ export interface ValidationErrors {
   __typename: ResponseTypes['VALIDATION_ERRORS']
 }
 
-export interface AuthSuccess extends IAuth {
+export interface AuthSuccess extends Auth {
   __typename: ResponseTypes['AUTH']
 }
 

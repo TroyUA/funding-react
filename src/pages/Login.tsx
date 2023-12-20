@@ -1,14 +1,14 @@
-import Button from '../components/Button'
-import { authAPI } from '../store/auth/service'
-import { z, ZodError } from 'zod'
-import { useNavigate } from 'react-router-dom'
-import { useAppDispatch } from '../hooks/redux'
-import { LocalStorageApi } from '../api/localStorage'
-import { setCredentials } from '../store/auth/slice'
-import Input from '../components/Input'
 import { Field, Form, Formik } from 'formik'
+import { useNavigate } from 'react-router-dom'
+import { z } from 'zod'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
+import { LocalStorageApi } from '../api/localStorage'
+import Button from '../components/Button'
+import Input from '../components/Input'
+import { useAppDispatch } from '../hooks/redux'
 import { ROUTES } from '../router'
+import { authAPI } from '../store/auth/service'
+import { setCredentials } from '../store/auth/slice'
 
 const loginSchema = z.object({
   teamName: z.string().min(3, 'TeamName should be at least 3 characters long'),
@@ -20,7 +20,7 @@ export type AuthModel = z.infer<typeof loginSchema>
 const Login = () => {
   const initialValues: AuthModel = { teamName: '', password: '' }
   const navigate = useNavigate()
-  const [login, { isError, isLoading }] = authAPI.useLoginMutation()
+  const [login] = authAPI.useLoginMutation()
   const dispatch = useAppDispatch()
 
   return (

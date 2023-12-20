@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { LocalStorageApi } from '../../api/localStorage'
 import { Profile } from '../users/types'
-import { IAuth, AuthSuccess } from './types'
+import { Auth, AuthSuccess } from './types'
 
-const initialState: IAuth = {
+const initialState: Auth = {
   token: LocalStorageApi.getAccessToken(),
   profile: null,
 }

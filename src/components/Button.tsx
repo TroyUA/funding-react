@@ -2,15 +2,15 @@ import React, { ComponentProps } from 'react'
 import { Link } from 'react-router-dom'
 import type { Route } from '../router'
 
-export interface IButtonProps extends ComponentProps<'button'> {
+export interface ButtonProps extends ComponentProps<'button'> {
   imgSrc?: string
-  className?: string
+  // className?: string
   onClick?: () => void
   to?: Route
   alt?: string
 }
 
-const Button: React.FC<IButtonProps> = (props) => {
+const Button: React.FC<ButtonProps> = (props) => {
   const { children, to, imgSrc, className, onClick, alt, ...rest } = props
 
   const componentInnerStructure = (

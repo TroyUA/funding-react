@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Button from '../components/Button'
 import ProfileSettings from '../components/ProfileSettings'
 import User from '../components/User'
-import { authAPI } from '../store/auth/service'
-import Button from '../components/Button'
-import { useNavigate } from 'react-router-dom'
 import { ROUTES } from '../router'
+import { authAPI } from '../store/auth/service'
+import Spiner from '../components/Spiner'
 
 const Profile: React.FC = () => {
   const { data, isLoading } = authAPI.useGetMyStatisticQuery()
@@ -32,7 +33,7 @@ const Profile: React.FC = () => {
       <ProfileSettings isOpened={isOpened} onClose={() => setIsOpened(false)} />
     </div>
   ) : (
-    <h1>Loading...</h1>
+    <Spiner />
   )
 }
 

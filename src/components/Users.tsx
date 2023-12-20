@@ -2,6 +2,7 @@ import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
 import { LeaderboardPagination } from '../store/users/types'
 import User from './User'
 import { SerializedError } from '@reduxjs/toolkit'
+import Spiner from './Spiner'
 
 interface UsersProps {
   leaderboard?: LeaderboardPagination
@@ -15,7 +16,7 @@ const Users: React.FC<UsersProps> = ({ error, isLoading, leaderboard }) => {
   }
 
   if (isLoading) {
-    return <h1>Loading...</h1>
+    return <Spiner />
   }
 
   return (

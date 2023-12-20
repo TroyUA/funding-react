@@ -2,6 +2,8 @@ import React from 'react'
 import type { User } from '../store/users/types'
 import Button from './Button'
 
+const DEFAULT_ICON = '/src/img/user-icon3.svg'
+
 const User: React.FC<User> = ({ avatar, teamName, city, totalDonation, position, country }) => {
   const formatter = Intl.NumberFormat('en-US', {
     currency: 'USD',
@@ -16,7 +18,7 @@ const User: React.FC<User> = ({ avatar, teamName, city, totalDonation, position,
         src={avatar}
         loading="lazy"
         onError={(e) => {
-          e.currentTarget.src = '/src/img/user-icon3.svg'
+          e.currentTarget.src = DEFAULT_ICON
         }}
       />
       <div className="user__all-other-info">

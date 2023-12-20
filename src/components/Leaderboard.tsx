@@ -1,28 +1,27 @@
+import { Form, Formik } from 'formik'
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import { useFilters } from '../hooks/useFilters'
+import { ROUTES } from '../router'
+import { usersAPI } from '../store/users/service'
+import { classNames } from '../utils'
 import Button from './Button'
 import Datepicker from './Datepicker'
 import SelectBox from './SelectBox'
 import Users from './Users'
-import { classNames } from '../utils'
-import { useFilters } from '../hooks/useFilters'
-import { Form, Formik } from 'formik'
-import { usersAPI } from '../store/users/service'
-import { ROUTES } from '../router'
-import { useLocation } from 'react-router-dom'
-import { Option, Select } from '@mui/base'
 // import { useSearchParams } from 'react-router-dom'
 
-interface ILeaderboardProps {
+interface LeaderboardProps {
   limit: number
 }
 
-const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
+const Leaderboard: React.FC<LeaderboardProps> = (props) => {
   const [limit, setLimit] = useState(props.limit)
   const isOnLeaderboardPage = useLocation().pathname.includes(ROUTES.LEADERBOARD)
   const [showFilters, setShowFilters] = useState(false)
 
   const {
-    // reset,
+    reset,
     setCountryId,
     setDistrictId,
     setCityId,
@@ -30,6 +29,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
     countryId,
     districtId,
     cityId,
+    categoryId,
     countryOptions,
     districtOptions,
     cityOptions,
@@ -57,7 +57,7 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
         <section className="filters">
           <h1>donation leaderboard</h1>
           <Formik
-            initialValues={{ countryId: '', cityId: '', districtId: '', categoryId: '', date: '' }}
+            initialValues={{ countryId, cityId, districtId, categoryId, date: '' }}
             onSubmit={({ cityId, countryId, districtId }) => {
               getLeaderboard({
                 limit,
@@ -69,58 +69,41 @@ const Leaderboard: React.FC<ILeaderboardProps> = (props) => {
               setShowFilters(false)
             }}
           >
-            {({ resetForm }) => (
+            {() => (
               <Form className={classNames('filters__form', showFilters && 'show')}>
                 <div className="filters__inputs">
-                  <Select
-                    placeholder="Country"
-                    // slots={{ root: 'div' }}
-                    // slotProps={{ popper: {  } }}
-                    // className="stretched"
-                    onChange={(e) => console.log(e?.target)}
-                  >
-                    {countryOptions?.map((item) => (
-                      <Option key={item.value} value={item.value}>
-                        {item.label}
-                      </Option>
-                    ))}
-                  </Select>
                   <SelectBox
                     onChange={setCountryId}
                     name="countryId"
                     placeholder="Country"
                     options={countryOptions}
+                    defaultValue={countryId}
                   ></SelectBox>
                   <SelectBox
                     name="cityId"
                     placeholder="City"
                     onChange={setCityId}
                     options={cityOptions}
+                    defaultValue={cityId}
                   ></SelectBox>
                   <SelectBox
                     name="districtId"
                     placeholder="District"
                     onChange={setDistrictId}
                     options={districtOptions}
+                    defaultValue={districtId}
                   ></SelectBox>
                   <SelectBox
                     name="categoryId"
                     placeholder="Category"
                     onChange={setCategoryId}
                     options={categoryOptions}
+                    defaultValue={categoryId}
                   ></SelectBox>
                   <Datepicker name="date"></Datepicker>
                 </div>
                 <div className="filters__buttons">
-                  <Button
-                    type="button"
-                    className="filters__reset-btn btn_red"
-                    onClick={() => {
-                      resetForm()
-                      // reset()
-                      console.log('inside reset')
-                    }}
-                  >
+                  <Button type="button" className="filters__reset-btn btn_red" onClick={reset}>
                     Reset
                   </Button>
                   <Button type="submit" className="filters__apply-btn btn_black">
