@@ -4,7 +4,7 @@ import Button from './Button'
 
 const DEFAULT_ICON = '/src/img/user-icon3.svg'
 
-const User: React.FC<User> = ({ avatar, teamName, city, totalDonation, position, country }) => {
+const UserView: React.FC<User> = ({ avatar, teamName, city, totalDonation, position, country }) => {
   const formatter = Intl.NumberFormat('en-US', {
     currency: 'USD',
     style: 'currency',
@@ -41,4 +41,4 @@ const User: React.FC<User> = ({ avatar, teamName, city, totalDonation, position,
   )
 }
 
-export default User
+export default UserView

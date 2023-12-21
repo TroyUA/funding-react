@@ -1,6 +1,6 @@
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query'
-import { LeaderboardPagination } from '../store/users/types'
-import User from './User'
+import type { LeaderboardPagination } from '../store/users/types'
+import UserView from './UserView'
 import { SerializedError } from '@reduxjs/toolkit'
 import Spiner from './Spiner'
 
@@ -22,7 +22,7 @@ const Users: React.FC<UsersProps> = ({ error, isLoading, leaderboard }) => {
   return (
     <div className="users">
       {leaderboard?.items?.map((user) => (
-        <User key={user.teamName} {...user} />
+        <UserView key={user.teamName} {...user} />
       ))}
     </div>
   )

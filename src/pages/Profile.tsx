@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import ProfileSettings from '../components/ProfileSettings'
-import User from '../components/User'
+import UserView from '../components/UserView'
 import { ROUTES } from '../router'
 import { authAPI } from '../store/auth/service'
 import Spiner from '../components/Spiner'
@@ -29,7 +29,7 @@ const Profile: React.FC = () => {
           Edit Profile
         </Button>
       </section>
-      <section className="profile-page__bottom">{data && <User {...data} />}</section>
+      <section className="profile-page__bottom">{data && <UserView {...data} />}</section>
       <ProfileSettings isOpened={isOpened} onClose={() => setIsOpened(false)} />
     </div>
   ) : (
