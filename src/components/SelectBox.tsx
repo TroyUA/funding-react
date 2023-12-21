@@ -63,7 +63,6 @@ const SelectBox: React.FC<SelectBoxProps> = (props) => {
   }
   const keydownHandler: KeyboardEventHandler = (e) => {
     if (e.target != selectRef.current || e.code === 'Tab') return
-    console.log(e.code)
 
     switch (e.code) {
       case 'Enter':
@@ -111,6 +110,15 @@ const SelectBox: React.FC<SelectBoxProps> = (props) => {
     onChange(selectedValue)
     helpers?.setValue(selectedValue)
   }, [selectedValue])
+
+  useEffect(() => {
+    if (showList) {
+      const selectedElement = selectRef.current?.querySelector(
+        `li:nth-child(${selectedIndex != null ? selectedIndex + 1 : 0})`
+      )
+      selectedElement?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+    }
+  }, [selectedIndex, showList])
 
   return (
     <div
