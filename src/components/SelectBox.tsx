@@ -55,7 +55,7 @@ const SelectBox: React.FC<SelectBoxProps> = (props) => {
     }, 500)
 
     const searchedOption = options?.find((option) =>
-      option.label.toLowerCase().startsWith(searchTermRef.current)
+      option.label.toLowerCase().startsWith(searchTermRef.current.toLowerCase())
     )
     if (searchedOption && searchedOption !== selectedOption) {
       setSelectedOption(searchedOption)

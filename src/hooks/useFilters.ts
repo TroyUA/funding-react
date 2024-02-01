@@ -54,17 +54,17 @@ export function useCities(countryId?: Value, districtId?: Value) {
 }
 
 export function useCategories() {
-  const [categoryId, setCategoryId] = useState<Value>(null)
-  const { data: fundsList } = listsAPI.useGetFundsQuery({})
+  const [categoryId, setCategoryId] = useState<Value>()
+  const { data: funds } = listsAPI.useGetFundsQuery({})
   const categoryOptions = useMemo(
     () =>
-      fundsList
+      funds
         ?.reduce((categories: string[], fund) => {
           if (categories.indexOf(fund.category) === -1) categories.push(fund.category)
           return categories
         }, [])
         .map((category) => ({ value: category, label: category } as Option)),
-    [fundsList]
+    [funds]
   )
 
   return { categoryId, setCategoryId, categoryOptions }
